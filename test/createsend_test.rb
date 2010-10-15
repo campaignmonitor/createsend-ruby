@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/helper'
 
 class CreateSendTest < Test::Unit::TestCase
-
   context "when an api caller is authenticated" do
     setup do
       @api_key = '123123123123123123123'
@@ -48,4 +47,9 @@ class CreateSendTest < Test::Unit::TestCase
     end
   end
 
+  context "when the CreateSend API responds with an error" do
+    
+    # TODO: Add tests for error case
+    
+  end
 end

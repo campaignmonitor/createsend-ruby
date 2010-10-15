@@ -1,0 +1,12 @@
+[
+  {
+    "EmailAddress": "subs+098u0qu0qwd@example.com",
+    "Date": "2009-11-25 13:23:20",
+    "State": "Suppressed"
+  },
+  {
+    "EmailAddress": "subs+3018006@example.com",
+    "Date": "2009-11-10 11:50:04",
+    "State": "Suppressed"
+  }
+]

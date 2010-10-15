@@ -17,7 +17,12 @@ class Client
       :Country => country }.to_json }
     CreateSend.post "/clients.json", options
   end
-  
+
+  def details
+    response = CreateSend.get "/clients/#{client_id}.json", {}
+    Hashie::Mash.new(response)
+  end
+
   def campaigns
     response = get 'campaigns'
     response.map{|item| Hashie::Mash.new(item)}
@@ -39,11 +44,13 @@ class Client
   end
 
   def suppressionlist
-    get 'suppressionlist'
+    response = get 'suppressionlist'
+    response.map{|item| Hashie::Mash.new(item)}
   end
   
   def templates
-    get 'templates'
+    response = get 'templates'
+    response.map{|item| Hashie::Mash.new(item)}
   end
 
   def delete

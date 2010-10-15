@@ -1,0 +1,14 @@
+[
+  {
+    "CampaignID": "7c7424792065d92627139208c8c01db1",
+    "Name": "Draft One",
+    "Subject": "Draft One",
+    "DateCreated": "2010-08-19 16:08:00"
+  },
+  {
+    "CampaignID": "2e928e982065d92627139208c8c01db1",
+    "Name": "Draft Two",
+    "Subject": "Draft Two",
+    "DateCreated": "2010-08-19 16:08:00"
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "BasicDetails": {
+    "ClientID": "4a397ccaaa55eb4e6aa1221e1e2d7122",
+    "CompanyName": "Client One",
+    "ContactName": "Client One (contact)",
+    "EmailAddress": "contact@example.com",
+    "Country": "Australia",
+    "Timezone": "(GMT+10:00) Canberra, Melbourne, Sydney"
+  },
+  "AccessAndBilling": {
+    "Username": "clientone",
+    "Password": "Deprecated",
+    "BillingType": "UserPaysOnClientsBehalf",
+    "Currency": "",
+    "DeliveryFee": "",
+    "CostPerRecipient": "",
+    "DesignAndSpamTestFee": "",
+    "AccessLevel": 23
+  }
+}
