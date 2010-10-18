@@ -4,7 +4,7 @@
     "CampaignID": "fc0ce7105baeaf97f47c99be31d02a91",
     "Subject": "Campaign One",
     "Name": "Campaign One",
-    "SentDate": "12/10/2010 12:58:00 PM",
+    "SentDate": "2010-10-12 12:58:00",
     "TotalRecipients": 2245
   },
   {
@@ -12,7 +12,7 @@
     "CampaignID": "072472b88c853ae5dedaeaf549a8d607",
     "Subject": "Campaign Two",
     "Name": "Campaign Two",
-    "SentDate": "6/10/2010 4:20:00 PM",
+    "SentDate": "2010-10-06 16:20:00",
     "TotalRecipients": 11222
   }
 ]
