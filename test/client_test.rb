@@ -22,8 +22,11 @@ class ClientTest < Test::Unit::TestCase
       campaigns = @client.campaigns
       campaigns.size.should == 2
       campaigns.first.CampaignID.should == 'fc0ce7105baeaf97f47c99be31d02a91'
+      campaigns.first.WebVersionURL.should == 'http://hello.createsend.com//t/ViewEmail/r/765E86829575EE2C/C67FD2F38AC4859C/'
+      campaigns.first.Subject.should == 'Campaign One'
       campaigns.first.Name.should == 'Campaign One'
-      # TODO: Check other values
+      campaigns.first.SentDate.should == '2010-10-12 12:58:00'
+      campaigns.first.TotalRecipients.should == 2245
     end
 
     should "get all drafts" do
@@ -32,7 +35,8 @@ class ClientTest < Test::Unit::TestCase
       drafts.size.should == 2
       drafts.first.CampaignID.should == '7c7424792065d92627139208c8c01db1'
       drafts.first.Name.should == 'Draft One'
-      # TODO: Check other values
+      drafts.first.Subject.should == 'Draft One'
+      drafts.first.DateCreated.should == '2010-08-19 16:08:00'
     end
 
     should "get all lists" do
@@ -67,5 +71,14 @@ class ClientTest < Test::Unit::TestCase
       templates.first.TemplateID.should == '5cac213cf061dd4e008de5a82b7a3621'
       templates.first.Name.should == 'Template One'
     end
+    
+#    should "create a client" do
+#    end
+
+    should "delete a client" do
+      stub_delete(@api_key, "clients/#{@client.client_id}.json", nil)
+      @client.delete
+    end
+    
   end
 end

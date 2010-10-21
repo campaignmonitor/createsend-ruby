@@ -57,4 +57,35 @@ end
 #new_client_id = Client.create 'Widget Lovers', 'Widget Lovers', 'hello@example.com', '(GMT+10:00) Canberra, Melbourne, Sydney', 'Australia'
 #pp new_client
 
+# Create a new template for the client
+template_id = Template.create(client.client_id, "My new template", "http://www.mailshot.co.nz/my-account/templates/single.html", 
+  "http://www.mailshot.co.nz/my-account/templates/single.zip", "http://www.mailshot.co.nz/my-account/templates/single.jpg")
+template = Template.new(template_id)
+puts "\nCreated template with ID: #{template.template_id}"
+
+# Show template details
+puts "\nThe template in all its glory:"
+deets = template.details
+puts deets.Name
+puts deets.TemplateID
+puts deets.PreviewURL
+puts deets.ScreenshotURL
+
+# Update the template
+puts "\nUpdating the template..."
+template.update("My updated template", "http://www.mailshot.co.nz/my-account/templates/single.html", 
+  "http://www.mailshot.co.nz/my-account/templates/single.zip", "http://www.mailshot.co.nz/my-account/templates/single.jpg")
+
+# Show template details, again
+puts "\nThe template in all its glory:"
+deets = template.details
+puts deets.Name
+puts deets.TemplateID
+puts deets.PreviewURL
+puts deets.ScreenshotURL
+
+# Delete the template
+puts "\nDeleting the template now..."
+template.delete
+
 puts "\n"

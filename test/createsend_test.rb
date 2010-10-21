@@ -48,8 +48,5 @@ class CreateSendTest < Test::Unit::TestCase
   end
 
   context "when the CreateSend API responds with an error" do
-    
-    # TODO: Add tests for error case
-    
   end
 end

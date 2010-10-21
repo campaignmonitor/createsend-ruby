@@ -6,6 +6,22 @@ require 'hashie'
 Hash.send :include, Hashie::HashExtensions
 
 require 'client'
+require 'template'
+
+class CreateSendError < StandardError
+  attr_reader :data
+  def initialize(data)
+    @data = data
+    super
+  end
+end
+
+class ClientError < StandardError; end
+class ServerError < CreateSendError; end
+class General < CreateSendError; end
+class Unauthorized < ClientError; end
+class NotFound < ClientError; end
+class Unavailable < StandardError; end
 
 class CreateSend
   include HTTParty
@@ -23,7 +39,7 @@ class CreateSend
     end
     self.class.basic_auth @api_key, 'x'
   end
-
+  
   def apikey(site_url, username, password) 
     site_url = CGI.escape(site_url)
     self.class.basic_auth username, password
@@ -51,5 +67,20 @@ class CreateSend
   def timezones
     response = CreateSend.get('/timezones.json')
     response.parsed_response
+  end
+
+  def self.get(*args); handle_response super end
+  def self.post(*args); handle_response super end
+  def self.put(*args); handle_response super end
+  def self.delete(*args); handle_response super end
+
+  def self.handle_response(response)
+    case response.code
+    when 401; raise Unauthorized.new
+    when 404; raise NotFound.new
+    when 400...500; raise ClientError.new
+    when 500...600; raise ServerError.new(response.code)
+    else; response
+    end
   end
 end
