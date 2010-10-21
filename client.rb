@@ -7,7 +7,7 @@ class Client
   def initialize(client_id)
     @client_id = client_id
   end
-  
+
   def self.create(company, contact_name, email, timezone, country)
     options = { :body => { 
       :CompanyName => company, 

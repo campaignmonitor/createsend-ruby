@@ -8,6 +8,12 @@ class ClientTest < Test::Unit::TestCase
       @cs = CreateSend.new(:api_key => @api_key, :base_uri => @base_uri)
       @client = Client.new(:client_id => '321iuhiuhi1u23hi2u3')
     end
+
+    should "create a client" do
+      stub_post(@api_key, "clients.json", "create_client.json")
+      client_id = Client.create "Client Company Name", "Client Contact Name", "client@example.com", "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia"
+      client_id.should == "32a381c49a2df99f1d0c6f3c112352b9"
+    end
     
     should "get details of a client" do
       stub_get(@api_key, "clients/#{@client.client_id}.json", "client_details.json")
@@ -72,9 +78,6 @@ class ClientTest < Test::Unit::TestCase
       templates.first.Name.should == 'Template One'
     end
     
-#    should "create a client" do
-#    end
-
     should "delete a client" do
       stub_delete(@api_key, "clients/#{@client.client_id}.json", nil)
       @client.delete
