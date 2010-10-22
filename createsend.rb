@@ -17,8 +17,8 @@ class CreateSendError < StandardError
 end
 
 class ClientError < StandardError; end
-class ServerError < CreateSendError; end
-class General < CreateSendError; end
+class ServerError < StandardError; end
+class BadRequest < CreateSendError; end
 class Unauthorized < ClientError; end
 class NotFound < ClientError; end
 class Unavailable < StandardError; end
@@ -76,11 +76,18 @@ class CreateSend
 
   def self.handle_response(response)
     case response.code
-    when 401; raise Unauthorized.new
-    when 404; raise NotFound.new
-    when 400...500; raise ClientError.new
-    when 500...600; raise ServerError.new(response.code)
-    else; response
+    when 400
+      raise BadRequest.new(response)
+    when 401
+      raise Unauthorized.new
+    when 404
+      raise NotFound.new
+    when 400...500
+      raise ClientError.new
+    when 500...600
+      raise ServerError.new
+    else
+      response
     end
   end
 end
