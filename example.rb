@@ -12,8 +12,7 @@ client = Client.new(client_id)
 # Show full details
 puts "\nClient's full details:"
 cl = client.details
-pp cl.BasicDetails
-pp cl.AccessAndBilling
+pp cl
 
 # Get their lists
 puts "\nTheir lists:"
@@ -58,34 +57,44 @@ end
 #pp new_client
 
 # Create a new template for the client
-template_id = Template.create(client.client_id, "My new template", "http://www.mailshot.co.nz/my-account/templates/single.html", 
-  "http://www.mailshot.co.nz/my-account/templates/single.zip", "http://www.mailshot.co.nz/my-account/templates/single.jpg")
-template = Template.new(template_id)
-puts "\nCreated template with ID: #{template.template_id}"
+# template_id = Template.create(client.client_id, "My new template", "http://www.mailshot.co.nz/my-account/templates/single.html", 
+#   "http://www.mailshot.co.nz/my-account/templates/single.zip", "http://www.mailshot.co.nz/my-account/templates/single.jpg")
+# template = Template.new(template_id)
+# puts "\nCreated template with ID: #{template.template_id}"
 
 # Show template details
-puts "\nThe template in all its glory:"
-deets = template.details
-puts deets.Name
-puts deets.TemplateID
-puts deets.PreviewURL
-puts deets.ScreenshotURL
+# puts "\nThe template in all its glory:"
+# deets = template.details
+# puts deets.Name
+# puts deets.TemplateID
+# puts deets.PreviewURL
+# puts deets.ScreenshotURL
 
 # Update the template
-puts "\nUpdating the template..."
-template.update("My updated template", "http://www.mailshot.co.nz/my-account/templates/single.html", 
-  "http://www.mailshot.co.nz/my-account/templates/single.zip", "http://www.mailshot.co.nz/my-account/templates/single.jpg")
+# puts "\nUpdating the template..."
+# template.update("My updated template", "http://www.mailshot.co.nz/my-account/templates/single.html", 
+#   "http://www.mailshot.co.nz/my-account/templates/single.zip", "http://www.mailshot.co.nz/my-account/templates/single.jpg")
 
 # Show template details, again
-puts "\nThe template in all its glory:"
-deets = template.details
-puts deets.Name
-puts deets.TemplateID
-puts deets.PreviewURL
-puts deets.ScreenshotURL
+# puts "\nThe template in all its glory:"
+# deets = template.details
+# puts deets.Name
+# puts deets.TemplateID
+# puts deets.PreviewURL
+# puts deets.ScreenshotURL
 
 # Delete the template
-puts "\nDeleting the template now..."
-template.delete
+#puts "\nDeleting the template now..."
+#template.delete
+
+# puts "\nUpdate their basic details..."
+# client.set_basics "The Basics", "The Basics", "jamesd+iuh987h98wh9@freshview.com", "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia"
+# cl = client.details
+# pp cl
+# 
+# puts "\nUpdate their access details..."
+# client.set_access "basics", "basics", 63
+# cl = client.details
+# pp cl
 
 puts "\n"

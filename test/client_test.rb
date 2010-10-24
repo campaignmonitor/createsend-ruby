@@ -20,7 +20,8 @@ class ClientTest < Test::Unit::TestCase
       cl = @client.details
       cl.BasicDetails.ClientID.should == "4a397ccaaa55eb4e6aa1221e1e2d7122"
       cl.BasicDetails.ContactName.should == "Client One (contact)"
-      cl.AccessAndBilling.Username.should == "clientone"
+      cl.AccessDetails.Username.should == "clientone"
+      cl.AccessDetails.AccessLevel.should == 23
     end
 
     should "get all campaigns" do
@@ -76,6 +77,26 @@ class ClientTest < Test::Unit::TestCase
       templates.size.should == 2
       templates.first.TemplateID.should == '5cac213cf061dd4e008de5a82b7a3621'
       templates.first.Name.should == 'Template One'
+    end
+    
+    should "set basics" do
+      stub_put(@api_key, "clients/#{@client.client_id}/setbasics.json", nil)
+      @client.set_basics "Client Company Name", "Client Contact Name", "client@example.com", "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia"
+    end
+    
+    should "set access" do
+      stub_put(@api_key, "clients/#{@client.client_id}/setaccess.json", nil)
+      @client.set_access "username", "password", 321
+    end
+    
+    should "set payg billing" do
+      stub_put(@api_key, "clients/#{@client.client_id}/setpaygbilling.json", nil)
+      @client.set_payg_billing "CAD", true, true, 150
+    end
+    
+    should "set monthly billing" do
+      stub_put(@api_key, "clients/#{@client.client_id}/setmonthlybilling.json", nil)
+      @client.set_monthly_billing "CAD", true, true, 150
     end
     
     should "delete a client" do
