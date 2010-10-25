@@ -20,11 +20,21 @@ client.lists.each do |l|
   puts l.Name
 end
 
-# Subscriber tests
+# Get a subscriber
+puts "\nGetting a subscriber..."
 subs = Subscriber.get "2fe4c8f0373ce320e2200596d7ef168f", "jamesd+7t8787Y@freshview.com"
 pp subs
 
-exit
+# Add a subscriber
+# puts "\nAdding a subscriber..."
+# custom_fields = [
+#   {
+#     :Key => "website",
+#     :Value => "http://subdomain.example.com"
+#   }
+# ]
+# email = Subscriber.add "2fe4c8f0373ce320e2200596d7ef168f", "jamesd+7890909i0ggg@freshview.com", "Jimmy", custom_fields, true
+# pp email
 
 # Get their segments
 puts "\nTheir segments:"

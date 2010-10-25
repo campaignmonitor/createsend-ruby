@@ -22,5 +22,19 @@ class SubscriberTest < Test::Unit::TestCase
       subscriber.CustomFields.first.Value.should == 'http://example.com'
     end
 
+    should "add a subscriber without custom fields" do
+      stub_post(@api_key, "subscribers/#{@list_id}.json", "add_subscriber.json")
+      email_address = Subscriber.add @list_id, "subscriber@example.com", "Subscriber", [], true
+      email_address.should == "subscriber@example.com"
+    end
+
+    should "add a subscriber with custom fields" do
+      stub_post(@api_key, "subscribers/#{@list_id}.json", "add_subscriber.json")
+      custom_fields = [ { :Key => 'website', :Value => 'http://example.com/' } ]
+      email_address = Subscriber.add @list_id, "subscriber@example.com", "Subscriber", custom_fields, true
+      email_address.should == "subscriber@example.com"
+    end
+    
+    
   end
 end

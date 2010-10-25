@@ -11,7 +11,19 @@ class Subscriber
   end
 
   def self.get(list_id, email_address)
-    response = CreateSend.get "/subscribers/#{list_id}.json", { :query => { :email => email_address } }
+    options = { :query => { :email => email_address } }
+    response = CreateSend.get "/subscribers/#{list_id}.json", options
     Hashie::Mash.new(response)
   end
+
+  def self.add(list_id, email_address, name, custom_fields, resubscribe)
+    options = { :body => {
+        :EmailAddress => email_address,
+        :Name => name,
+        :CustomFields => custom_fields,
+        :Resubscribe => resubscribe }.to_json }
+    response = CreateSend.post "/subscribers/#{list_id}.json", options
+    response.parsed_response
+  end
+  
 end
