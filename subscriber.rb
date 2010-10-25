@@ -18,12 +18,20 @@ class Subscriber
 
   def self.add(list_id, email_address, name, custom_fields, resubscribe)
     options = { :body => {
-        :EmailAddress => email_address,
-        :Name => name,
-        :CustomFields => custom_fields,
-        :Resubscribe => resubscribe }.to_json }
+      :EmailAddress => email_address,
+      :Name => name,
+      :CustomFields => custom_fields,
+      :Resubscribe => resubscribe }.to_json }
     response = CreateSend.post "/subscribers/#{list_id}.json", options
     response.parsed_response
+  end
+
+  def self.import(list_id, subscribers, resubscribe)
+    options = { :body => {
+      :Subscribers => subscribers,
+      :Resubscribe => resubscribe }.to_json }
+    response = CreateSend.post "/subscribers/#{list_id}/import.json", options
+    Hashie::Mash.new(response)
   end
 
   def unsubscribe

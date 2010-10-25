@@ -25,6 +25,7 @@ puts "\nGetting a subscriber..."
 subs = Subscriber.get "2fe4c8f0373ce320e2200596d7ef168f", "jamesd+7t8787Y@freshview.com"
 pp subs
 
+# Get a subscriber's history
 puts "\nGetting a subscriber's history..."
 s = Subscriber.new "adb870d33204f211926ff7870c6a3268", "jamesd+8798u98u@freshview.com"
 history = s.history
@@ -45,6 +46,16 @@ pp history
 # ]
 # email = Subscriber.add "2fe4c8f0373ce320e2200596d7ef168f", "jamesd+7890909i0ggg@freshview.com", "Jimmy", custom_fields, true
 # pp email
+
+# Import multiple subscribers
+# puts "\nImporting multiple subscribers"
+# subscribers = [
+#   { :EmailAddress => "example+1@example.com", :Name => "Example One" },
+#   { :EmailAddress => "example+2@example.com", :Name => "Example Two" },
+#   { :EmailAddress => "example+3@example.com", :Name => "Example Three" },
+# ]
+# import_result = Subscriber.import "2fe4c8f0373ce320e2200596d7ef168f", subscribers, true
+# pp import_result
 
 # Get their segments
 puts "\nTheir segments:"

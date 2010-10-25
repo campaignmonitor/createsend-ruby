@@ -35,6 +35,21 @@ class SubscriberTest < Test::Unit::TestCase
       email_address = Subscriber.add @list_id, "subscriber@example.com", "Subscriber", custom_fields, true
       email_address.should == "subscriber@example.com"
     end
+    
+    should "import many subscribers at once" do
+      stub_post(@api_key, "subscribers/#{@list_id}/import.json", "import_subscribers.json")
+      subscribers = [
+        { :EmailAddress => "example+1@example.com", :Name => "Example One" },
+        { :EmailAddress => "example+2@example.com", :Name => "Example Two" },
+        { :EmailAddress => "example+3@example.com", :Name => "Example Three" },
+      ]
+      import_result = Subscriber.import @list_id, subscribers, true
+      import_result.FailureDetails.size.should == 0
+      import_result.TotalUniqueEmailsSubmitted.should == 3
+      import_result.TotalExistingSubscribers.should == 0
+      import_result.TotalNewSubscribers.should == 3
+      import_result.DuplicateEmailsInSubmission.size.should == 0
+    end
 
     should "unsubscribe a subscriber" do
       stub_post(@api_key, "subscribers/#{@subscriber.list_id}/unsubscribe.json", nil)
