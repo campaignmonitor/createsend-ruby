@@ -20,6 +20,12 @@ client.lists.each do |l|
   puts l.Name
 end
 
+# Subscriber tests
+subs = Subscriber.get "2fe4c8f0373ce320e2200596d7ef168f", "jamesd+7t8787Y@freshview.com"
+pp subs
+
+exit
+
 # Get their segments
 puts "\nTheir segments:"
 client.segments.each do |s|

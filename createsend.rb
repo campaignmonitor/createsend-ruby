@@ -7,6 +7,7 @@ Hash.send :include, Hashie::HashExtensions
 
 require 'client'
 require 'template'
+require 'subscriber'
 
 class CreateSendError < StandardError
   attr_reader :data
