@@ -7,6 +7,7 @@ class SubscriberTest < Test::Unit::TestCase
       @base_uri = 'http://api.createsend.com/api/v3'
       @cs = CreateSend.new(:api_key => @api_key, :base_uri => @base_uri)
       @list_id = "d98h2938d9283d982u3d98u88"
+      @subscriber = Subscriber.new @list_id, "subscriber@example.com"
     end
     
     should "get a subscriber by list id and email address" do
@@ -34,7 +35,25 @@ class SubscriberTest < Test::Unit::TestCase
       email_address = Subscriber.add @list_id, "subscriber@example.com", "Subscriber", custom_fields, true
       email_address.should == "subscriber@example.com"
     end
+
+    should "unsubscribe a subscriber" do
+      stub_post(@api_key, "subscribers/#{@subscriber.list_id}/unsubscribe.json", nil)
+      @subscriber.unsubscribe
+    end
     
-    
+    should "get a subscriber's history" do
+      stub_get(@api_key, "subscribers/#{@subscriber.list_id}/history.json?email=#{CGI.escape(@subscriber.email_address)}", "subscriber_history.json")
+      history = @subscriber.history
+      history.size.should == 1
+      history.first.Name.should == "Campaign One"
+      history.first.Type.should == "Campaign"
+      history.first.ID.should == "fc0ce7105baeaf97f47c99be31d02a91"
+      history.first.Actions.size.should == 6
+      history.first.Actions.first.Event.should ==  "Open"
+      history.first.Actions.first.Date.should ==  "2010-10-12 13:18:00"
+      history.first.Actions.first.IPAddress.should == "192.168.126.87"
+      history.first.Actions.first.Detail.should == ""
+    end
+
   end
 end

@@ -25,5 +25,17 @@ class Subscriber
     response = CreateSend.post "/subscribers/#{list_id}.json", options
     response.parsed_response
   end
-  
+
+  def unsubscribe
+    options = { :body => {
+      :EmailAddress => @email_address }.to_json }
+    CreateSend.post "/subscribers/#{@list_id}/unsubscribe.json", options
+  end
+
+  def history
+    options = { :query => { :email => @email_address } }
+    response = CreateSend.get "/subscribers/#{@list_id}/history.json", options
+    response.map{|item| Hashie::Mash.new(item)}
+  end
+
 end

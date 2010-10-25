@@ -25,6 +25,16 @@ puts "\nGetting a subscriber..."
 subs = Subscriber.get "2fe4c8f0373ce320e2200596d7ef168f", "jamesd+7t8787Y@freshview.com"
 pp subs
 
+puts "\nGetting a subscriber's history..."
+s = Subscriber.new "adb870d33204f211926ff7870c6a3268", "jamesd+8798u98u@freshview.com"
+history = s.history
+pp history
+
+# Unsubscribe a subscriber
+# puts "\nUnsubscribing a subscriber..."
+# s = Subscriber.new "2fe4c8f0373ce320e2200596d7ef168f", "subscriber@example.com"
+# s.unsubscribe
+
 # Add a subscriber
 # puts "\nAdding a subscriber..."
 # custom_fields = [
