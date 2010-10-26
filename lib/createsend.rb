@@ -41,18 +41,6 @@ class CreateSend
   headers 'Content-Type' => 'application/json'
   base_uri CreateSendOptions['base_uri']
   basic_auth CreateSendOptions['api_key'], 'x'
-
-  # def initialize(config={})
-  #   if config[:api_key].nil? or config[:base_uri].nil?
-  #     config = YAML.load_file('config.yaml')
-  #     @api_key = config['api_key']
-  #     self.class.base_uri config['base_uri']
-  #   else
-  #     @api_key = config[:api_key]
-  #     self.class.base_uri config[:base_uri]
-  #   end
-  #   self.class.basic_auth @api_key, 'x'
-  # end
   
   def self.api_key(api_key=nil)
     return @@api_key unless api_key
