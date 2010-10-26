@@ -4,8 +4,7 @@ class TemplateTest < Test::Unit::TestCase
   context "when an api caller is authenticated" do
     setup do
       @api_key = '123123123123123123123'
-      @base_uri = 'http://api.createsend.com/api/v3'
-      @cs = CreateSend.new(:api_key => @api_key, :base_uri => @base_uri)
+      CreateSend.api_key @api_key
       @template = Template.new(:template_id => '98y2e98y289dh89h938389')
     end
 

@@ -4,8 +4,7 @@ class ListTest < Test::Unit::TestCase
   context "when an api caller is authenticated" do
     setup do
       @api_key = '123123123123123123123'
-      @base_uri = 'http://api.createsend.com/api/v3'
-      @cs = CreateSend.new(:api_key => @api_key, :base_uri => @base_uri)
+      CreateSend.api_key @api_key
       @client_id = "87y8d7qyw8d7yq8w7ydwqwd"
       @list_id = "e3c5f034d68744f7881fdccf13c2daee"
       @list = List.new @list_id

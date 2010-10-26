@@ -2,10 +2,13 @@ require 'pp'
 
 require 'lib/createsend'
 
+CreateSend.api_key "04f82350a845ee9d937f782091015a00"
 cs = CreateSend.new
 
 # Get a client
 clients = cs.clients
+pp clients
+exit
 
 client_id = clients.first.ClientID
 puts "\nOur client: #{clients.first.Name}"

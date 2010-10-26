@@ -5,6 +5,13 @@ require 'httparty'
 require 'hashie'
 Hash.send :include, Hashie::HashExtensions
 
+CreateSendOptions = { 'api_key' => nil, 'base_uri' => "http://api.createsend.com/api/v3" } if not Object.const_defined? :CreateSendOptions # :nodoc:
+if File.exists?('config.yaml')
+  config = YAML.load_file('config.yaml')
+  CreateSendOptions['base_uri'] = config['base_uri']
+  CreateSendOptions['api_key'] = config['api_key']
+end
+
 libdir = File.dirname(__FILE__)
 $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 
@@ -32,26 +39,34 @@ class Unavailable < StandardError; end
 class CreateSend
   include HTTParty
   headers 'Content-Type' => 'application/json'
+  base_uri CreateSendOptions['base_uri']
+  basic_auth CreateSendOptions['api_key'], 'x'
 
-  # :api_key => 'xxxxxxxxxxxxxxxxxxxxxxxx', :base_uri => 'http://api.createsend.com/api/v3'
-  def initialize(config={})
-    if config[:api_key].nil? or config[:base_uri].nil?
-      config = YAML.load_file('config.yaml')
-      @api_key = config['api_key']
-      self.class.base_uri config['base_uri']
-    else
-      @api_key = config[:api_key]
-      self.class.base_uri config[:base_uri]
-    end
-    self.class.basic_auth @api_key, 'x'
+  # def initialize(config={})
+  #   if config[:api_key].nil? or config[:base_uri].nil?
+  #     config = YAML.load_file('config.yaml')
+  #     @api_key = config['api_key']
+  #     self.class.base_uri config['base_uri']
+  #   else
+  #     @api_key = config[:api_key]
+  #     self.class.base_uri config[:base_uri]
+  #   end
+  #   self.class.basic_auth @api_key, 'x'
+  # end
+  
+  def self.api_key(api_key=nil)
+    return @@api_key unless api_key
+    CreateSendOptions['api_key'] = api_key
+    @@api_key = api_key
+    basic_auth @@api_key, 'x'
   end
   
   def apikey(site_url, username, password) 
     site_url = CGI.escape(site_url)
     self.class.basic_auth username, password
     response = CreateSend.get("/apikey.json?SiteUrl=#{site_url}")
-    # Revert basic_auth to use @api_key, 'x'
-    self.class.basic_auth @api_key, 'x'
+    # Revert basic_auth to use @@api_key, 'x'
+    self.class.basic_auth @@api_key, 'x'
     Hashie::Mash.new(response)
   end
 
