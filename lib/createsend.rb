@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'cgi'
 require 'uri'
 require 'httparty'
