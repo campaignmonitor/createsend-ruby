@@ -17,7 +17,7 @@ end
  
 desc "Build and release the gem"
 task :release => :build do
-  system "gem push createsend.gem"
+  system "gem push createsend-#{CreateSend::VERSION}.gem"
 end
 
 task :default => :test

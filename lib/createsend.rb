@@ -41,6 +41,8 @@ class CreateSend
   base_uri CreateSendOptions['base_uri']
   basic_auth CreateSendOptions['api_key'], 'x'
   
+  VERSION = "0.0.1"
+  
   def self.api_key(api_key=nil)
     return @@api_key unless api_key
     CreateSendOptions['api_key'] = api_key
