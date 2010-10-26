@@ -24,6 +24,55 @@ class Campaign
     response.parsed_response
   end
   
+  def send(confirmation_email, send_date="immediately")
+    options = { :body => {
+      :ConfirmationEmail => confirmation_email,
+      :SendDate => send_date }.to_json }
+    response = post "send", options
+  end
+
+  def delete
+    response = CreateSend.delete "/campaigns/#{campaign_id}.json", {}
+  end
+  
+  def summary
+    response = get "summary", {}
+    Hashie::Mash.new(response)
+  end
+  
+  def lists
+    response = get "lists", {}
+    response.map{|item| Hashie::Mash.new(item)}
+  end
+  
+  def segments
+    # TODO: This needs to be implemented
+    []
+  end
+  
+  def opens(date)
+    options = { :query => { :date => date } }
+    response = get "opens", options
+    response.map{|item| Hashie::Mash.new(item)}
+  end
+  
+  def clicks(date)
+    options = { :query => { :date => date } }
+    response = get "clicks", options
+    response.map{|item| Hashie::Mash.new(item)}
+  end
+  
+  def unsubscribes(date)
+    options = { :query => { :date => date } }
+    response = get "unsubscribes", options
+    response.map{|item| Hashie::Mash.new(item)}
+  end
+  
+  def bounces
+    response = get "bounces", {}
+    response.map{|item| Hashie::Mash.new(item)}
+  end
+
   private
 
   def get(action, options = {})
@@ -32,10 +81,6 @@ class Campaign
 
   def post(action, options = {})
     CreateSend.post uri_for(action), options
-  end
-
-  def put(action, options = {})
-    CreateSend.put uri_for(action), options
   end
 
   def uri_for(action)

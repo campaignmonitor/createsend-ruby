@@ -53,19 +53,19 @@ class List
 
   def active(date)
     options = { :query => { :date => date } }
-    response = CreateSend.get "/lists/#{list_id}/active.json", options
+    response = get "active", options
     response.map{|item| Hashie::Mash.new(item)}
   end
 
   def bounced(date)
     options = { :query => { :date => date } }
-    response = CreateSend.get "/lists/#{list_id}/bounced.json", options
+    response = get "bounced", options
     response.map{|item| Hashie::Mash.new(item)}
   end
 
   def unsubscribed(date)
     options = { :query => { :date => date } }
-    response = CreateSend.get "/lists/#{list_id}/unsubscribed.json", options
+    response = get "unsubscribed", options
     response.map{|item| Hashie::Mash.new(item)}
   end
 

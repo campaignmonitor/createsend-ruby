@@ -21,6 +21,14 @@ client.lists.each do |l|
   puts l.Name
 end
 
+# Get campaign data...
+# campaign = Campaign.new "072472b88c853ae5dedaeaf549a8d607"
+# pp campaign.summary
+# pp campaign.lists
+# pp campaign.opens "2010-01-01"
+# pp campaign.clicks "2010-01-01"
+# pp campaign.unsubscribes "2010-01-01"
+
 # Create a campaign
 # puts "\nCreating a campaign..."
 # campaign_id = Campaign.create "27874e612bb0971b20189689bc57b88e", "subject", "name", "g'day", "good.day@example.com", "good.day@example.com", 
@@ -29,17 +37,15 @@ end
 # [ '2fe4c8f0373ce320e2200596d7ef168f' ], []
 # pp campaign_id
 
+# Delete a campaign
+# puts "\nDeleting a campaign..."
+# campaign = Campaign.new "db0751035d741466c0eb9882394dcecd"
+# campaign.delete
 
-
-# "{ Subject : 'Api Curl Test', 
-# Name : 'Api Curl Test', 
-# FromName : 'Toby Brain', 
-# FromEmail : 'tobyb+api@freshview.com', 
-# ReplyTo : 'tobyb+api@freshview.com', 
-# HtmlUrl : 'http://www.campaignmonitor.com/uploads/templates/previews/template-1-left-sidebar/index.html', 
-# TextUrl : 'http://www.campaignmonitor.com/uploads/templates/previews/template-1-left-sidebar/textversion.txt', 
-# ListIDs : [ '53101bf66331f24716e0ea44e69f0107' ], 
-# Segments : [] }"
+# Send a campaign
+# puts "\nSending a campaign..."
+# campaign = Campaign.new "a2e7de70d7e80fdcf8cfa466ff35d5a1"
+# campaign.send "jamesd@freshview.com"
 
 # Create a list
 # puts "\nCreating a list..."
