@@ -20,6 +20,27 @@ client.lists.each do |l|
   puts l.Name
 end
 
+# Create a list
+# puts "\nCreating a list..."
+# list_id = List.create "27874e612bb0971b20189689bc57b88e", "List One", '', false, ''
+# puts "List ID: #{list_id}"
+
+# Create a custom field
+# puts "\nCreating a custom field..."
+# list = List.new "e3c5f034d68744f7881fdccf13c2daee"
+# personalisation_tag = list.create_custom_field "new date field", "Date"
+# pp personalisation_tag
+
+# Delete a custom field
+# puts "\nDeleting a custom field..."
+# list = List.new "e3c5f034d68744f7881fdccf13c2daee"
+# list.delete_custom_field "[newdatefield]"
+
+# Delete a list
+# puts "\nDeleting a list..."
+# list = List.new "e3c5f034d68744f7881fdccf13c2daee"
+# list.delete
+
 # Get a subscriber
 puts "\nGetting a subscriber..."
 subs = Subscriber.get "2fe4c8f0373ce320e2200596d7ef168f", "jamesd+7t8787Y@freshview.com"

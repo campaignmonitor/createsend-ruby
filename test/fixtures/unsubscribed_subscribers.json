@@ -1,0 +1,21 @@
+[
+  {
+    "EmailAddress": "subscriber@example.com",
+    "Name": "Unsub One",
+    "Date": "2010-10-25 13:11:00",
+    "State": "Unsubscribed",
+    "CustomFields": []
+  },
+  {
+    "EmailAddress": "subscriberone@example.com",
+    "Name": "Unsub Two",
+    "Date": "2010-10-25 13:04:00",
+    "State": "Unsubscribed",
+    "CustomFields": [
+      {
+        "Key": "website",
+        "Value": "http://google.com"
+      }
+    ]
+  }
+]
