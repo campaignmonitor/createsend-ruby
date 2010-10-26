@@ -6,6 +6,7 @@ require 'hashie'
 Hash.send :include, Hashie::HashExtensions
 
 require 'client'
+require 'campaign'
 require 'template'
 require 'subscriber'
 require 'list'

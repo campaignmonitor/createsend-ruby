@@ -5,6 +5,7 @@ cs = CreateSend.new
 
 # Get a client
 clients = cs.clients
+
 client_id = clients.first.ClientID
 puts "\nOur client: #{clients.first.Name}"
 client = Client.new(client_id)
@@ -19,6 +20,26 @@ puts "\nTheir lists:"
 client.lists.each do |l|
   puts l.Name
 end
+
+# Create a campaign
+# puts "\nCreating a campaign..."
+# campaign_id = Campaign.create "27874e612bb0971b20189689bc57b88e", "subject", "name", "g'day", "good.day@example.com", "good.day@example.com", 
+# "http://www.campaignmonitor.com/uploads/templates/previews/template-1-left-sidebar/index.html", 
+# "http://www.campaignmonitor.com/uploads/templates/previews/template-1-left-sidebar/textversion.txt", 
+# [ '2fe4c8f0373ce320e2200596d7ef168f' ], []
+# pp campaign_id
+
+
+
+# "{ Subject : 'Api Curl Test', 
+# Name : 'Api Curl Test', 
+# FromName : 'Toby Brain', 
+# FromEmail : 'tobyb+api@freshview.com', 
+# ReplyTo : 'tobyb+api@freshview.com', 
+# HtmlUrl : 'http://www.campaignmonitor.com/uploads/templates/previews/template-1-left-sidebar/index.html', 
+# TextUrl : 'http://www.campaignmonitor.com/uploads/templates/previews/template-1-left-sidebar/textversion.txt', 
+# ListIDs : [ '53101bf66331f24716e0ea44e69f0107' ], 
+# Segments : [] }"
 
 # Create a list
 # puts "\nCreating a list..."
