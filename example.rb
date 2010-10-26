@@ -1,5 +1,6 @@
-require 'createsend'
 require 'pp'
+
+require 'lib/createsend'
 
 cs = CreateSend.new
 

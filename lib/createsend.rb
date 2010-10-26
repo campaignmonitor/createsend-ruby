@@ -5,11 +5,14 @@ require 'httparty'
 require 'hashie'
 Hash.send :include, Hashie::HashExtensions
 
+libdir = File.dirname(__FILE__)
+$LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
+
 require 'client'
 require 'campaign'
-require 'template'
-require 'subscriber'
 require 'list'
+require 'subscriber'
+require 'template'
 
 class CreateSendError < StandardError
   attr_reader :data
