@@ -1,3 +1,3 @@
 # createsend
 
-A simple ruby wrapper for the createsend API.
+A wrapper for the createsend API v3.
