@@ -14,10 +14,10 @@ desc "Build the gem"
 task :build do
   system "gem build createsend.gemspec"
 end
- 
+
 desc "Build and release the gem"
 task :release => :build do
-  system "gem push createsend-#{CreateSend::VERSION}.gem"
+  system "gem push createsend-#{CreateSend::VER}.gem"
 end
 
 task :default => :test

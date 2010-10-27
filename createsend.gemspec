@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.summary = %q{Wrapper for the CreateSend API v3}
   s.test_files = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.version = CreateSend::VERSION
+  s.version = CreateSend::VER
   s.platform = Gem::Platform::RUBY
   s.required_rubygems_version = Gem::Requirement.new('>= 1.3.6') if s.respond_to? :required_rubygems_version=
 end

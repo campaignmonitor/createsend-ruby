@@ -24,7 +24,7 @@ class CreateSendError < StandardError
   attr_reader :data
   def initialize(data)
     @data = data
-    super
+    super "The CreateSend API responded with the following error - #{@data.Code}: #{@data.Message}"
   end
 end
 
@@ -41,7 +41,7 @@ class CreateSend
   base_uri CreateSendOptions['base_uri']
   basic_auth CreateSendOptions['api_key'], 'x'
   
-  VERSION = "0.0.1"
+  VER = "0.0.1" unless defined?(CreateSend::VER)
   
   def self.api_key(api_key=nil)
     return @@api_key unless api_key
@@ -87,7 +87,7 @@ class CreateSend
   def self.handle_response(response)
     case response.code
     when 400
-      raise BadRequest.new(response)
+      raise BadRequest.new(Hashie::Mash.new response)
     when 401
       raise Unauthorized.new
     when 404
