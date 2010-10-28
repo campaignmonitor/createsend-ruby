@@ -57,7 +57,16 @@ class ListTest < Test::Unit::TestCase
       cfs.first.DataType.should == "Text"
       cfs.first.FieldOptions.should == []
     end
-    
+
+    should "get the segments for a list" do
+      stub_get(@api_key, "lists/#{@list.list_id}/segments.json", "segments.json")
+      segments = @list.segments
+      segments.size.should == 2
+      segments.first.ListID.should == 'a58ee1d3039b8bec838e6d1482a8a965'
+      segments.first.SegmentID.should == '46aa5e01fd43381863d4e42cf277d3a9'
+      segments.first.Title.should == 'Segment One'
+    end
+
     should "get the stats for a list" do
       stub_get(@api_key, "lists/#{@list.list_id}/stats.json", "list_stats.json")
       stats = @list.stats

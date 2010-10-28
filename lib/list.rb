@@ -45,6 +45,11 @@ class List
     response = get "customfields"
     response.map{|item| Hashie::Mash.new(item)}
   end
+
+  def segments
+    response = get "segments"
+    response.map{|item| Hashie::Mash.new(item)}
+  end
   
   def stats
     response = get "stats"

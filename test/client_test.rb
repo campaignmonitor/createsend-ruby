@@ -54,12 +54,13 @@ class ClientTest < Test::Unit::TestCase
       lists.first.Name.should == 'List One'
     end
     
-    should "get all segments" do
+    should "get all segments for a client" do
       stub_get(@api_key, "clients/#{@client.client_id}/segments.json", "segments.json")
       segments = @client.segments
       segments.size.should == 2
       segments.first.ListID.should == 'a58ee1d3039b8bec838e6d1482a8a965'
-      segments.first.Name.should == 'Segment One'
+      segments.first.SegmentID.should == '46aa5e01fd43381863d4e42cf277d3a9'
+      segments.first.Title.should == 'Segment One'
     end
 
     should "get suppression list" do
