@@ -28,7 +28,7 @@ class ClientTest < Test::Unit::TestCase
       campaigns = @client.campaigns
       campaigns.size.should == 2
       campaigns.first.CampaignID.should == 'fc0ce7105baeaf97f47c99be31d02a91'
-      campaigns.first.WebVersionURL.should == 'http://hello.createsend.com//t/ViewEmail/r/765E86829575EE2C/C67FD2F38AC4859C/'
+      campaigns.first.WebVersionURL.should == 'http://hello.createsend.com/t/ViewEmail/r/765E86829575EE2C/C67FD2F38AC4859C/'
       campaigns.first.Subject.should == 'Campaign One'
       campaigns.first.Name.should == 'Campaign One'
       campaigns.first.SentDate.should == '2010-10-12 12:58:00'
@@ -43,6 +43,7 @@ class ClientTest < Test::Unit::TestCase
       drafts.first.Name.should == 'Draft One'
       drafts.first.Subject.should == 'Draft One'
       drafts.first.DateCreated.should == '2010-08-19 16:08:00'
+      drafts.first.PreviewURL.should == 'http://hello.createsend.com/t/ViewEmail/r/E97A7BB2E6983DA1/C67FD2F38AC4859C/'
     end
 
     should "get all lists" do

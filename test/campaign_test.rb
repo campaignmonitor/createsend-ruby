@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/helper'
 
-class ClientTest < Test::Unit::TestCase
+class CampaignTest < Test::Unit::TestCase
   context "when an api caller is authenticated" do
     setup do
       @api_key = '123123123123123123123'
@@ -35,7 +35,7 @@ class ClientTest < Test::Unit::TestCase
       summary.Unsubscribed.should == 0
       summary.Bounced.should == 0
       summary.UniqueOpened.should == 5
-      summary.WebVersionURL.should == "http://clientone.createsend.com//t/ViewEmail/r/3A433FC72FFE3B8B/C67FD2F38AC4859C/"
+      summary.WebVersionURL.should == "http://clientone.createsend.com/t/ViewEmail/r/3A433FC72FFE3B8B/C67FD2F38AC4859C/"
     end
     
     should "get the lists for a campaign" do
