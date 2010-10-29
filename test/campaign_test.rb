@@ -16,7 +16,12 @@ class CampaignTest < Test::Unit::TestCase
       [ 'y78q9w8d9w8ud9q8uw', 'djw98quw9duqw98uwd98' ]
       campaign_id.should == "787y87y87y87y87y87y87"
     end
-    
+
+    should "send a test of a draft campaign" do
+      stub_post(@api_key, "campaigns/#{@campaign.campaign_id}/test.json", nil)
+      @campaign.test [ "test+89898u9@example.com", "test+787y8y7y8@example.com" ], "random"
+    end
+
     should "send a campaign" do
       stub_post(@api_key, "campaigns/#{@campaign.campaign_id}/send.json", nil)
       @campaign.send "confirmation@example.com"
