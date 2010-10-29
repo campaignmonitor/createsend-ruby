@@ -9,7 +9,7 @@ class Campaign
   end
 
   def self.create(client_id, subject, name, from_name, from_email, reply_to, html_url,
-    text_url, list_ids, segments)
+    text_url, list_ids, segment_ids)
     options = { :body => { 
       :Subject => subject,
       :Name => name,
@@ -18,8 +18,8 @@ class Campaign
       :ReplyTo => reply_to,
       :HtmlUrl => html_url,
       :TextUrl => text_url,
-      :ListIDs => list_ids ,
-      :Segments => segments }.to_json }
+      :ListIDs => list_ids,
+      :SegmentIDs => segment_ids }.to_json }
     response = CreateSend.post "/campaigns/#{client_id}.json", options
     response.parsed_response
   end
