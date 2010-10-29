@@ -50,16 +50,32 @@ class List
     response = get "segments"
     response.map{|item| Hashie::Mash.new(item)}
   end
+
+  def segment_subscribers(segment_id, date, page=1, page_size=1000, order_field="email", order_direction="asc")
+    options = { :query => {
+      :date => date,
+      :page => page,
+      :pagesize => page_size,
+      :orderfield => order_field,
+      :orderdirection => order_direction } }
+    response = get "segments/#{segment_id}/active", options
+    Hashie::Mash.new(response)
+  end
   
   def stats
     response = get "stats"
     Hashie::Mash.new(response)
   end
 
-  def active(date)
-    options = { :query => { :date => date } }
+  def active(date, page=1, page_size=1000, order_field="email", order_direction="asc")
+    options = { :query => { 
+      :date => date,
+      :page => page,
+      :pagesize => page_size,
+      :orderfield => order_field,
+      :orderdirection => order_direction } }
     response = get "active", options
-    response.map{|item| Hashie::Mash.new(item)}
+    Hashie::Mash.new(response)
   end
 
   def bounced(date)

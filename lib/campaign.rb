@@ -51,7 +51,7 @@ class Campaign
     response = get "lists", {}
     response.map{|item| Hashie::Mash.new(item)}
   end
-  
+
   def segments
     # TODO: This needs to be implemented
     []

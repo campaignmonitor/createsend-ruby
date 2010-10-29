@@ -66,6 +66,27 @@ class ListTest < Test::Unit::TestCase
       segments.first.SegmentID.should == '46aa5e01fd43381863d4e42cf277d3a9'
       segments.first.Title.should == 'Segment One'
     end
+    
+    should "get the active subscribers for a particular segment in the list" do
+      segment_id = "293187293879293879"
+      min_date = "2010-01-01"
+      stub_get(@api_key, "lists/#{@list.list_id}/segments/#{segment_id}/active.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}",
+        "segment_subscribers.json")
+      res = @list.segment_subscribers segment_id, min_date
+      res.ResultsOrderedBy.should == "email"
+      res.OrderDirection.should == "asc"
+      res.PageNumber.should == 1
+      res.PageSize.should == 1000
+      res.RecordsOnThisPage.should == 2
+      res.TotalNumberOfRecords.should == 2
+      res.NumberOfPages.should == 1
+      res.Results.size.should == 2
+      res.Results.first.EmailAddress.should == "personone@example.com"
+      res.Results.first.Name.should == "Person One"
+      res.Results.first.Date.should == "2010-10-27 13:13:00"
+      res.Results.first.State.should == "Active"
+      res.Results.first.CustomFields.should == []
+    end
 
     should "get the stats for a list" do
       stub_get(@api_key, "lists/#{@list.list_id}/stats.json", "list_stats.json")
@@ -78,14 +99,22 @@ class ListTest < Test::Unit::TestCase
     
     should "get the active subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@api_key, "lists/#{@list.list_id}/active.json?date=#{CGI.escape(min_date)}", "active_subscribers.json")
-      active = @list.active min_date
-      active.size.should == 6
-      active.first.EmailAddress.should == "subs+7t8787Y@example.com"
-      active.first.Name.should == "Subscriber One"
-      active.first.Date.should == "2010-10-25 10:28:00"
-      active.first.State.should == "Active"
-      active.first.CustomFields.size.should == 3
+      stub_get(@api_key, "lists/#{@list.list_id}/active.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}",
+        "active_subscribers.json")
+      res = @list.active min_date
+      res.ResultsOrderedBy.should == "email"
+      res.OrderDirection.should == "asc"
+      res.PageNumber.should == 1
+      res.PageSize.should == 1000
+      res.RecordsOnThisPage.should == 5
+      res.TotalNumberOfRecords.should == 5
+      res.NumberOfPages.should == 1
+      res.Results.size.should == 5
+      res.Results.first.EmailAddress.should == "subs+7t8787Y@example.com"
+      res.Results.first.Name.should =="Person One"
+      res.Results.first.Date.should == "2010-10-25 10:28:00"
+      res.Results.first.State.should == "Active"
+      res.Results.first.CustomFields.size.should == 3
     end
     
     should "get the unsubscribed subscribers for a list" do
