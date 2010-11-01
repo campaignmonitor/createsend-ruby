@@ -78,16 +78,26 @@ class List
     Hashie::Mash.new(response)
   end
 
-  def bounced(date)
-    options = { :query => { :date => date } }
+  def bounced(date, page=1, page_size=1000, order_field="email", order_direction="asc")
+    options = { :query => { 
+      :date => date,
+      :page => page,
+      :pagesize => page_size,
+      :orderfield => order_field,
+      :orderdirection => order_direction } }
     response = get "bounced", options
-    response.map{|item| Hashie::Mash.new(item)}
+    Hashie::Mash.new(response)
   end
 
-  def unsubscribed(date)
-    options = { :query => { :date => date } }
+  def unsubscribed(date, page=1, page_size=1000, order_field="email", order_direction="asc")
+    options = { :query => { 
+      :date => date,
+      :page => page,
+      :pagesize => page_size,
+      :orderfield => order_field,
+      :orderdirection => order_direction } }
     response = get "unsubscribed", options
-    response.map{|item| Hashie::Mash.new(item)}
+    Hashie::Mash.new(response)
   end
 
   def update(title, unsubscribe_page, confirmed_opt_in, confirmation_success_page)

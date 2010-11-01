@@ -119,26 +119,42 @@ class ListTest < Test::Unit::TestCase
     
     should "get the unsubscribed subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@api_key, "lists/#{@list.list_id}/unsubscribed.json?date=#{CGI.escape(min_date)}", "unsubscribed_subscribers.json")
-      unsub = @list.unsubscribed min_date
-      unsub.size.should == 2
-      unsub.first.EmailAddress.should == "subscriber@example.com"
-      unsub.first.Name.should == "Unsub One"
-      unsub.first.Date.should == "2010-10-25 13:11:00"
-      unsub.first.State.should == "Unsubscribed"
-      unsub.first.CustomFields.size.should == 0
+      stub_get(@api_key, "lists/#{@list.list_id}/unsubscribed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}", 
+        "unsubscribed_subscribers.json")
+      res = @list.unsubscribed min_date
+      res.ResultsOrderedBy.should == "email"
+      res.OrderDirection.should == "asc"
+      res.PageNumber.should == 1
+      res.PageSize.should == 1000
+      res.RecordsOnThisPage.should == 5
+      res.TotalNumberOfRecords.should == 5
+      res.NumberOfPages.should == 1
+      res.Results.size.should == 5
+      res.Results.first.EmailAddress.should == "subscriber@example.com"
+      res.Results.first.Name.should == "Unsub One"
+      res.Results.first.Date.should == "2010-10-25 13:11:00"
+      res.Results.first.State.should == "Unsubscribed"
+      res.Results.first.CustomFields.size.should == 0
     end
 
     should "get the bounced subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@api_key, "lists/#{@list.list_id}/bounced.json?date=#{CGI.escape(min_date)}", "bounced_subscribers.json")
-      bounced = @list.bounced min_date
-      bounced.size.should == 1
-      bounced.first.EmailAddress.should == "bouncedsubscriber@example.com"
-      bounced.first.Name.should == "Bounced One"
-      bounced.first.Date.should == "2010-10-25 13:11:00"
-      bounced.first.State.should == "Bounced"
-      bounced.first.CustomFields.size.should == 0
+      stub_get(@api_key, "lists/#{@list.list_id}/bounced.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}",
+        "bounced_subscribers.json")
+      res = @list.bounced min_date
+      res.ResultsOrderedBy.should == "email"
+      res.OrderDirection.should == "asc"
+      res.PageNumber.should == 1
+      res.PageSize.should == 1000
+      res.RecordsOnThisPage.should == 1
+      res.TotalNumberOfRecords.should == 1
+      res.NumberOfPages.should == 1
+      res.Results.size.should == 1
+      res.Results.first.EmailAddress.should == "bouncedsubscriber@example.com"
+      res.Results.first.Name.should == "Bounced One"
+      res.Results.first.Date.should == "2010-10-25 13:11:00"
+      res.Results.first.State.should == "Bounced"
+      res.Results.first.CustomFields.size.should == 0
     end
 
   end
