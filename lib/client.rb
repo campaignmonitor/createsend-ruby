@@ -43,9 +43,14 @@ class Client
     response.map{|item| Hashie::Mash.new(item)}
   end
 
-  def suppressionlist
-    response = get 'suppressionlist'
-    response.map{|item| Hashie::Mash.new(item)}
+  def suppressionlist(page=1, page_size=1000, order_field="email", order_direction="asc")
+    options = { :query => { 
+      :page => page,
+      :pagesize => page_size,
+      :orderfield => order_field,
+      :orderdirection => order_direction } }
+    response = get 'suppressionlist', options
+    Hashie::Mash.new(response)
   end
   
   def templates

@@ -64,12 +64,19 @@ class ClientTest < Test::Unit::TestCase
     end
 
     should "get suppression list" do
-      stub_get(@api_key, "clients/#{@client.client_id}/suppressionlist.json", "suppressionlist.json")
-      sl = @client.suppressionlist
-      sl.size.should == 2
-      sl.first.EmailAddress.should == "subs+098u0qu0qwd@example.com"
-      sl.first.Date.should == "2009-11-25 13:23:20"
-      sl.first.State.should == "Suppressed"
+      stub_get(@api_key, "clients/#{@client.client_id}/suppressionlist.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc", "suppressionlist.json")
+      res = @client.suppressionlist
+      res.ResultsOrderedBy.should == "email"
+      res.OrderDirection.should == "asc"
+      res.PageNumber.should == 1
+      res.PageSize.should == 1000
+      res.RecordsOnThisPage.should == 5
+      res.TotalNumberOfRecords.should == 5
+      res.NumberOfPages.should == 1
+      res.Results.size.should == 5
+      res.Results.first.EmailAddress.should == "example+1@example.com"
+      res.Results.first.Date.should == "2010-10-26 10:55:31"
+      res.Results.first.State.should == "Suppressed"
     end
 
     should "get all templates" do
