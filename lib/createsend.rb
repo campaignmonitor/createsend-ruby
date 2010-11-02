@@ -37,11 +37,11 @@ class Unavailable < StandardError; end
 
 class CreateSend
   include HTTParty
-  headers 'Content-Type' => 'application/json'
+
+  VER = "0.0.1" unless defined?(CreateSend::VER)
+  headers({ 'User-Agent' => "createsend-ruby-#{CreateSend::VER}", 'Content-Type' => 'application/json' })
   base_uri CreateSendOptions['base_uri']
   basic_auth CreateSendOptions['api_key'], 'x'
-  
-  VER = "0.0.1" unless defined?(CreateSend::VER)
   
   def self.api_key(api_key=nil)
     return @@api_key unless api_key
