@@ -56,6 +56,21 @@ class CampaignTest < Test::Unit::TestCase
     # should "get the segments for a campaign" do
     # end
     
+    should "get the recipients for a campaign" do
+      stub_get(@api_key, "campaigns/#{@campaign.campaign_id}/recipients.json?pagesize=20&orderfield=email&page=1&orderdirection=asc", "campaign_recipients.json")
+      res = @campaign.recipients page=1, page_size=20
+      res.ResultsOrderedBy.should == "email"
+      res.OrderDirection.should == "asc"
+      res.PageNumber.should == 1
+      res.PageSize.should == 20
+      res.RecordsOnThisPage.should == 20
+      res.TotalNumberOfRecords.should == 2200
+      res.NumberOfPages.should == 110
+      res.Results.size.should == 20
+      res.Results.first.EmailAddress.should == "subs+6g76t7t0@example.com"
+      res.Results.first.ListID.should == "a994a3caf1328a16af9a69a730eaa706"
+    end
+    
     should "get the opens for a campaign" do
       min_date = "2010-01-01"
       stub_get(@api_key, "campaigns/#{@campaign.campaign_id}/opens.json?date=#{CGI.escape(min_date)}", "campaign_opens.json")

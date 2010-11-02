@@ -57,6 +57,16 @@ class Campaign
     []
   end
   
+  def recipients(page=1, page_size=1000, order_field="email", order_direction="asc")
+    options = { :query => { 
+      :page => page,
+      :pagesize => page_size,
+      :orderfield => order_field,
+      :orderdirection => order_direction } }
+    response = get 'recipients', options
+    Hashie::Mash.new(response)
+  end
+  
   def opens(date)
     options = { :query => { :date => date } }
     response = get "opens", options
