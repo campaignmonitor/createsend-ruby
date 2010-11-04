@@ -17,6 +17,7 @@ $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 require 'client'
 require 'campaign'
 require 'list'
+require 'segment'
 require 'subscriber'
 require 'template'
 
