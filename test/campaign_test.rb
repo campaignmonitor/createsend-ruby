@@ -18,8 +18,8 @@ class CampaignTest < Test::Unit::TestCase
     end
 
     should "send a test of a draft campaign" do
-      stub_post(@api_key, "campaigns/#{@campaign.campaign_id}/test.json", nil)
-      @campaign.test [ "test+89898u9@example.com", "test+787y8y7y8@example.com" ], "random"
+      stub_post(@api_key, "campaigns/#{@campaign.campaign_id}/sendpreview.json", nil)
+      @campaign.send_preview [ "test+89898u9@example.com", "test+787y8y7y8@example.com" ], "random"
     end
 
     should "send a campaign" do

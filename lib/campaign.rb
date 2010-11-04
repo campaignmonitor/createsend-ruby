@@ -24,13 +24,13 @@ class Campaign
     response.parsed_response
   end
 
-  def test(recipients, personalize="fallback")
+  def send_preview(recipients, personalize="fallback")
     options = { :body => {
       :TestRecipients => recipients.kind_of?(String) ? [ recipients ] : recipients,
       :Personalize => personalize }.to_json }
-    response = post "test", options
+    response = post "sendpreview", options
   end
-  
+
   def send(confirmation_email, send_date="immediately")
     options = { :body => {
       :ConfirmationEmail => confirmation_email,
