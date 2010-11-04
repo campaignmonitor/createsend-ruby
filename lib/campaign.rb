@@ -26,7 +26,7 @@ class Campaign
 
   def send_preview(recipients, personalize="fallback")
     options = { :body => {
-      :TestRecipients => recipients.kind_of?(String) ? [ recipients ] : recipients,
+      :PreviewRecipients => recipients.kind_of?(String) ? [ recipients ] : recipients,
       :Personalize => personalize }.to_json }
     response = post "sendpreview", options
   end

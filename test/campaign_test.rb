@@ -17,7 +17,7 @@ class CampaignTest < Test::Unit::TestCase
       campaign_id.should == "787y87y87y87y87y87y87"
     end
 
-    should "send a test of a draft campaign" do
+    should "send a preview of a draft campaign" do
       stub_post(@api_key, "campaigns/#{@campaign.campaign_id}/sendpreview.json", nil)
       @campaign.send_preview [ "test+89898u9@example.com", "test+787y8y7y8@example.com" ], "random"
     end
