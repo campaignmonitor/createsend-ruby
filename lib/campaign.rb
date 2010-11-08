@@ -46,17 +46,12 @@ class Campaign
     response = get "summary", {}
     Hashie::Mash.new(response)
   end
-  
-  def lists
-    response = get "lists", {}
-    response.map{|item| Hashie::Mash.new(item)}
+
+  def lists_and_segments
+    response = get "listsandsegments", {}
+    Hashie::Mash.new(response)
   end
 
-  def segments
-    # TODO: This needs to be implemented
-    []
-  end
-  
   def recipients(page=1, page_size=1000, order_field="email", order_direction="asc")
     options = { :query => { 
       :page => page,

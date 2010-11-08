@@ -44,18 +44,18 @@ class CampaignTest < Test::Unit::TestCase
       summary.WebVersionURL.should == "http://clientone.createsend.com/t/ViewEmail/r/3A433FC72FFE3B8B/C67FD2F38AC4859C/"
     end
     
-    should "get the lists for a campaign" do
-      stub_get(@api_key, "campaigns/#{@campaign.campaign_id}/lists.json", "campaign_lists.json")
-      lists = @campaign.lists
-      lists.size.should == 2
-      lists.first.Name.should == "List One"
-      lists.first.ListID.should == "a58ee1d3039b8bec838e6d1482a8a965"
+    should "get the lists and segments for a campaign" do
+      stub_get(@api_key, "campaigns/#{@campaign.campaign_id}/listsandsegments.json", "campaign_listsandsegments.json")
+      ls = @campaign.lists_and_segments
+      ls.Lists.size.should == 1
+      ls.Segments.size.should == 1
+      ls.Lists.first.Name.should == "List One"
+      ls.Lists.first.ListID.should == "a58ee1d3039b8bec838e6d1482a8a965"
+      ls.Segments.first.Title.should == "Segment for campaign"
+      ls.Segments.first.ListID.should == "2bea949d0bf96148c3e6a209d2e82060"
+      ls.Segments.first.SegmentID.should == "dba84a225d5ce3d19105d7257baac46f"
     end
 
-    # TODO: Add this test once segments has been implemented
-    # should "get the segments for a campaign" do
-    # end
-    
     should "get the recipients for a campaign" do
       stub_get(@api_key, "campaigns/#{@campaign.campaign_id}/recipients.json?pagesize=20&orderfield=email&page=1&orderdirection=asc", "campaign_recipients.json")
       res = @campaign.recipients page=1, page_size=20
