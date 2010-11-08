@@ -62,27 +62,47 @@ class Campaign
     Hashie::Mash.new(response)
   end
   
-  def opens(date)
-    options = { :query => { :date => date } }
+  def opens(date, page=1, page_size=1000, order_field="date", order_direction="asc")
+    options = { :query => { 
+      :date => date,
+      :page => page,
+      :pagesize => page_size,
+      :orderfield => order_field,
+      :orderdirection => order_direction } }
     response = get "opens", options
-    response.map{|item| Hashie::Mash.new(item)}
+    Hashie::Mash.new(response)
   end
   
-  def clicks(date)
-    options = { :query => { :date => date } }
+  def clicks(date, page=1, page_size=1000, order_field="date", order_direction="asc")
+    options = { :query => { 
+      :date => date,
+      :page => page,
+      :pagesize => page_size,
+      :orderfield => order_field,
+      :orderdirection => order_direction } }
     response = get "clicks", options
-    response.map{|item| Hashie::Mash.new(item)}
+    Hashie::Mash.new(response)
   end
   
-  def unsubscribes(date)
-    options = { :query => { :date => date } }
+  def unsubscribes(date, page=1, page_size=1000, order_field="date", order_direction="asc")
+    options = { :query => { 
+      :date => date,
+      :page => page,
+      :pagesize => page_size,
+      :orderfield => order_field,
+      :orderdirection => order_direction } }
     response = get "unsubscribes", options
-    response.map{|item| Hashie::Mash.new(item)}
+    Hashie::Mash.new(response)
   end
-  
-  def bounces
-    response = get "bounces", {}
-    response.map{|item| Hashie::Mash.new(item)}
+
+  def bounces(page=1, page_size=1000, order_field="date", order_direction="asc")
+    options = { :query => { 
+      :page => page,
+      :pagesize => page_size,
+      :orderfield => order_field,
+      :orderdirection => order_direction } }
+    response = get "bounces", options
+    Hashie::Mash.new(response)
   end
 
   private
