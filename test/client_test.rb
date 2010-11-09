@@ -17,6 +17,7 @@ class ClientTest < Test::Unit::TestCase
     should "get details of a client" do
       stub_get(@api_key, "clients/#{@client.client_id}.json", "client_details.json")
       cl = @client.details
+      cl.ApiKey.should == "639d8cc27198202f5fe6037a8b17a29a59984b86d3289bc9"
       cl.BasicDetails.ClientID.should == "4a397ccaaa55eb4e6aa1221e1e2d7122"
       cl.BasicDetails.ContactName.should == "Client One (contact)"
       cl.AccessDetails.Username.should == "clientone"
