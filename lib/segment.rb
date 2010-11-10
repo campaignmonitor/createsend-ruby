@@ -18,6 +18,10 @@ class Segment
     response = get "active", options
     Hashie::Mash.new(response)
   end
+  
+  def clear_rules
+    response = CreateSend.delete "/segments/#{segment_id}/rules.json", {}
+  end
 
   def delete
     response = CreateSend.delete "/segments/#{segment_id}.json", {}

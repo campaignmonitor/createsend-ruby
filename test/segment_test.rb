@@ -33,5 +33,10 @@ class SegmentTest < Test::Unit::TestCase
       @segment.delete
     end
 
+    should "clear a segment's rules" do
+      stub_delete(@api_key, "segments/#{@segment.segment_id}/rules.json", nil)
+      @segment.clear_rules
+    end
+
   end
 end
