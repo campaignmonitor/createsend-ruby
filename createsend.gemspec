@@ -12,13 +12,13 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency('httparty', '~> 0.6.1')
   s.name = "createsend"
   s.author = "James Dennes"
-  s.description = %q{A wrapper for the CreateSend API v3}
+  s.description = %q{A library which implements the complete functionality of v3 of the createsend API.}
   s.email = ["jdennes@gmail.com"]
   s.executables = `git ls-files -- bin/*`.split("\n").map{|f| File.basename(f)}
   s.files = `git ls-files`.split("\n")
   s.homepage = "http://github.com/campaignmonitor/createsend-ruby/"
   s.require_paths = ["lib"]
-  s.summary = %q{Wrapper for the CreateSend API v3}
+  s.summary = %q{A library which implements the complete functionality of v3 of the createsend API.}
   s.test_files = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.version = CreateSend::VER
   s.platform = Gem::Platform::RUBY

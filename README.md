@@ -1,6 +1,6 @@
 # createsend
 
-A ruby wrapper for the createsend API v3.
+A ruby library which implements the complete functionality of v3 of the createsend API.
 
 ## Installation
 
