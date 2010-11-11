@@ -1,6 +1,7 @@
 require 'createsend'
 require 'json'
 
+# Represents a subscriber list segment and associated functionality.
 class Segment
   attr_reader :segment_id
 
@@ -8,6 +9,7 @@ class Segment
     @segment_id = segment_id
   end
 
+  # Gets the active subscribers in this segment.
   def subscribers(date, page=1, page_size=1000, order_field="email", order_direction="asc")
     options = { :query => {
       :date => date,
@@ -18,11 +20,13 @@ class Segment
     response = get "active", options
     Hashie::Mash.new(response)
   end
-  
+
+  # Clears all rules of this segment.
   def clear_rules
     response = CreateSend.delete "/segments/#{segment_id}/rules.json", {}
   end
 
+  # Deletes this segment.
   def delete
     response = CreateSend.delete "/segments/#{segment_id}.json", {}
   end

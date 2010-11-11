@@ -21,6 +21,7 @@ require 'segment'
 require 'subscriber'
 require 'template'
 
+# Represents a CreateSend API error and contains specific data about the error.
 class CreateSendError < StandardError
   attr_reader :data
   def initialize(data)
@@ -37,6 +38,7 @@ class Unauthorized < ClientError; end
 class NotFound < ClientError; end
 class Unavailable < StandardError; end
 
+# Provides high level CreateSend functionality/data you'll probably need.
 class CreateSend
   include HTTParty
 
@@ -44,14 +46,16 @@ class CreateSend
   headers({ 'User-Agent' => "createsend-ruby-#{CreateSend::VER}", 'Content-Type' => 'application/json' })
   base_uri CreateSendOptions['base_uri']
   basic_auth CreateSendOptions['api_key'], 'x'
-  
+
+  # Sets the API key which will be used to make calls to the CreateSend API.
   def self.api_key(api_key=nil)
     return @@api_key unless api_key
     CreateSendOptions['api_key'] = api_key
     @@api_key = api_key
     basic_auth @@api_key, 'x'
   end
-  
+
+  # Gets your CreateSend API key, given your site url, username and password.
   def apikey(site_url, username, password) 
     site_url = CGI.escape(site_url)
     self.class.basic_auth username, password
@@ -61,21 +65,25 @@ class CreateSend
     Hashie::Mash.new(response)
   end
 
+  # Gets your clients.
   def clients
     response = CreateSend.get('/clients.json')
     response.map{|item| Hashie::Mash.new(item)}
   end
 
+  # Gets valid countries.
   def countries
     response = CreateSend.get('/countries.json')
     response.parsed_response
   end
 
+  # Gets the current date in your account's timezone.
   def systemdate
     response = CreateSend.get('/systemdate.json')
     Hashie::Mash.new(response)
   end
 
+  # Gets valid timezones.
   def timezones
     response = CreateSend.get('/timezones.json')
     response.parsed_response
@@ -86,7 +94,7 @@ class CreateSend
   def self.put(*args); handle_response super end
   def self.delete(*args); handle_response super end
 
-  def self.handle_response(response)
+  def self.handle_response(response) # :nodoc:
     case response.code
     when 400
       raise BadRequest.new(Hashie::Mash.new response)

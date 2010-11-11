@@ -1,6 +1,7 @@
 require 'createsend'
 require 'json'
 
+# Represents a subscriber list and associated functionality.
 class List
   attr_reader :list_id
 
@@ -8,6 +9,7 @@ class List
     @list_id = list_id
   end
 
+  # Creates a new list for a client.
   def self.create(client_id, title, unsubscribe_page, confirmed_opt_in, confirmation_success_page)
     options = { :body => {
       :Title => title,
@@ -18,10 +20,12 @@ class List
     response.parsed_response
   end
 
+  # Deletes this list.
   def delete
     response = CreateSend.delete "/lists/#{list_id}.json", {}
   end
-  
+
+  # Creates a new custom field for this list.
   def create_custom_field(field_name, data_type, options=[])
     options = { :body => {
       :FieldName => field_name,
@@ -31,31 +35,37 @@ class List
     response.parsed_response
   end
 
+  # Deletes a custom field associated with this list.
   def delete_custom_field(custom_field_key)
     custom_field_key = CGI.escape(custom_field_key)
     response = CreateSend.delete "/lists/#{list_id}/customfields/#{custom_field_key}.json", {}
   end
-  
+
+  # Gets the details of this list.
   def details
     response = CreateSend.get "/lists/#{list_id}.json", {}
     Hashie::Mash.new(response)
   end
-  
+
+  # Gets the custom fields for this list.
   def custom_fields
     response = get "customfields"
     response.map{|item| Hashie::Mash.new(item)}
   end
 
+  # Gets the segments for this list.
   def segments
     response = get "segments"
     response.map{|item| Hashie::Mash.new(item)}
   end
 
+  # Gets the stats for this list.
   def stats
     response = get "stats"
     Hashie::Mash.new(response)
   end
 
+  # Gets the active subscribers for this list.
   def active(date, page=1, page_size=1000, order_field="email", order_direction="asc")
     options = { :query => { 
       :date => date,
@@ -67,6 +77,7 @@ class List
     Hashie::Mash.new(response)
   end
 
+  # Gets the bounced subscribers for this list.
   def bounced(date, page=1, page_size=1000, order_field="email", order_direction="asc")
     options = { :query => { 
       :date => date,
@@ -78,6 +89,7 @@ class List
     Hashie::Mash.new(response)
   end
 
+  # Gets the unsubscribed subscribers for this list.
   def unsubscribed(date, page=1, page_size=1000, order_field="email", order_direction="asc")
     options = { :query => { 
       :date => date,
@@ -89,6 +101,7 @@ class List
     Hashie::Mash.new(response)
   end
 
+  # Updates this list.
   def update(title, unsubscribe_page, confirmed_opt_in, confirmation_success_page)
     options = { :body => {
       :Title => title,

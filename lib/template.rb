@@ -1,6 +1,7 @@
 require 'createsend'
 require 'json'
 
+# Represents an email template and associated functionality.
 class Template
   attr_reader :template_id
 
@@ -8,6 +9,7 @@ class Template
     @template_id = template_id
   end
 
+  # Creates a new email template.
   def self.create(client_id, name, html_url, zip_url, screenshot_url)
     options = { :body => { 
       :Name => name,
@@ -18,11 +20,13 @@ class Template
     response.parsed_response
   end
 
+  # Gets the details of this email template.
   def details
     response = CreateSend.get "/templates/#{template_id}.json", {}
     Hashie::Mash.new(response)
   end
 
+  # Updates this email template.
   def update(name, html_url, zip_url, screenshot_url)
     options = { :body => { 
       :Name => name,
@@ -32,6 +36,7 @@ class Template
     response = CreateSend.put "/templates/#{template_id}.json", options
   end
 
+  # Deletes this email template.
   def delete
     response = CreateSend.delete "/templates/#{template_id}.json", {}
   end

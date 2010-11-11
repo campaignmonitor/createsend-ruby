@@ -1,6 +1,7 @@
 require 'createsend'
 require 'json'
 
+# Represents a campaign and provides associated funtionality.
 class Campaign
   attr_reader :campaign_id
 
@@ -8,6 +9,7 @@ class Campaign
     @campaign_id = campaign_id
   end
 
+  # Creates a new campaign for a client.
   def self.create(client_id, subject, name, from_name, from_email, reply_to, html_url,
     text_url, list_ids, segment_ids)
     options = { :body => { 
@@ -24,6 +26,7 @@ class Campaign
     response.parsed_response
   end
 
+  # Sends a preview of this campaign.
   def send_preview(recipients, personalize="fallback")
     options = { :body => {
       :PreviewRecipients => recipients.kind_of?(String) ? [ recipients ] : recipients,
@@ -31,6 +34,7 @@ class Campaign
     response = post "sendpreview", options
   end
 
+  # Sends this campaign.
   def send(confirmation_email, send_date="immediately")
     options = { :body => {
       :ConfirmationEmail => confirmation_email,
@@ -38,20 +42,24 @@ class Campaign
     response = post "send", options
   end
 
+  # Deletes this campaign.
   def delete
     response = CreateSend.delete "/campaigns/#{campaign_id}.json", {}
   end
-  
+
+  # Gets a summary of this campaign
   def summary
     response = get "summary", {}
     Hashie::Mash.new(response)
   end
 
+  # Retrieves the lists and segments to which this campaaign will be (or was) sent.
   def lists_and_segments
     response = get "listsandsegments", {}
     Hashie::Mash.new(response)
   end
 
+  # Retrieves the recipients of this campaign.
   def recipients(page=1, page_size=1000, order_field="email", order_direction="asc")
     options = { :query => { 
       :page => page,
@@ -61,7 +69,8 @@ class Campaign
     response = get 'recipients', options
     Hashie::Mash.new(response)
   end
-  
+
+  # Retrieves the opens for this campaign.
   def opens(date, page=1, page_size=1000, order_field="date", order_direction="asc")
     options = { :query => { 
       :date => date,
@@ -72,7 +81,8 @@ class Campaign
     response = get "opens", options
     Hashie::Mash.new(response)
   end
-  
+
+  # Retrieves the subscriber clicks for this campaign.
   def clicks(date, page=1, page_size=1000, order_field="date", order_direction="asc")
     options = { :query => { 
       :date => date,
@@ -83,7 +93,8 @@ class Campaign
     response = get "clicks", options
     Hashie::Mash.new(response)
   end
-  
+
+  # Retrieves the unsubscribes for this campaign.
   def unsubscribes(date, page=1, page_size=1000, order_field="date", order_direction="asc")
     options = { :query => { 
       :date => date,
@@ -95,6 +106,7 @@ class Campaign
     Hashie::Mash.new(response)
   end
 
+  # Retrieves the bounces for this campaign.
   def bounces(page=1, page_size=1000, order_field="date", order_direction="asc")
     options = { :query => { 
       :page => page,
