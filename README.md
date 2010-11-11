@@ -30,6 +30,10 @@ Results in:
 ### Handling errors
 If the createsend API returns an error, an exception will be thrown. For example, if you attempt to create a campaign and enter empty values for subject etc:
 
+    require 'createsend'
+
+    CreateSend.api_key 'your_api_key'
+
     begin
       cl = Client.new "4a397ccaaa55eb4e6aa1221e1e2d7122"
       id = Campaign.create cl.client_id, "", "", "", "", "", "", "", [], []
