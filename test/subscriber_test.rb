@@ -50,6 +50,25 @@ class SubscriberTest < Test::Unit::TestCase
       import_result.DuplicateEmailsInSubmission.size.should == 0
     end
 
+    should "import many subscribers at once with partial success" do
+      # Stub request with 400 Bad Request as the expected response status
+      stub_post(@api_key, "subscribers/#{@list_id}/import.json", "import_subscribers_partial_success.json", 400)
+      subscribers = [
+        { :EmailAddress => "example+1@example", :Name => "Example One" },
+        { :EmailAddress => "example+2@example.com", :Name => "Example Two" },
+        { :EmailAddress => "example+3@example.com", :Name => "Example Three" },
+      ]
+      import_result = Subscriber.import @list_id, subscribers, true
+      import_result.FailureDetails.size.should == 1
+      import_result.FailureDetails.first.EmailAddress.should == "example+1@example"
+      import_result.FailureDetails.first.Code.should == 1
+      import_result.FailureDetails.first.Message.should == "Invalid Email Address"
+      import_result.TotalUniqueEmailsSubmitted.should == 3
+      import_result.TotalExistingSubscribers.should == 2
+      import_result.TotalNewSubscribers.should == 0
+      import_result.DuplicateEmailsInSubmission.size.should == 0
+    end
+
     should "unsubscribe a subscriber" do
       stub_post(@api_key, "subscribers/#{@subscriber.list_id}/unsubscribe.json", nil)
       @subscriber.unsubscribe

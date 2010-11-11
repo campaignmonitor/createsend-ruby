@@ -30,7 +30,19 @@ class Subscriber
     options = { :body => {
       :Subscribers => subscribers,
       :Resubscribe => resubscribe }.to_json }
-    response = CreateSend.post "/subscribers/#{list_id}/import.json", options
+    begin
+      response = CreateSend.post "/subscribers/#{list_id}/import.json", options
+    rescue BadRequest => br
+      # Subscriber import will throw BadRequest if some subscribers are not imported
+      # successfully. If this occurs, we want to return the ResultData property of
+      # the BadRequest exception (which is of the same "form" as the response we'd 
+      # receive upon a completely successful import)
+      if br.data.ResultData
+        return br.data.ResultData
+      else
+        raise br
+      end
+    end
     Hashie::Mash.new(response)
   end
 
