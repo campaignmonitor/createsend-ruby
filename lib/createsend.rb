@@ -26,7 +26,8 @@ class CreateSendError < StandardError
   attr_reader :data
   def initialize(data)
     @data = data
-    extra = self.data.ResultData ? "\nExtra result data: #{self.data.ResultData}" : ""
+    # @data should contain Code, Message and optionally ResultData
+    extra = @data.ResultData ? "\nExtra result data: #{@data.ResultData}" : ""
     super "The CreateSend API responded with the following error - #{@data.Code}: #{@data.Message}#{extra}"
   end
 end
