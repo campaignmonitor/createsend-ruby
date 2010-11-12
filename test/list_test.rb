@@ -37,6 +37,13 @@ class ListTest < Test::Unit::TestCase
       stub_delete(@api_key, "lists/#{@list.list_id}/customfields/#{CGI.escape(custom_field_key)}.json", nil)
       @list.delete_custom_field custom_field_key
     end
+    
+    should "update the options of a multi-optioned custom field" do
+      custom_field_key = "[newdatefield]"
+      new_options = [ "one", "two", "three" ]
+      stub_put(@api_key, "lists/#{@list.list_id}/customfields/#{CGI.escape(custom_field_key)}/options.json", nil)
+      @list.update_custom_field_options custom_field_key, new_options, true
+    end
 
     should "get the details of a list" do
       stub_get(@api_key, "lists/#{@list.list_id}.json", "list_details.json")

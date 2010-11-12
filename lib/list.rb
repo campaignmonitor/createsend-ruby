@@ -41,6 +41,15 @@ class List
     response = CreateSend.delete "/lists/#{list_id}/customfields/#{custom_field_key}.json", {}
   end
 
+  # Updates the options of a multi-optioned custom field on this list.
+  def update_custom_field_options(custom_field_key, new_options, keep_existing_options)
+    custom_field_key = CGI.escape(custom_field_key)
+    options = { :body => {
+      :Options => new_options,
+      :KeepExistingOptions => keep_existing_options }.to_json }
+    response = put "customfields/#{custom_field_key}/options", options
+  end
+
   # Gets the details of this list.
   def details
     response = CreateSend.get "/lists/#{list_id}.json", {}
