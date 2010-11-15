@@ -33,6 +33,19 @@ class SegmentTest < Test::Unit::TestCase
       @segment.delete
     end
 
+    should "get the details of a segment" do
+      stub_get(@api_key, "segments/#{@segment.segment_id}.json", "segment_details.json")
+      res = @segment.details
+      res.ActiveSubscribers.should == 0
+      res.Rules.size.should == 2
+      res.Rules.first.Subject.should == "EmailAddress"
+      res.Rules.first.Clauses.size.should == 1
+      res.Rules.first.Clauses.first.should == "CONTAINS @hello.com"
+      res.ListID.should == "2bea949d0bf96148c3e6a209d2e82060"
+      res.SegmentID.should == "dba84a225d5ce3d19105d7257baac46f"
+      res.Title.should == "My Segment"
+    end
+
     should "clear a segment's rules" do
       stub_delete(@api_key, "segments/#{@segment.segment_id}/rules.json", nil)
       @segment.clear_rules

@@ -21,6 +21,12 @@ class Segment
     Hashie::Mash.new(response)
   end
 
+  # Gets the details of this segment
+  def details
+    response = CreateSend.get "/segments/#{segment_id}.json", {}
+    Hashie::Mash.new(response)
+  end
+
   # Clears all rules of this segment.
   def clear_rules
     response = CreateSend.delete "/segments/#{segment_id}/rules.json", {}
