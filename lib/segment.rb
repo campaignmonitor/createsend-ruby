@@ -9,6 +9,31 @@ class Segment
     @segment_id = segment_id
   end
 
+  # Creates a new segment.
+  def self.create(list_id, title, rules)
+    options = { :body => {
+      :Title => title,
+      :Rules => rules }.to_json }
+    response = CreateSend.post "/segments/#{list_id}.json", options
+    response.parsed_response
+  end
+
+  # Updates this segment.
+  def update(title, rules)
+    options = { :body => {
+      :Title => title,
+      :Rules => rules }.to_json }
+    response = CreateSend.put "/segments/#{segment_id}.json", options
+  end
+
+  # Adds a rule to this segment.
+  def add_rule(subject, clauses)
+    options = { :body => {
+      :Subject => subject,
+      :Clauses => clauses }.to_json }
+    response = CreateSend.post "/segments/#{segment_id}/rules.json", options
+  end
+
   # Gets the active subscribers in this segment.
   def subscribers(date, page=1, page_size=1000, order_field="email", order_direction="asc")
     options = { :query => {

@@ -8,6 +8,26 @@ class SegmentTest < Test::Unit::TestCase
       @segment = Segment.new(:segment_id => '98y2e98y289dh89h938389')
     end
 
+    should "create a new segment" do
+      list_id = "2983492834987394879837498"
+      rules = [ { :Subject => "EmailAddress", :Clauses => [ "CONTAINS example.com" ] } ]
+      stub_post(@api_key, "segments/#{list_id}.json", "create_segment.json")
+      res = Segment.create list_id, "new segment title", rules
+      res.should == "0246c2aea610a3545d9780bf6ab89006"
+    end
+
+    should "update a segment" do
+      rules = [ { :Subject => "Name", :Clauses => [ "EQUALS subscriber" ] } ]
+      stub_put(@api_key, "segments/#{@segment.segment_id}.json", nil)
+      @segment.update "new title for segment", rules
+    end
+    
+    should "add a rule to a segment" do
+      clauses = [ "CONTAINS example.com" ]
+      stub_post(@api_key, "segments/#{@segment.segment_id}/rules.json", nil)
+      @segment.add_rule "EmailAddress", clauses
+    end
+
     should "get the active subscribers for a particular segment in the list" do
       min_date = "2010-01-01"
       stub_get(@api_key, "segments/#{@segment.segment_id}/active.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}",
