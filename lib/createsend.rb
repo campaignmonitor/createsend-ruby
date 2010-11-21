@@ -35,7 +35,7 @@ end
 class ClientError < StandardError; end
 class ServerError < StandardError; end
 class BadRequest < CreateSendError; end
-class Unauthorized < ClientError; end
+class Unauthorized < CreateSendError; end
 class NotFound < ClientError; end
 class Unavailable < StandardError; end
 
@@ -100,7 +100,7 @@ class CreateSend
     when 400
       raise BadRequest.new(Hashie::Mash.new response)
     when 401
-      raise Unauthorized.new
+      raise Unauthorized.new(Hashie::Mash.new response)
     when 404
       raise NotFound.new
     when 400...500
