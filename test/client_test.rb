@@ -105,7 +105,7 @@ class ClientTest < Test::Unit::TestCase
     
     should "set monthly billing" do
       stub_put(@api_key, "clients/#{@client.client_id}/setmonthlybilling.json", nil)
-      @client.set_monthly_billing "CAD", true, true, 150
+      @client.set_monthly_billing "CAD", true, 150
     end
     
     should "delete a client" do

@@ -102,10 +102,9 @@ class Client
   end
 
   # Sets the monthly billing settings for this client.
-  def set_monthly_billing(currency, can_purchase_credits, client_pays, markup_percentage)
+  def set_monthly_billing(currency, client_pays, markup_percentage)
     options = { :body => { 
       :Currency => currency,
-      :CanPurchaseCredits => can_purchase_credits,
       :ClientPays => client_pays,
       :MarkupPercentage => markup_percentage }.to_json }
     put 'setmonthlybilling', options
