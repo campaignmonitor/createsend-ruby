@@ -120,6 +120,48 @@ class List
     response = CreateSend.put "/lists/#{list_id}.json", options
   end
 
+  # Gets the webhooks for this list.
+  def webhooks
+    response = get "webhooks"
+    response.map{|item| Hashie::Mash.new(item)}
+  end
+
+  # Creates a new webhook for the specified events (an array of strings). 
+  # Valid events are "Subscribe", "Unsubscribe", "Bounce", "Spam", and 
+  # "SubscriberUpdate". Valid payload formats are "json", and "xml".
+  def create_webhook(events, url, payload_format)
+    options = { :body => {
+      :Events => events,
+      :Url => url,
+      :PayloadFormat => payload_format }.to_json }
+    response = post "webhooks", options
+    response.parsed_response
+  end
+
+  # Tests that a post can be made to the endpoint specified for the webhook
+  # identified by webhook_id.
+  def test_webhook(webhook_id)
+    response = get "webhooks/#{webhook_id}/test"
+    true # An exception will be raised if any error occurs
+  end
+
+  # Deletes a webhook associated with this list.
+  def delete_webhook(webhook_id)
+    response = CreateSend.delete "/lists/#{list_id}/webhooks/#{webhook_id}.json", {}
+  end
+
+  # Activates a webhook associated with this list.
+  def activate_webhook(webhook_id)
+    options = { :body => '' }
+    response = put "webhooks/#{webhook_id}/activate", options
+  end
+
+  # De-activates a webhook associated with this list.
+  def deactivate_webhook(webhook_id)
+    options = { :body => '' }
+    response = put "webhooks/#{webhook_id}/deactivate", options
+  end
+
   private
 
   def get(action, options = {})

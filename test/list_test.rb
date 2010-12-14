@@ -143,5 +143,47 @@ class ListTest < Test::Unit::TestCase
       res.Results.first.CustomFields.size.should == 0
     end
 
+    should "get the webhooks for a list" do
+      stub_get(@api_key, "lists/#{@list.list_id}/webhooks.json", "list_webhooks.json")
+      hooks = @list.webhooks
+      hooks.size.should == 2
+      hooks.first.WebhookID.should == "943678317049bc13"
+      hooks.first.Events.size.should == 2
+      hooks.first.Events.first.should == "Bounce"
+      hooks.first.Url.should == "http://www.postbin.org/d9w8ud9wud9w"
+      hooks.first.Status.should == "Active"
+      hooks.first.PayloadFormat.should == "Json"
+    end
+
+    should "create a webhook for a list" do
+      stub_post(@api_key, "lists/#{@list.list_id}/webhooks.json", "create_list_webhook.json")
+      webhook_id = @list.create_webhook ["Unsubscribe", "Spam"], "http://example.com/unsub", "json"
+      webhook_id.should == "6a783d359bd44ef62c6ca0d3eda4412a"
+    end
+    
+    should "test a webhook for a list" do
+      webhook_id = "jiuweoiwueoiwueowiueo"
+      stub_get(@api_key, "lists/#{@list.list_id}/webhooks/#{webhook_id}/test.json", nil)
+      @list.test_webhook webhook_id
+    end
+
+    should "delete a webhook for a list" do
+      webhook_id = "jiuweoiwueoiwueowiueo"
+      stub_delete(@api_key, "lists/#{@list.list_id}/webhooks/#{webhook_id}.json", nil)
+      @list.delete_webhook webhook_id
+    end
+    
+    should "activate a webhook for a list" do
+      webhook_id = "jiuweoiwueoiwueowiueo"
+      stub_put(@api_key, "lists/#{@list.list_id}/webhooks/#{webhook_id}/activate.json", nil)
+      @list.activate_webhook webhook_id
+    end
+
+    should "de-activate a webhook for a list" do
+      webhook_id = "jiuweoiwueoiwueowiueo"
+      stub_put(@api_key, "lists/#{@list.list_id}/webhooks/#{webhook_id}/deactivate.json", nil)
+      @list.deactivate_webhook webhook_id
+    end
+
   end
 end
