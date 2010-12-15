@@ -120,6 +120,9 @@ class List
     response = CreateSend.put "/lists/#{list_id}.json", options
   end
 
+  # Please note: Any webhook-related methods below are not yet supported in production.
+  # The gem version will be bumped when these are released in production.
+
   # Gets the webhooks for this list.
   def webhooks
     response = get "webhooks"

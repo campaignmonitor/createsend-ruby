@@ -43,7 +43,7 @@ class Unavailable < StandardError; end
 class CreateSend
   include HTTParty
 
-  VER = "0.1.0" unless defined?(CreateSend::VER)
+  VER = "0.1.1" unless defined?(CreateSend::VER)
   headers({ 'User-Agent' => "createsend-ruby-#{CreateSend::VER}", 'Content-Type' => 'application/json' })
   base_uri CreateSendOptions['base_uri']
   basic_auth CreateSendOptions['api_key'], 'x'
