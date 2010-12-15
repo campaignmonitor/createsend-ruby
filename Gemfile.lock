@@ -4,6 +4,7 @@ PATH
     createsend (0.1.0)
       hashie (~> 0.4.0)
       httparty (~> 0.6.1)
+      json
 
 GEM
   remote: http://rubygems.org/
@@ -14,6 +15,7 @@ GEM
     httparty (0.6.1)
       crack (= 0.1.8)
     jnunemaker-matchy (0.4.0)
+    json (1.4.6)
     mocha (0.9.10)
       rake
     rake (0.8.7)
@@ -28,5 +30,6 @@ DEPENDENCIES
   hashie (~> 0.4.0)
   httparty (~> 0.6.1)
   jnunemaker-matchy (~> 0.4.0)
+  json
   mocha (~> 0.9)
   shoulda (~> 2.11)
