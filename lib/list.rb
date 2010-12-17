@@ -130,8 +130,8 @@ class List
   end
 
   # Creates a new webhook for the specified events (an array of strings). 
-  # Valid events are "Subscribe", "Unsubscribe", "Bounce", "Spam", and 
-  # "SubscriberUpdate". Valid payload formats are "json", and "xml".
+  # Valid events are "Subscribe", "Deactivate", and "Update".
+  # Valid payload formats are "json", and "xml".
   def create_webhook(events, url, payload_format)
     options = { :body => {
       :Events => events,

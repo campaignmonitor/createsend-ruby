@@ -1,10 +1,7 @@
 [
   {
     "WebhookID": "943678317049bc13",
-    "Events": [
-      "Bounce",
-      "Spam"
-    ],
+    "Events": [ "Deactivate" ],
     "Url": "http://www.postbin.org/d9w8ud9wud9w",
     "Status": "Active",
     "PayloadFormat": "Json"

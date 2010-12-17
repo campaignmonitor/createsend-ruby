@@ -148,8 +148,8 @@ class ListTest < Test::Unit::TestCase
       hooks = @list.webhooks
       hooks.size.should == 2
       hooks.first.WebhookID.should == "943678317049bc13"
-      hooks.first.Events.size.should == 2
-      hooks.first.Events.first.should == "Bounce"
+      hooks.first.Events.size.should == 1
+      hooks.first.Events.first.should == "Deactivate"
       hooks.first.Url.should == "http://www.postbin.org/d9w8ud9wud9w"
       hooks.first.Status.should == "Active"
       hooks.first.PayloadFormat.should == "Json"
