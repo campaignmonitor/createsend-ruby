@@ -6,7 +6,7 @@ class CreateSendTest < Test::Unit::TestCase
       @api_key = '123123123123123123123'
       @base_uri = 'http://api.createsend.com/api/v3'
       CreateSend.api_key @api_key
-      @cs = CreateSend.new
+      @cs = CreateSend::CreateSend.new
     end
     
     should "get api key" do
@@ -53,14 +53,14 @@ class CreateSendTest < Test::Unit::TestCase
       @api_key = '123123123123123123123'
       @base_uri = 'http://api.createsend.com/api/v3'
       CreateSend.api_key @api_key
-      @cs = CreateSend.new
-      @template = Template.new(:template_id => '98y2e98y289dh89h938389')
+      @cs = CreateSend::CreateSend.new
+      @template = CreateSend::Template.new(:template_id => '98y2e98y289dh89h938389')
     end
     
-    { ["400", "Bad Request"]  => BadRequest,
-      ["401", "Unauthorized"] => Unauthorized,
-      ["404", "Not Found"]    => NotFound,
-      ["500", "Server Error"] => ServerError
+    { ["400", "Bad Request"]  => CreateSend::BadRequest,
+      ["401", "Unauthorized"] => CreateSend::Unauthorized,
+      ["404", "Not Found"]    => CreateSend::NotFound,
+      ["500", "Server Error"] => CreateSend::ServerError
     }.each do |status, exception|
       context "#{status.first}, a get" do
         should "raise a #{exception.name} error" do
@@ -72,7 +72,7 @@ class CreateSendTest < Test::Unit::TestCase
       context "#{status.first}, a post" do
         should "raise a #{exception.name} error" do
           stub_post(@api_key, "clients.json", (status.first == '400' or status.first == '401') ? 'custom_api_error.json' : nil, status)
-          lambda { Client.create "Client Company Name", "Client Contact Name", "client@example.com", 
+          lambda { CreateSend::Client.create "Client Company Name", "Client Contact Name", "client@example.com", 
             "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia" }.should raise_error(exception)
         end
       end

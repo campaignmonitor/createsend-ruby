@@ -5,12 +5,12 @@ class ClientTest < Test::Unit::TestCase
     setup do
       @api_key = '123123123123123123123'
       CreateSend.api_key @api_key
-      @client = Client.new(:client_id => '321iuhiuhi1u23hi2u3')
+      @client = CreateSend::Client.new(:client_id => '321iuhiuhi1u23hi2u3')
     end
 
     should "create a client" do
       stub_post(@api_key, "clients.json", "create_client.json")
-      client_id = Client.create "Client Company Name", "Client Contact Name", "client@example.com", "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia"
+      client_id = CreateSend::Client.create "Client Company Name", "Client Contact Name", "client@example.com", "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia"
       client_id.should == "32a381c49a2df99f1d0c6f3c112352b9"
     end
     
