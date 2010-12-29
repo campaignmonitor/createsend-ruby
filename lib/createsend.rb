@@ -22,7 +22,7 @@ require 'subscriber'
 require 'template'
 
 module CreateSend
-  VERSION = "0.1.1" unless defined?(CreateSend::VERSION)
+  VERSION = "0.2.0" unless defined?(CreateSend::VERSION)
 
   # Just allows callers to do CreateSend.api_key "..." rather than CreateSend::CreateSend.api_key "..." etc
   class << self
