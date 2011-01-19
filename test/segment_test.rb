@@ -5,7 +5,7 @@ class SegmentTest < Test::Unit::TestCase
     setup do
       @api_key = '123123123123123123123'
       CreateSend.api_key @api_key
-      @segment = CreateSend::Segment.new(:segment_id => '98y2e98y289dh89h938389')
+      @segment = CreateSend::Segment.new('98y2e98y289dh89h938389')
     end
 
     should "create a new segment" do

@@ -5,7 +5,7 @@ class TemplateTest < Test::Unit::TestCase
     setup do
       @api_key = '123123123123123123123'
       CreateSend.api_key @api_key
-      @template = CreateSend::Template.new(:template_id => '98y2e98y289dh89h938389')
+      @template = CreateSend::Template.new('98y2e98y289dh89h938389')
     end
 
     should "create a template" do

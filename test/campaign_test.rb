@@ -5,7 +5,7 @@ class CampaignTest < Test::Unit::TestCase
     setup do
       @api_key = '123123123123123123123'
       CreateSend.api_key @api_key
-      @campaign = CreateSend::Campaign.new(:campaign_id => '787y87y87y87y87y87y87')
+      @campaign = CreateSend::Campaign.new('787y87y87y87y87y87y87')
     end
 
     should "create a campaign" do

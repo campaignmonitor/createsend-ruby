@@ -5,7 +5,8 @@ class ClientTest < Test::Unit::TestCase
     setup do
       @api_key = '123123123123123123123'
       CreateSend.api_key @api_key
-      @client = CreateSend::Client.new(:client_id => '321iuhiuhi1u23hi2u3')
+      @client = CreateSend::Client.new('321iuhiuhi1u23hi2u3')
+      @client.client_id.should == '321iuhiuhi1u23hi2u3'
     end
 
     should "create a client" do
