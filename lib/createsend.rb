@@ -14,12 +14,12 @@ end
 libdir = File.dirname(__FILE__)
 $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 
-require 'client'
-require 'campaign'
-require 'list'
-require 'segment'
-require 'subscriber'
-require 'template'
+require 'createsend/client'
+require 'createsend/campaign'
+require 'createsend/list'
+require 'createsend/segment'
+require 'createsend/subscriber'
+require 'createsend/template'
 
 module CreateSend
   VERSION = "0.2.0" unless defined?(CreateSend::VERSION)
