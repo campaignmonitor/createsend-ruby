@@ -14,6 +14,7 @@ end
 libdir = File.dirname(__FILE__)
 $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
 
+require 'createsend/version'
 require 'createsend/client'
 require 'createsend/campaign'
 require 'createsend/list'
@@ -22,7 +23,6 @@ require 'createsend/subscriber'
 require 'createsend/template'
 
 module CreateSend
-  VERSION = "0.2.0" unless defined?(CreateSend::VERSION)
 
   # Just allows callers to do CreateSend.api_key "..." rather than CreateSend::CreateSend.api_key "..." etc
   class << self
