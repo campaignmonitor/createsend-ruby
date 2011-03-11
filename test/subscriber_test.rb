@@ -34,6 +34,15 @@ class SubscriberTest < Test::Unit::TestCase
       email_address = CreateSend::Subscriber.add @list_id, "subscriber@example.com", "Subscriber", custom_fields, true
       email_address.should == "subscriber@example.com"
     end
+
+    should "add a subscriber with custom fields including multi-option fields" do
+      stub_post(@api_key, "subscribers/#{@list_id}.json", "add_subscriber.json")
+      custom_fields = [ { :Key => 'multioptionselectone', :Value => 'myoption' }, 
+        { :Key => 'multioptionselectmany', :Value => 'firstoption' },
+        { :Key => 'multioptionselectmany', :Value => 'secondoption' } ]
+      email_address = CreateSend::Subscriber.add @list_id, "subscriber@example.com", "Subscriber", custom_fields, true
+      email_address.should == "subscriber@example.com"
+    end
     
     should "import many subscribers at once" do
       stub_post(@api_key, "subscribers/#{@list_id}/import.json", "import_subscribers.json")
