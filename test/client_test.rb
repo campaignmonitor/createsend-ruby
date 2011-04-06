@@ -76,6 +76,7 @@ class ClientTest < Test::Unit::TestCase
       res.TotalNumberOfRecords.should == 5
       res.NumberOfPages.should == 1
       res.Results.size.should == 5
+      res.Results.first.SuppressionReason.should == "Unsubscribed"
       res.Results.first.EmailAddress.should == "example+1@example.com"
       res.Results.first.Date.should == "2010-10-26 10:55:31"
       res.Results.first.State.should == "Suppressed"
