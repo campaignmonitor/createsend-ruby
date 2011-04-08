@@ -43,6 +43,13 @@ class SubscriberTest < Test::Unit::TestCase
       email_address = CreateSend::Subscriber.add @list_id, "subscriber@example.com", "Subscriber", custom_fields, true
       email_address.should == "subscriber@example.com"
     end
+
+    should "update a subscriber with custom fields" do
+      email = "subscriber@example.com"
+      stub_put(@api_key, "subscribers/#{@list_id}.json?email=#{CGI.escape(email)}", nil)
+      custom_fields = [ { :Key => 'website', :Value => 'http://example.com/' } ]
+      @subscriber.update "new_email_address@example.com", "Subscriber", custom_fields, true
+    end
     
     should "import many subscribers at once" do
       stub_post(@api_key, "subscribers/#{@list_id}/import.json", "import_subscribers.json")
