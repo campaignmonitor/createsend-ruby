@@ -62,6 +62,8 @@ module CreateSend
           :CustomFields => custom_fields,
           :Resubscribe => resubscribe }.to_json }
       CreateSend.put "/subscribers/#{@list_id}.json", options
+      # Update @email_address, so this object can continue to be used reliably
+      @email_address = new_email_address
     end
 
     # Unsubscribes this subscriber from the associated list.

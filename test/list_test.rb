@@ -15,12 +15,12 @@ class ListTest < Test::Unit::TestCase
       list_id = CreateSend::List.create @client_id, "List One", "", false, ""
       list_id.should == "e3c5f034d68744f7881fdccf13c2daee"
     end
-    
+
     should "update a list" do
       stub_put(@api_key, "lists/#{@list.list_id}.json", nil)
       @list.update "List One Renamed", "", false, ""
     end
-    
+
     should "delete a list" do
       stub_delete(@api_key, "lists/#{@list.list_id}.json", nil)
       @list.delete

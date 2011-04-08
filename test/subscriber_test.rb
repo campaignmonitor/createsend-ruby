@@ -46,9 +46,11 @@ class SubscriberTest < Test::Unit::TestCase
 
     should "update a subscriber with custom fields" do
       email = "subscriber@example.com"
+      new_email = "new_email_address@example.com"
       stub_put(@api_key, "subscribers/#{@list_id}.json?email=#{CGI.escape(email)}", nil)
       custom_fields = [ { :Key => 'website', :Value => 'http://example.com/' } ]
-      @subscriber.update "new_email_address@example.com", "Subscriber", custom_fields, true
+      @subscriber.update new_email, "Subscriber", custom_fields, true
+      @subscriber.email_address.should == new_email
     end
     
     should "import many subscribers at once" do
