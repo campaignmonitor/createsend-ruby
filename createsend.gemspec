@@ -5,12 +5,12 @@ require File.expand_path('lib/createsend/version')
 
 Gem::Specification.new do |s|
   s.add_development_dependency('fakeweb', '~> 1.3')
-  s.add_development_dependency('jnunemaker-matchy', '~> 0.4.0')
+  s.add_development_dependency('jnunemaker-matchy', '~> 0.4')
   s.add_development_dependency('mocha', '~> 0.9')
   s.add_development_dependency('shoulda', '~> 2.11')
   s.add_runtime_dependency('json')
-  s.add_runtime_dependency('hashie', '~> 0.4.0')
-  s.add_runtime_dependency('httparty', '~> 0.6.1')
+  s.add_runtime_dependency('hashie', '~> 1.0')
+  s.add_runtime_dependency('httparty', '~> 0.7')
   s.name = "createsend"
   s.author = "James Dennes"
   s.description = %q{A library which implements the complete functionality of v3 of the createsend API.}
