@@ -25,6 +25,9 @@ PLATFORMS
 DEPENDENCIES
   createsend!
   fakeweb (~> 1.3)
+  hashie (~> 1.0)
+  httparty (~> 0.7)
   jnunemaker-matchy (~> 0.4)
+  json
   mocha (~> 0.9)
   shoulda (~> 2.11)
