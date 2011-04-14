@@ -57,7 +57,10 @@ module CreateSend
   class CreateSend
     include HTTParty
 
-    headers({ 'User-Agent' => "createsend-ruby-#{CreateSend::VERSION}", 'Content-Type' => 'application/json' })
+    headers({ 
+      'User-Agent' => "createsend-ruby-#{CreateSend::VERSION}", 
+      'Content-Type' => 'application/json; charset=utf-8',
+      'Accept-Encoding' => 'gzip, deflate' })
     base_uri CreateSendOptions['base_uri']
     basic_auth CreateSendOptions['api_key'], 'x'
 
