@@ -51,6 +51,21 @@ module CreateSend
       Hashie::Mash.new(response)
     end
 
+    # Updates any aspect of a subscriber, including email address, name, and 
+    # custom field data if supplied.
+    def update(new_email_address, name, custom_fields, resubscribe)
+      options = {
+        :query => { :email => @email_address },
+        :body => {
+          :EmailAddress => new_email_address,
+          :Name => name,
+          :CustomFields => custom_fields,
+          :Resubscribe => resubscribe }.to_json }
+      CreateSend.put "/subscribers/#{@list_id}.json", options
+      # Update @email_address, so this object can continue to be used reliably
+      @email_address = new_email_address
+    end
+
     # Unsubscribes this subscriber from the associated list.
     def unsubscribe
       options = { :body => {
