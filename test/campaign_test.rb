@@ -127,8 +127,9 @@ class CampaignTest < Test::Unit::TestCase
     end
 
     should "get the bounces for a campaign" do
-      stub_get(@api_key, "campaigns/#{@campaign.campaign_id}/bounces.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc", "campaign_bounces.json")
-      bounces = @campaign.bounces
+      min_date = "2010-01-01"
+      stub_get(@api_key, "campaigns/#{@campaign.campaign_id}/bounces.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_bounces.json")
+      bounces = @campaign.bounces min_date
       bounces.Results.size.should == 2
       bounces.Results.first.EmailAddress.should == "asdf@softbouncemyemail.com"
       bounces.Results.first.ListID.should == "654523a5855b4a440bae3fb295641546"

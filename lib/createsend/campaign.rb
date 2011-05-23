@@ -108,8 +108,9 @@ module CreateSend
     end
 
     # Retrieves the bounces for this campaign.
-    def bounces(page=1, page_size=1000, order_field="date", order_direction="asc")
+    def bounces(date="1900-01-01", page=1, page_size=1000, order_field="date", order_direction="asc")
       options = { :query => { 
+        :date => date,
         :page => page,
         :pagesize => page_size,
         :orderfield => order_field,
