@@ -41,7 +41,7 @@ class CampaignTest < Test::Unit::TestCase
       summary.Unsubscribed.should == 0
       summary.Bounced.should == 0
       summary.UniqueOpened.should == 5
-      summary.WebVersionURL.should == "http://clientone.createsend.com/t/ViewEmail/r/3A433FC72FFE3B8B/C67FD2F38AC4859C/"
+      summary.WebVersionURL.should == "http://createsend.com/t/r-3A433FC72FFE3B8B"
     end
     
     should "get the lists and segments for a campaign" do
