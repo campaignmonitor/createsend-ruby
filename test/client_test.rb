@@ -37,6 +37,19 @@ class ClientTest < Test::Unit::TestCase
       campaigns.first.TotalRecipients.should == 2245
     end
 
+    should "get scheduled campaigns" do
+      stub_get(@api_key, "clients/#{@client.client_id}/scheduled.json", "scheduled_campaigns.json")
+      campaigns = @client.scheduled
+      campaigns.size.should == 2
+      campaigns.first.DateScheduled.should == "2011-05-25 10:40:00"
+      campaigns.first.ScheduledTimeZone.should == "(GMT+10:00) Canberra, Melbourne, Sydney"
+      campaigns.first.CampaignID.should == "827dbbd2161ea9989fa11ad562c66937"
+      campaigns.first.Name.should == "Magic Issue One"
+      campaigns.first.Subject.should == "Magic Issue One"
+      campaigns.first.DateCreated.should == "2011-05-24 10:37:00"
+      campaigns.first.PreviewURL.should == "http://hello.createsend.com/t/r-DD543521A87C9B8B/"
+    end
+
     should "get all drafts" do
       stub_get(@api_key, "clients/#{@client.client_id}/drafts.json", "drafts.json")
       drafts = @client.drafts

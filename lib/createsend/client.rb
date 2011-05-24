@@ -32,6 +32,12 @@ module CreateSend
       response = get 'campaigns'
       response.map{|item| Hashie::Mash.new(item)}
     end
+    
+    # Gets the currently scheduled campaigns belonging to this client.
+    def scheduled
+      response = get 'scheduled'
+      response.map{|item| Hashie::Mash.new(item)}
+    end
 
     # Gets the draft campaigns belonging to this client.
     def drafts
