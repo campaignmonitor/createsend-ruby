@@ -12,7 +12,7 @@ class TemplateTest < Test::Unit::TestCase
       client_id = '87y8d7qyw8d7yq8w7ydwqwd'
       stub_post(@api_key, "templates/#{client_id}.json", "create_template.json")
       template_id = CreateSend::Template.create client_id, "Template One", "http://templates.org/index.html", 
-        "http://templates.org/files.zip", "http://templates.org/screenshot.jpg"
+        "http://templates.org/files.zip"
       template_id.should == "98y2e98y289dh89h938389"
     end
 
@@ -27,7 +27,7 @@ class TemplateTest < Test::Unit::TestCase
 
     should "update a template" do
       stub_put(@api_key, "templates/#{@template.template_id}.json", nil)
-      @template.update "Template One Updated", "http://templates.org/index.html", "http://templates.org/files.zip", "http://templates.org/screenshot.jpg"
+      @template.update "Template One Updated", "http://templates.org/index.html", "http://templates.org/files.zip"
     end
 
     should "delete a template" do

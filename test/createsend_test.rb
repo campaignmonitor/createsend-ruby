@@ -76,15 +76,15 @@ class CreateSendTest < Test::Unit::TestCase
             "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia" }.should raise_error(exception)
         end
       end
-      
+
       context "#{status.first}, a put" do
         should "raise a #{exception.name} error" do
           stub_put(@api_key, "templates/#{@template.template_id}.json", (status.first == '400' or status.first == '401') ? 'custom_api_error.json' : nil, status)
           lambda { @template.update "Template One Updated", "http://templates.org/index.html", 
-            "http://templates.org/files.zip", "http://templates.org/screenshot.jpg" }.should raise_error(exception)
+            "http://templates.org/files.zip" }.should raise_error(exception)
         end
       end
-      
+
       context "#{status.first}, a delete" do
         should "raise a #{exception.name} error" do
           stub_delete(@api_key, "templates/#{@template.template_id}.json", (status.first == '400' or status.first == '401') ? 'custom_api_error.json' : nil, status)
