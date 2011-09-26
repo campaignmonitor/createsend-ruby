@@ -1,22 +1,24 @@
 PATH
   remote: .
   specs:
-    createsend (0.3.0)
+    createsend (0.3.2)
       hashie (~> 1.0)
-      httparty (~> 0.7)
+      httparty (~> 0.8)
       json
 
 GEM
   remote: http://rubygems.org/
   specs:
-    crack (0.1.8)
     fakeweb (1.3.0)
     hashie (1.0.0)
-    httparty (0.7.4)
-      crack (= 0.1.8)
+    httparty (0.8.0)
+      multi_json
+      multi_xml
     jnunemaker-matchy (0.4.0)
     json (1.5.1)
     mocha (0.9.12)
+    multi_json (0.0.5)
+    multi_xml (0.4.0)
     shoulda (2.11.3)
 
 PLATFORMS
@@ -25,9 +27,6 @@ PLATFORMS
 DEPENDENCIES
   createsend!
   fakeweb (~> 1.3)
-  hashie (~> 1.0)
-  httparty (~> 0.7)
   jnunemaker-matchy (~> 0.4)
-  json
   mocha (~> 0.9)
   shoulda (~> 2.11)
