@@ -146,7 +146,7 @@ class SubscriberTest < Test::Unit::TestCase
     end
 
     should "delete a subscriber" do
-      stub_delete(@api_key, "subscribers/#{@subscriber.list_id}.json", nil)
+      stub_delete(@api_key, "subscribers/#{@subscriber.list_id}.json?email=#{CGI.escape(@subscriber.email_address)}", nil)
       @subscriber.delete
     end
   end
