@@ -31,10 +31,11 @@ module CreateSend
     end
 
     # Imports subscribers into a subscriber list.
-    def self.import(list_id, subscribers, resubscribe)
+    def self.import(list_id, subscribers, resubscribe, queue_subscription_based_autoresponders=false)
       options = { :body => {
         :Subscribers => subscribers,
-        :Resubscribe => resubscribe }.to_json }
+        :Resubscribe => resubscribe,
+        :QueueSubscriptionBasedAutoresponders => queue_subscription_based_autoresponders }.to_json }
       begin
         response = CreateSend.post "/subscribers/#{list_id}/import.json", options
       rescue BadRequest => br
@@ -80,5 +81,11 @@ module CreateSend
       response.map{|item| Hashie::Mash.new(item)}
     end
 
+    # Moves this subscriber to the Deleted state in the associated list.
+    def delete
+      options = { :body => {
+        :EmailAddress => @email_address }.to_json }
+      CreateSend.delete "/subscribers/#{@list_id}.json", options
+    end
   end
 end

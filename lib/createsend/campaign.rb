@@ -43,6 +43,11 @@ module CreateSend
       response = post "send", options
     end
 
+    # Unschedules this campaign if it is currently scheduled.
+    def unschedule
+      response = post "unschedule"
+    end
+
     # Deletes this campaign.
     def delete
       response = CreateSend.delete "/campaigns/#{campaign_id}.json", {}
