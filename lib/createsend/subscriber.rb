@@ -83,8 +83,7 @@ module CreateSend
 
     # Moves this subscriber to the Deleted state in the associated list.
     def delete
-      options = { :body => {
-        :EmailAddress => @email_address }.to_json }
+      options = { :query => { :email => @email_address } }
       CreateSend.delete "/subscribers/#{@list_id}.json", options
     end
   end
