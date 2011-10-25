@@ -1,6 +1,4 @@
 .DS_Store
-config.yaml
-config.jdennes.yaml
 rdoc
 pkg
 *.gem

@@ -4,7 +4,7 @@ class CreateSendTest < Test::Unit::TestCase
   context "when an api caller is authenticated" do
     setup do
       @api_key = '123123123123123123123'
-      @base_uri = 'http://api.createsend.com/api/v3'
+      @base_uri = 'https://api.createsend.com/api/v3'
       CreateSend.api_key @api_key
       @cs = CreateSend::CreateSend.new
     end
@@ -14,7 +14,7 @@ class CreateSendTest < Test::Unit::TestCase
       site_url = "http://iamadesigner.createsend.com/"
       username = "myusername"
       password = "mypassword"
-      stub_get(nil, "http://#{username}:#{password}@#{uri.host}#{uri.path}/apikey.json?SiteUrl=#{CGI.escape(site_url)}", "apikey.json")
+      stub_get(nil, "https://#{username}:#{password}@#{uri.host}#{uri.path}/apikey.json?SiteUrl=#{CGI.escape(site_url)}", "apikey.json")
       apikey = @cs.apikey(site_url, username, password).ApiKey
       apikey.should == "981298u298ue98u219e8u2e98u2"
     end
@@ -51,7 +51,7 @@ class CreateSendTest < Test::Unit::TestCase
   context "when the CreateSend API responds with an error" do
     setup do
       @api_key = '123123123123123123123'
-      @base_uri = 'http://api.createsend.com/api/v3'
+      @base_uri = 'https://api.createsend.com/api/v3'
       CreateSend.api_key @api_key
       @cs = CreateSend::CreateSend.new
       @template = CreateSend::Template.new(:template_id => '98y2e98y289dh89h938389')

@@ -19,7 +19,7 @@ def fixture_file(filename)
 end
 
 def createsend_url(api_key, url)
-  api_key.nil? ? url : url =~ /^http/ ? url : "http://#{api_key}:x@api.createsend.com/api/v3/#{url}"
+  api_key.nil? ? url : url =~ /^http/ ? url : "https://#{api_key}:x@api.createsend.com/api/v3/#{url}"
 end
 
 def stub_request(method, api_key, url, filename, status=nil)
