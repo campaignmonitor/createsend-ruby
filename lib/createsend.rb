@@ -56,7 +56,7 @@ module CreateSend
   # Provides high level CreateSend functionality/data you'll probably need.
   class CreateSend
     include HTTParty
-
+    
     class Parser::DealWithCreateSendInvalidJson < HTTParty::Parser
       # The createsend API returns an ID as a string when a 201 Created
       # response is returned. Unfortunately this is invalid json.
@@ -69,7 +69,7 @@ module CreateSend
       end
     end
     parser Parser::DealWithCreateSendInvalidJson
-        
+    @@api_key = nil
     headers({ 
       'User-Agent' => "createsend-ruby-#{CreateSend::VERSION}", 
       'Content-Type' => 'application/json; charset=utf-8',
