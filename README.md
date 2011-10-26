@@ -4,7 +4,7 @@ A ruby library which implements the complete functionality of v3 of the CreateSe
 
 ## Installation
 
-    sudo gem install createsend
+    gem install createsend
 
 ## Examples
 
