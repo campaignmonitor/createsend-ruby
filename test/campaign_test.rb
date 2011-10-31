@@ -46,9 +46,9 @@ class CampaignTest < Test::Unit::TestCase
       summary.Unsubscribed.should == 0
       summary.Bounced.should == 0
       summary.UniqueOpened.should == 5
-      summary.TwitterTweets.should == 23
-      summary.ForwardToAFriends.should == 11
-      summary.FacebookLikes.should == 32
+      summary.Mentions.should == 23
+      summary.Forwards.should == 11
+      summary.Likes.should == 32
       summary.WebVersionURL.should == "http://createsend.com/t/r-3A433FC72FFE3B8B"
     end
     
