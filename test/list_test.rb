@@ -123,6 +123,26 @@ class ListTest < Test::Unit::TestCase
       res.Results.first.CustomFields.size.should == 0
     end
 
+    should "get the deleted subscribers for a list" do
+      min_date = "2010-01-01"
+      stub_get(@api_key, "lists/#{@list.list_id}/deleted.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}", 
+        "deleted_subscribers.json")
+      res = @list.deleted min_date
+      res.ResultsOrderedBy.should == "email"
+      res.OrderDirection.should == "asc"
+      res.PageNumber.should == 1
+      res.PageSize.should == 1000
+      res.RecordsOnThisPage.should == 5
+      res.TotalNumberOfRecords.should == 5
+      res.NumberOfPages.should == 1
+      res.Results.size.should == 5
+      res.Results.first.EmailAddress.should == "subscriber@example.com"
+      res.Results.first.Name.should == "Deleted One"
+      res.Results.first.Date.should == "2010-10-25 13:11:00"
+      res.Results.first.State.should == "Deleted"
+      res.Results.first.CustomFields.size.should == 0
+    end
+
     should "get the bounced subscribers for a list" do
       min_date = "2010-01-01"
       stub_get(@api_key, "lists/#{@list.list_id}/bounced.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}",
@@ -184,6 +204,5 @@ class ListTest < Test::Unit::TestCase
       stub_put(@api_key, "lists/#{@list.list_id}/webhooks/#{webhook_id}/deactivate.json", nil)
       @list.deactivate_webhook webhook_id
     end
-
   end
 end

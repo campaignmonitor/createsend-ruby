@@ -52,6 +52,15 @@ class SubscriberTest < Test::Unit::TestCase
       @subscriber.update new_email, "Subscriber", custom_fields, true
       @subscriber.email_address.should == new_email
     end
+
+    should "update a subscriber with custom fields including the clear option" do
+      email = "subscriber@example.com"
+      new_email = "new_email_address@example.com"
+      stub_put(@api_key, "subscribers/#{@list_id}.json?email=#{CGI.escape(email)}", nil)
+      custom_fields = [ { :Key => 'website', :Value => '', :Clear => true } ]
+      @subscriber.update new_email, "Subscriber", custom_fields, true
+      @subscriber.email_address.should == new_email
+    end
     
     should "import many subscribers at once" do
       stub_post(@api_key, "subscribers/#{@list_id}/import.json", "import_subscribers.json")
@@ -59,6 +68,36 @@ class SubscriberTest < Test::Unit::TestCase
         { :EmailAddress => "example+1@example.com", :Name => "Example One" },
         { :EmailAddress => "example+2@example.com", :Name => "Example Two" },
         { :EmailAddress => "example+3@example.com", :Name => "Example Three" },
+      ]
+      import_result = CreateSend::Subscriber.import @list_id, subscribers, true
+      import_result.FailureDetails.size.should == 0
+      import_result.TotalUniqueEmailsSubmitted.should == 3
+      import_result.TotalExistingSubscribers.should == 0
+      import_result.TotalNewSubscribers.should == 3
+      import_result.DuplicateEmailsInSubmission.size.should == 0
+    end
+
+    should "import many subscribers at once, and start subscription-based autoresponders" do
+      stub_post(@api_key, "subscribers/#{@list_id}/import.json", "import_subscribers.json")
+      subscribers = [
+        { :EmailAddress => "example+1@example.com", :Name => "Example One" },
+        { :EmailAddress => "example+2@example.com", :Name => "Example Two" },
+        { :EmailAddress => "example+3@example.com", :Name => "Example Three" },
+      ]
+      import_result = CreateSend::Subscriber.import @list_id, subscribers, true, true
+      import_result.FailureDetails.size.should == 0
+      import_result.TotalUniqueEmailsSubmitted.should == 3
+      import_result.TotalExistingSubscribers.should == 0
+      import_result.TotalNewSubscribers.should == 3
+      import_result.DuplicateEmailsInSubmission.size.should == 0
+    end
+
+    should "import many subscribers at once with custom fields, including the clear option" do
+      stub_post(@api_key, "subscribers/#{@list_id}/import.json", "import_subscribers.json")
+      subscribers = [
+        { :EmailAddress => "example+1@example.com", :Name => "Example One", :CustomFields => [ { :Key => 'website', :Value => '', :Clear => true } ] },
+        { :EmailAddress => "example+2@example.com", :Name => "Example Two", :CustomFields => [ { :Key => 'website', :Value => '', :Clear => false } ]  },
+        { :EmailAddress => "example+3@example.com", :Name => "Example Three", :CustomFields => [ { :Key => 'website', :Value => '', :Clear => false } ]  },
       ]
       import_result = CreateSend::Subscriber.import @list_id, subscribers, true
       import_result.FailureDetails.size.should == 0
@@ -106,5 +145,9 @@ class SubscriberTest < Test::Unit::TestCase
       history.first.Actions.first.Detail.should == ""
     end
 
+    should "delete a subscriber" do
+      stub_delete(@api_key, "subscribers/#{@subscriber.list_id}.json?email=#{CGI.escape(@subscriber.email_address)}", nil)
+      @subscriber.delete
+    end
   end
 end

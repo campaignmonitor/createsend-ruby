@@ -43,6 +43,12 @@ module CreateSend
       response = post "send", options
     end
 
+    # Unschedules this campaign if it is currently scheduled.
+    def unschedule
+      options = { :body => "" }
+      response = post "unschedule", options
+    end
+
     # Deletes this campaign.
     def delete
       response = CreateSend.delete "/campaigns/#{campaign_id}.json", {}

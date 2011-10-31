@@ -111,6 +111,18 @@ module CreateSend
       Hashie::Mash.new(response)
     end
 
+    # Gets the deleted subscribers for this list.
+    def deleted(date, page=1, page_size=1000, order_field="email", order_direction="asc")
+      options = { :query => { 
+        :date => date,
+        :page => page,
+        :pagesize => page_size,
+        :orderfield => order_field,
+        :orderdirection => order_direction } }
+      response = get "deleted", options
+      Hashie::Mash.new(response)
+    end
+
     # Updates this list.
     def update(title, unsubscribe_page, confirmed_opt_in, confirmation_success_page)
       options = { :body => {

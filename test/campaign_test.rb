@@ -26,6 +26,11 @@ class CampaignTest < Test::Unit::TestCase
       stub_post(@api_key, "campaigns/#{@campaign.campaign_id}/send.json", nil)
       @campaign.send "confirmation@example.com"
     end
+
+    should "unschedule a campaign" do
+      stub_post(@api_key, "campaigns/#{@campaign.campaign_id}/unschedule.json", nil)
+      @campaign.unschedule
+    end
     
     should "delete a campaign" do
       stub_delete(@api_key, "campaigns/#{@campaign.campaign_id}.json", nil)
@@ -41,6 +46,9 @@ class CampaignTest < Test::Unit::TestCase
       summary.Unsubscribed.should == 0
       summary.Bounced.should == 0
       summary.UniqueOpened.should == 5
+      summary.Mentions.should == 23
+      summary.Forwards.should == 11
+      summary.Likes.should == 32
       summary.WebVersionURL.should == "http://createsend.com/t/r-3A433FC72FFE3B8B"
     end
     
