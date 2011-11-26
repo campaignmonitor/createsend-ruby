@@ -1,9 +1,9 @@
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require "bundler/version"
 require "shoulda/tasks"
-require 'lib/createsend'
-
 require "rake/testtask"
+require "./lib/createsend"
+
 Rake::TestTask.new(:test) do |test|
   test.ruby_opts = ["-rubygems"] if defined? Gem
   test.libs << "lib" << "test"

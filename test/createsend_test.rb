@@ -54,7 +54,7 @@ class CreateSendTest < Test::Unit::TestCase
       @base_uri = 'https://api.createsend.com/api/v3'
       CreateSend.api_key @api_key
       @cs = CreateSend::CreateSend.new
-      @template = CreateSend::Template.new(:template_id => '98y2e98y289dh89h938389')
+      @template = CreateSend::Template.new('98y2e98y289dh89h938389')
     end
     
     { ["400", "Bad Request"]  => CreateSend::BadRequest,
