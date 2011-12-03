@@ -65,7 +65,7 @@ module CreateSend
     @@base_uri = "https://api.createsend.com/api/v3"
     @@api_key = ""
     headers({ 
-      'User-Agent' => "createsend-ruby-#{CreateSend::VERSION}", 
+      'User-Agent' => "createsend-ruby-#{VERSION}", 
       'Content-Type' => 'application/json; charset=utf-8',
       'Accept-Encoding' => 'gzip, deflate' })
     base_uri @@base_uri

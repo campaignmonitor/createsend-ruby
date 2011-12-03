@@ -9,6 +9,14 @@ class CreateSendTest < Test::Unit::TestCase
       @cs = CreateSend::CreateSend.new
     end
     
+    should "include the CreateSend module VERSION constant as part of the user agent when making a call" do
+      # This test is done to ensure that the version from HTTParty isn't included instead
+      assert CreateSend::CreateSend.headers["User-Agent"] == "createsend-ruby-#{CreateSend::VERSION}"
+      stub_get(@api_key, "clients.json", "clients.json")
+      clients = @cs.clients
+      clients.size.should == 2
+    end
+    
     should "get api key" do
       uri = URI.parse(@base_uri)
       site_url = "http://iamadesigner.createsend.com/"
