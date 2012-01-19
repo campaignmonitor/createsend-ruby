@@ -4,6 +4,7 @@ require 'bundler/version'
 require File.expand_path('lib/createsend/version')
 
 Gem::Specification.new do |s|
+  s.add_development_dependency('rake')
   s.add_development_dependency('fakeweb', '~> 1.3')
   s.add_development_dependency('jnunemaker-matchy', '~> 0.4')
   s.add_development_dependency('mocha', '~> 0.9')
