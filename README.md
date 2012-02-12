@@ -1,8 +1,8 @@
-# createsend
-
-[![Build Status](https://secure.travis-ci.org/campaignmonitor/createsend-ruby.png)](http://travis-ci.org/campaignmonitor/createsend-ruby)
-
+# createsend [![Build Status](https://secure.travis-ci.org/campaignmonitor/createsend-ruby.png)][travis] [![Dependency Status](https://gemnasium.com/campaignmonitor/createsend-ruby.png)][gemnasium]
 A ruby library which implements the complete functionality of v3 of the CreateSend API.
+
+[travis]: http://travis-ci.org/campaignmonitor/createsend-ruby
+[gemnasium]: https://gemnasium.com/campaignmonitor/createsend-ruby
 
 ## Installation
 
