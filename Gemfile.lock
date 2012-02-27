@@ -22,7 +22,11 @@ GEM
     multi_json (1.0.3)
     multi_xml (0.4.1)
     rake (0.9.2.2)
-    shoulda (2.11.3)
+    shoulda (3.0.0)
+      shoulda-context (~> 1.0.0)
+      shoulda-matchers (~> 1.0.0)
+    shoulda-context (1.0.0)
+    shoulda-matchers (1.0.0)
 
 PLATFORMS
   ruby
@@ -33,4 +37,4 @@ DEPENDENCIES
   jnunemaker-matchy (~> 0.4)
   mocha (~> 0.9)
   rake
-  shoulda (~> 2.11)
+  shoulda (~> 3.0.0)
