@@ -1,6 +1,5 @@
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require "bundler/version"
-require "shoulda/tasks"
 require "rake/testtask"
 require "./lib/createsend"
 
