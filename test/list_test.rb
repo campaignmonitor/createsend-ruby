@@ -11,7 +11,7 @@ class ListTest < Test::Unit::TestCase
 
     should "create a list" do
       stub_post(@api_key, "lists/#{@client_id}.json", "create_list.json", @api_key)
-      list_id = CreateSend::List.create @client_id, "List One", "", false, ""
+      list_id = CreateSend::List.create @client_id, "List One", "", false, "", @api_key
       list_id.should == "e3c5f034d68744f7881fdccf13c2daee"
     end
 

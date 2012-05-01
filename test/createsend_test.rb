@@ -60,7 +60,7 @@ class CreateSendTest < Test::Unit::TestCase
       @api_key = '123123123123123123123'
       @base_uri = 'https://api.createsend.com/api/v3'
       @cs = CreateSend::CreateSend.new(@api_key)
-      @template = CreateSend::Template.new('98y2e98y289dh89h938389')
+      @template = CreateSend::Template.new('98y2e98y289dh89h938389', @api_key)
     end
     
     { ["400", "Bad Request"]  => CreateSend::BadRequest,
@@ -79,7 +79,7 @@ class CreateSendTest < Test::Unit::TestCase
         should "raise a #{exception.name} error" do
           stub_post(@api_key, "clients.json", (status.first == '400' or status.first == '401') ? 'custom_api_error.json' : nil, status)
           lambda { CreateSend::Client.create "Client Company Name", "Client Contact Name", "client@example.com", 
-            "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia" }.should raise_error(exception)
+            "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia", @api_key }.should raise_error(exception)
         end
       end
 

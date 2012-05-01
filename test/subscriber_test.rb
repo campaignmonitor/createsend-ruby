@@ -23,14 +23,14 @@ class SubscriberTest < Test::Unit::TestCase
 
     should "add a subscriber without custom fields" do
       stub_post(@api_key, "subscribers/#{@list_id}.json", "add_subscriber.json")
-      email_address = CreateSend::Subscriber.add @list_id, "subscriber@example.com", "Subscriber", [], @api_key, true
+      email_address = CreateSend::Subscriber.add @list_id, "subscriber@example.com", "Subscriber", [], true, @api_key
       email_address.should == "subscriber@example.com"
     end
 
     should "add a subscriber with custom fields" do
       stub_post(@api_key, "subscribers/#{@list_id}.json", "add_subscriber.json")
       custom_fields = [ { :Key => 'website', :Value => 'http://example.com/' } ]
-      email_address = CreateSend::Subscriber.add @list_id, "subscriber@example.com", "Subscriber", custom_fields, @api_key, true
+      email_address = CreateSend::Subscriber.add @list_id, "subscriber@example.com", "Subscriber", custom_fields, true, @api_key
       email_address.should == "subscriber@example.com"
     end
 
@@ -39,7 +39,7 @@ class SubscriberTest < Test::Unit::TestCase
       custom_fields = [ { :Key => 'multioptionselectone', :Value => 'myoption' }, 
         { :Key => 'multioptionselectmany', :Value => 'firstoption' },
         { :Key => 'multioptionselectmany', :Value => 'secondoption' } ]
-      email_address = CreateSend::Subscriber.add @list_id, "subscriber@example.com", "Subscriber", custom_fields, @api_key, true
+      email_address = CreateSend::Subscriber.add @list_id, "subscriber@example.com", "Subscriber", custom_fields, true, @api_key
       email_address.should == "subscriber@example.com"
     end
 
@@ -68,7 +68,7 @@ class SubscriberTest < Test::Unit::TestCase
         { :EmailAddress => "example+2@example.com", :Name => "Example Two" },
         { :EmailAddress => "example+3@example.com", :Name => "Example Three" },
       ]
-      import_result = CreateSend::Subscriber.import @list_id, subscribers, @api_key, true
+      import_result = CreateSend::Subscriber.import @list_id, subscribers, true, @api_key
       import_result.FailureDetails.size.should == 0
       import_result.TotalUniqueEmailsSubmitted.should == 3
       import_result.TotalExistingSubscribers.should == 0
@@ -83,7 +83,7 @@ class SubscriberTest < Test::Unit::TestCase
         { :EmailAddress => "example+2@example.com", :Name => "Example Two" },
         { :EmailAddress => "example+3@example.com", :Name => "Example Three" },
       ]
-      import_result = CreateSend::Subscriber.import @list_id, subscribers, true, true
+      import_result = CreateSend::Subscriber.import @list_id, subscribers, true, true, @api_key
       import_result.FailureDetails.size.should == 0
       import_result.TotalUniqueEmailsSubmitted.should == 3
       import_result.TotalExistingSubscribers.should == 0
@@ -98,7 +98,7 @@ class SubscriberTest < Test::Unit::TestCase
         { :EmailAddress => "example+2@example.com", :Name => "Example Two", :CustomFields => [ { :Key => 'website', :Value => '', :Clear => false } ]  },
         { :EmailAddress => "example+3@example.com", :Name => "Example Three", :CustomFields => [ { :Key => 'website', :Value => '', :Clear => false } ]  },
       ]
-      import_result = CreateSend::Subscriber.import @list_id, subscribers, true
+      import_result = CreateSend::Subscriber.import @list_id, subscribers, true, @api_key
       import_result.FailureDetails.size.should == 0
       import_result.TotalUniqueEmailsSubmitted.should == 3
       import_result.TotalExistingSubscribers.should == 0
@@ -114,7 +114,7 @@ class SubscriberTest < Test::Unit::TestCase
         { :EmailAddress => "example+2@example.com", :Name => "Example Two" },
         { :EmailAddress => "example+3@example.com", :Name => "Example Three" },
       ]
-      import_result = CreateSend::Subscriber.import @list_id, subscribers, true
+      import_result = CreateSend::Subscriber.import @list_id, subscribers, true, @api_key
       import_result.FailureDetails.size.should == 1
       import_result.FailureDetails.first.EmailAddress.should == "example+1@example"
       import_result.FailureDetails.first.Code.should == 1
