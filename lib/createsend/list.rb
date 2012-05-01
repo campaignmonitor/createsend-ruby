@@ -6,24 +6,26 @@ module CreateSend
   class List
     attr_reader :list_id
 
-    def initialize(list_id)
+    def initialize(list_id, api_key)
       @list_id = list_id
+			@api_key = api_key
+			@create_send = CreateSend.new(@api_key)
     end
 
     # Creates a new list for a client.
-    def self.create(client_id, title, unsubscribe_page, confirmed_opt_in, confirmation_success_page)
+    def self.create(client_id, title, unsubscribe_page, confirmed_opt_in, confirmation_success_page, api_key)
       options = { :body => {
         :Title => title,
         :UnsubscribePage => unsubscribe_page,
         :ConfirmedOptIn => confirmed_opt_in,
         :ConfirmationSuccessPage => confirmation_success_page }.to_json }
-      response = CreateSend.post "/lists/#{client_id}.json", options
+      response = CreateSend.new(api_key).post "/lists/#{client_id}.json", options
       response.parsed_response
     end
 
     # Deletes this list.
     def delete
-      response = CreateSend.delete "/lists/#{list_id}.json", {}
+      response = @create_send.delete "/lists/#{list_id}.json", {}
     end
 
     # Creates a new custom field for this list.
@@ -39,7 +41,7 @@ module CreateSend
     # Deletes a custom field associated with this list.
     def delete_custom_field(custom_field_key)
       custom_field_key = CGI.escape(custom_field_key)
-      response = CreateSend.delete "/lists/#{list_id}/customfields/#{custom_field_key}.json", {}
+      response = @create_send.delete "/lists/#{list_id}/customfields/#{custom_field_key}.json", {}
     end
 
     # Updates the options of a multi-optioned custom field on this list.
@@ -53,7 +55,7 @@ module CreateSend
 
     # Gets the details of this list.
     def details
-      response = CreateSend.get "/lists/#{list_id}.json", {}
+      response = @create_send.get "/lists/#{list_id}.json", {}
       Hashie::Mash.new(response)
     end
 
@@ -130,7 +132,7 @@ module CreateSend
         :UnsubscribePage => unsubscribe_page,
         :ConfirmedOptIn => confirmed_opt_in,
         :ConfirmationSuccessPage => confirmation_success_page }.to_json }
-      response = CreateSend.put "/lists/#{list_id}.json", options
+      response = @create_send.put "/lists/#{list_id}.json", options
     end
 
     # Gets the webhooks for this list.
@@ -160,7 +162,7 @@ module CreateSend
 
     # Deletes a webhook associated with this list.
     def delete_webhook(webhook_id)
-      response = CreateSend.delete "/lists/#{list_id}/webhooks/#{webhook_id}.json", {}
+      response = @create_send.delete "/lists/#{list_id}/webhooks/#{webhook_id}.json", {}
     end
 
     # Activates a webhook associated with this list.
@@ -178,15 +180,15 @@ module CreateSend
     private
 
     def get(action, options = {})
-      CreateSend.get uri_for(action), options
+      @create_send.get uri_for(action), options
     end
 
     def post(action, options = {})
-      CreateSend.post uri_for(action), options
+      @create_send.post uri_for(action), options
     end
 
     def put(action, options = {})
-      CreateSend.put uri_for(action), options
+      @create_send.put uri_for(action), options
     end
 
     def uri_for(action)

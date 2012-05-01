@@ -4,14 +4,13 @@ class ListTest < Test::Unit::TestCase
   context "when an api caller is authenticated" do
     setup do
       @api_key = '123123123123123123123'
-      CreateSend.api_key @api_key
       @client_id = "87y8d7qyw8d7yq8w7ydwqwd"
       @list_id = "e3c5f034d68744f7881fdccf13c2daee"
-      @list = CreateSend::List.new @list_id
+      @list = CreateSend::List.new @list_id, @api_key
     end
 
     should "create a list" do
-      stub_post(@api_key, "lists/#{@client_id}.json", "create_list.json")
+      stub_post(@api_key, "lists/#{@client_id}.json", "create_list.json", @api_key)
       list_id = CreateSend::List.create @client_id, "List One", "", false, ""
       list_id.should == "e3c5f034d68744f7881fdccf13c2daee"
     end

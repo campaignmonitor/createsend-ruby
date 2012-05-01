@@ -5,8 +5,7 @@ class CreateSendTest < Test::Unit::TestCase
     setup do
       @api_key = '123123123123123123123'
       @base_uri = 'https://api.createsend.com/api/v3'
-      CreateSend.api_key @api_key
-      @cs = CreateSend::CreateSend.new
+      @cs = CreateSend::CreateSend.new(@api_key)
     end
     
     should "include the CreateSend module VERSION constant as part of the user agent when making a call" do
@@ -60,8 +59,7 @@ class CreateSendTest < Test::Unit::TestCase
     setup do
       @api_key = '123123123123123123123'
       @base_uri = 'https://api.createsend.com/api/v3'
-      CreateSend.api_key @api_key
-      @cs = CreateSend::CreateSend.new
+      @cs = CreateSend::CreateSend.new(@api_key)
       @template = CreateSend::Template.new('98y2e98y289dh89h938389')
     end
     

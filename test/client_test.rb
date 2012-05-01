@@ -4,14 +4,16 @@ class ClientTest < Test::Unit::TestCase
   context "when an api caller is authenticated" do
     setup do
       @api_key = '123123123123123123123'
-      CreateSend.api_key @api_key
-      @client = CreateSend::Client.new('321iuhiuhi1u23hi2u3')
+      #CreateSend.api_key @api_key
+      @client = CreateSend::Client.new('321iuhiuhi1u23hi2u3', @api_key)
       @client.client_id.should == '321iuhiuhi1u23hi2u3'
+			@client.api_key.should == '123123123123123123123'
     end
 
     should "create a client" do
       stub_post(@api_key, "clients.json", "create_client.json")
-      client_id = CreateSend::Client.create "Client Company Name", "Client Contact Name", "client@example.com", "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia"
+      client_id = CreateSend::Client.create "Client Company Name", "Client Contact Name", "client@example.com", "(GMT+10:00) Canberra, Melbourne, Sydney", 
+				"Australia", @api_key
       client_id.should == "32a381c49a2df99f1d0c6f3c112352b9"
     end
     

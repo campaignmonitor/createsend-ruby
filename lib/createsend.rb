@@ -19,8 +19,8 @@ module CreateSend
 
   # Just allows callers to do CreateSend.api_key "..." rather than CreateSend::CreateSend.api_key "..." etc
   class << self
-    def api_key(api_key=nil)
-      r = CreateSend.api_key api_key
+    def new(api_key)
+    	CreateSend::CreateSend.new api_key
     end
     
     def base_uri(uri)
@@ -63,20 +63,16 @@ module CreateSend
     end
     parser Parser::DealWithCreateSendInvalidJson
     @@base_uri = "https://api.createsend.com/api/v3"
-    @@api_key = ""
+  #  @api_key = ""
     headers({ 
       'User-Agent' => "createsend-ruby-#{VERSION}", 
       'Content-Type' => 'application/json; charset=utf-8',
       'Accept-Encoding' => 'gzip, deflate' })
     base_uri @@base_uri
-    basic_auth @@api_key, 'x'
 
-    # Sets the API key which will be used to make calls to the CreateSend API.
-    def self.api_key(api_key=nil)
-      return @@api_key unless api_key
-      @@api_key = api_key
-      basic_auth @@api_key, 'x'
-    end
+		def initialize(api_key)
+			@api_key = api_key
+		end
 
     # Gets your CreateSend API key, given your site url, username and password.
     def apikey(site_url, username, password) 
@@ -84,35 +80,59 @@ module CreateSend
       self.class.basic_auth username, password
       response = CreateSend.get("/apikey.json?SiteUrl=#{site_url}")
       # Revert basic_auth to use @@api_key, 'x'
-      self.class.basic_auth @@api_key, 'x'
+      self.class.basic_auth @api_key, 'x'
       Hashie::Mash.new(response)
     end
 
     # Gets your clients.
     def clients
-      response = CreateSend.get('/clients.json')
+      response = self.get('/clients.json')
       response.map{|item| Hashie::Mash.new(item)}
     end
 
     # Gets valid countries.
     def countries
-      response = CreateSend.get('/countries.json')
+      response = self.get('/countries.json')
       response.parsed_response
     end
 
     # Gets the current date in your account's timezone.
     def systemdate
-      response = CreateSend.get('/systemdate.json')
+      response = self.get('/systemdate.json')
       Hashie::Mash.new(response)
     end
 
     # Gets valid timezones.
     def timezones
-      response = CreateSend.get('/timezones.json')
+      response = self.get('/timezones.json')
       response.parsed_response
     end
 
-    def self.get(*args); handle_response super end
+		def authenticate!
+			self.class.basic_auth @api_key, 'x'
+		end
+
+		def get(*args)
+			authenticate!
+			self.class.get(*args)
+		end
+		
+		def post(*args)
+			authenticate!
+			self.class.post(*args)
+		end
+		
+		def put(*args)
+			authenticate!
+			self.class.put(*args)
+		end
+    
+		def delete(*args)
+			authenticate!
+			self.class.delete(*args)
+		end
+		
+		def self.get(*args); handle_response super end
     def self.post(*args); handle_response super end
     def self.put(*args); handle_response super end
     def self.delete(*args); handle_response super end
