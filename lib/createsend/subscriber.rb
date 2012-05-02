@@ -33,7 +33,7 @@ module CreateSend
     end
 
     # Imports subscribers into a subscriber list.
-    def self.import(list_id, subscribers, resubscribe, queue_subscription_based_autoresponders=false, api_key)
+    def self.import(list_id, subscribers, resubscribe, queue_subscription_based_autoresponders, api_key)
       options = { :body => {
         :Subscribers => subscribers,
         :Resubscribe => resubscribe,
