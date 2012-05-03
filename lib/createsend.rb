@@ -2,7 +2,6 @@ require 'cgi'
 require 'uri'
 require 'httparty'
 require 'hashie'
-Hash.send :include, Hashie::HashExtensions
 
 libdir = File.dirname(__FILE__)
 $LOAD_PATH.unshift(libdir) unless $LOAD_PATH.include?(libdir)
