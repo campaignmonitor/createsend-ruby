@@ -20,9 +20,9 @@ module CreateSend
   # Just allows callers to do CreateSend.api_key "..." rather than CreateSend::CreateSend.api_key "..." etc
   class << self
     def new(api_key)
-    	CreateSend::CreateSend.new api_key
+      CreateSend.new api_key
     end
-    
+
     def base_uri(uri)
       r = CreateSend.base_uri uri
     end
@@ -49,7 +49,7 @@ module CreateSend
   # Provides high level CreateSend functionality/data you'll probably need.
   class CreateSend
     include HTTParty
-    
+
     class Parser::DealWithCreateSendInvalidJson < HTTParty::Parser
       # The createsend API returns an ID as a string when a 201 Created
       # response is returned. Unfortunately this is invalid json.
@@ -64,18 +64,18 @@ module CreateSend
     parser Parser::DealWithCreateSendInvalidJson
     @@base_uri = "https://api.createsend.com/api/v3"
   #  @api_key = ""
-    headers({ 
-      'User-Agent' => "createsend-ruby-#{VERSION}", 
+    headers({
+      'User-Agent' => "createsend-ruby-#{VERSION}",
       'Content-Type' => 'application/json; charset=utf-8',
       'Accept-Encoding' => 'gzip, deflate' })
     base_uri @@base_uri
 
-		def initialize(api_key)
-			@api_key = api_key
-		end
+    def initialize(api_key)
+      @api_key = api_key
+    end
 
     # Gets your CreateSend API key, given your site url, username and password.
-    def apikey(site_url, username, password) 
+    def apikey(site_url, username, password)
       site_url = CGI.escape(site_url)
       self.class.basic_auth username, password
       response = CreateSend.get("/apikey.json?SiteUrl=#{site_url}")
@@ -108,31 +108,31 @@ module CreateSend
       response.parsed_response
     end
 
-		def authenticate!
-			self.class.basic_auth @api_key, 'x'
-		end
+    def authenticate!
+      self.class.basic_auth @api_key, 'x'
+    end
 
-		def get(*args)
-			authenticate!
-			self.class.get(*args)
-		end
-		
-		def post(*args)
-			authenticate!
-			self.class.post(*args)
-		end
-		
-		def put(*args)
-			authenticate!
-			self.class.put(*args)
-		end
-    
-		def delete(*args)
-			authenticate!
-			self.class.delete(*args)
-		end
-		
-		def self.get(*args); handle_response super end
+    def get(*args)
+      authenticate!
+      self.class.get(*args)
+    end
+
+    def post(*args)
+      authenticate!
+      self.class.post(*args)
+    end
+
+    def put(*args)
+      authenticate!
+      self.class.put(*args)
+    end
+
+    def delete(*args)
+      authenticate!
+      self.class.delete(*args)
+    end
+
+    def self.get(*args); handle_response super end
     def self.post(*args); handle_response super end
     def self.put(*args); handle_response super end
     def self.delete(*args); handle_response super end
