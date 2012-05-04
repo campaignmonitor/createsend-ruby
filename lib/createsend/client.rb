@@ -5,25 +5,28 @@ module CreateSend
   # Represents a client and associated functionality.
   class Client
     attr_reader :client_id
+		attr_reader :api_key
 
-    def initialize(client_id)
+    def initialize(client_id, api_key)
       @client_id = client_id
+			@api_key = api_key
+			@create_send = CreateSend.new(@api_key)
     end
 
     # Creates a client.
-    def self.create(company, contact_name, email, timezone, country)
+    def self.create(company, contact_name, email, timezone, country, api_key)
       options = { :body => { 
         :CompanyName => company, 
         :ContactName => contact_name,
         :EmailAddress => email,
         :TimeZone => timezone,
         :Country => country }.to_json }
-      CreateSend.post "/clients.json", options
+      CreateSend.new(api_key).post "/clients.json", options
     end
 
     # Gets the details of this client.
     def details
-      response = CreateSend.get "/clients/#{client_id}.json", {}
+      response = @create_send.get "/clients/#{client_id}.json", {}
       Hashie::Mash.new(response)
     end
 
@@ -119,21 +122,21 @@ module CreateSend
 
     # Deletes this client.
     def delete
-      CreateSend.delete "/clients/#{client_id}.json", {}
+      @create_send.delete "/clients/#{client_id}.json", {}
     end
 
     private
 
     def get(action, options = {})
-      CreateSend.get uri_for(action), options
+      @create_send.get uri_for(action), options
     end
 
     def post(action, options = {})
-      CreateSend.post uri_for(action), options
+      @create_send.post uri_for(action), options
     end
 
     def put(action, options = {})
-      CreateSend.put uri_for(action), options
+      @create_send.put uri_for(action), options
     end
 
     def uri_for(action)

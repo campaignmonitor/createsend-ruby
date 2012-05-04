@@ -4,8 +4,7 @@ class CampaignTest < Test::Unit::TestCase
   context "when an api caller is authenticated" do
     setup do
       @api_key = '123123123123123123123'
-      CreateSend.api_key @api_key
-      @campaign = CreateSend::Campaign.new('787y87y87y87y87y87y87')
+      @campaign = CreateSend::Campaign.new('787y87y87y87y87y87y87', @api_key)
     end
 
     should "create a campaign" do
@@ -13,7 +12,7 @@ class CampaignTest < Test::Unit::TestCase
       stub_post(@api_key, "campaigns/#{client_id}.json", "create_campaign.json")
       campaign_id = CreateSend::Campaign.create client_id, "subject", "name", "g'day", "good.day@example.com", "good.day@example.com", 
       "http://example.com/campaign.html", "http://example.com/campaign.txt", [ '7y12989e82ue98u2e', 'dh9w89q8w98wudwd989' ],
-      [ 'y78q9w8d9w8ud9q8uw', 'djw98quw9duqw98uwd98' ]
+      [ 'y78q9w8d9w8ud9q8uw', 'djw98quw9duqw98uwd98' ], @api_key
       campaign_id.should == "787y87y87y87y87y87y87"
     end
 
