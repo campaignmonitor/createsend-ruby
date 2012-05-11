@@ -4,10 +4,11 @@ require 'json'
 module CreateSend
   # Represents a subscriber list segment and associated functionality.
   class Segment
-    attr_reader :segment_id
+    attr_reader :segment_id, :active_subscribers, :rules, :list_id, :title
 
-    def initialize(segment_id)
+    def initialize(segment_id, with_details = false)
       @segment_id = segment_id
+      details if with_details
     end
 
     # Creates a new segment.
@@ -50,7 +51,13 @@ module CreateSend
     # Gets the details of this segment
     def details
       response = CreateSend.get "/segments/#{segment_id}.json", {}
-      Hashie::Mash.new(response)
+      hash = Hashie::Mash.new(response)
+
+      hash.each do |k,v|
+        instance_variable_set :"@#{k.underscore}", v
+      end
+
+      hash
     end
 
     # Clears all rules of this segment.
@@ -62,7 +69,7 @@ module CreateSend
     def delete
       response = CreateSend.delete "/segments/#{segment_id}.json", {}
     end
-  
+
     private
 
     def get(action, options = {})

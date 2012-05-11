@@ -14,7 +14,7 @@ class ClientTest < Test::Unit::TestCase
       client_id = CreateSend::Client.create "Client Company Name", "Client Contact Name", "client@example.com", "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia"
       client_id.should == "32a381c49a2df99f1d0c6f3c112352b9"
     end
-    
+
     should "get details of a client" do
       stub_get(@api_key, "clients/#{@client.client_id}.json", "client_details.json")
       cl = @client.details
@@ -23,6 +23,20 @@ class ClientTest < Test::Unit::TestCase
       cl.BasicDetails.ContactName.should == "Client One (contact)"
       cl.AccessDetails.Username.should == "clientone"
       cl.AccessDetails.AccessLevel.should == 23
+    end
+
+    should "set attributes when getting details" do
+      stub_get(@api_key, "clients/#{@client.client_id}.json", "client_details.json")
+
+      cl = @client.details
+      @client.client_id.should == cl.BasicDetails.ClientID
+      @client.contact_name.should == cl.BasicDetails.ContactName
+
+      @client.username.should == cl.AccessDetails.Username
+      @client.access_level.should == cl.AccessDetails.AccessLevel
+
+      @client.can_purchase_credits.should == cl.BillingDetails.CanPurchaseCredits
+      @client.markup_on_design_spam_test.should == cl.BillingDetails.MarkupOnDesignSpamTest
     end
 
     should "get all campaigns" do
@@ -68,7 +82,7 @@ class ClientTest < Test::Unit::TestCase
       lists.first.ListID.should == 'a58ee1d3039b8bec838e6d1482a8a965'
       lists.first.Name.should == 'List One'
     end
-    
+
     should "get all segments for a client" do
       stub_get(@api_key, "clients/#{@client.client_id}/segments.json", "segments.json")
       segments = @client.segments
@@ -102,31 +116,31 @@ class ClientTest < Test::Unit::TestCase
       templates.first.TemplateID.should == '5cac213cf061dd4e008de5a82b7a3621'
       templates.first.Name.should == 'Template One'
     end
-    
+
     should "set basics" do
       stub_put(@api_key, "clients/#{@client.client_id}/setbasics.json", nil)
       @client.set_basics "Client Company Name", "Client Contact Name", "client@example.com", "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia"
     end
-    
+
     should "set access" do
       stub_put(@api_key, "clients/#{@client.client_id}/setaccess.json", nil)
       @client.set_access "username", "password", 321
     end
-    
+
     should "set payg billing" do
       stub_put(@api_key, "clients/#{@client.client_id}/setpaygbilling.json", nil)
       @client.set_payg_billing "CAD", true, true, 150
     end
-    
+
     should "set monthly billing" do
       stub_put(@api_key, "clients/#{@client.client_id}/setmonthlybilling.json", nil)
       @client.set_monthly_billing "CAD", true, 150
     end
-    
+
     should "delete a client" do
       stub_delete(@api_key, "clients/#{@client.client_id}.json", nil)
       @client.delete
     end
-    
+
   end
 end

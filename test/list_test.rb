@@ -37,7 +37,7 @@ class ListTest < Test::Unit::TestCase
       stub_delete(@api_key, "lists/#{@list.list_id}/customfields/#{CGI.escape(custom_field_key)}.json", nil)
       @list.delete_custom_field custom_field_key
     end
-    
+
     should "update the options of a multi-optioned custom field" do
       custom_field_key = "[newdatefield]"
       new_options = [ "one", "two", "three" ]
@@ -53,6 +53,17 @@ class ListTest < Test::Unit::TestCase
       details.UnsubscribePage.should == ""
       details.ListID.should == "2fe4c8f0373ce320e2200596d7ef168f"
       details.ConfirmationSuccessPage.should == ""
+    end
+
+    should "set attributes when getting details" do
+      stub_get(@api_key, "lists/#{@list.list_id}.json", "list_details.json")
+
+      details = @list.details
+      @list.list_id.should == details.ListID
+      @list.title.should == details.Title
+      @list.confirmed_opt_in.should == details.ConfirmedOptIn
+      @list.unsubscribe_page.should == details.UnsubscribePage
+      @list.confirmation_success_page.should == details.ConfirmationSuccessPage
     end
 
     should "get the custom fields for a list" do
@@ -73,7 +84,7 @@ class ListTest < Test::Unit::TestCase
       segments.first.SegmentID.should == '46aa5e01fd43381863d4e42cf277d3a9'
       segments.first.Title.should == 'Segment One'
     end
-    
+
     should "get the stats for a list" do
       stub_get(@api_key, "lists/#{@list.list_id}/stats.json", "list_stats.json")
       stats = @list.stats
@@ -82,7 +93,7 @@ class ListTest < Test::Unit::TestCase
       stats.TotalDeleted.should == 0
       stats.TotalBounces.should == 0
     end
-    
+
     should "get the active subscribers for a list" do
       min_date = "2010-01-01"
       stub_get(@api_key, "lists/#{@list.list_id}/active.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}",
@@ -102,10 +113,10 @@ class ListTest < Test::Unit::TestCase
       res.Results.first.State.should == "Active"
       res.Results.first.CustomFields.size.should == 3
     end
-    
+
     should "get the unsubscribed subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@api_key, "lists/#{@list.list_id}/unsubscribed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}", 
+      stub_get(@api_key, "lists/#{@list.list_id}/unsubscribed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}",
         "unsubscribed_subscribers.json")
       res = @list.unsubscribed min_date
       res.ResultsOrderedBy.should == "email"
@@ -125,7 +136,7 @@ class ListTest < Test::Unit::TestCase
 
     should "get the deleted subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@api_key, "lists/#{@list.list_id}/deleted.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}", 
+      stub_get(@api_key, "lists/#{@list.list_id}/deleted.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}",
         "deleted_subscribers.json")
       res = @list.deleted min_date
       res.ResultsOrderedBy.should == "email"
@@ -180,7 +191,7 @@ class ListTest < Test::Unit::TestCase
       webhook_id = @list.create_webhook ["Unsubscribe", "Spam"], "http://example.com/unsub", "json"
       webhook_id.should == "6a783d359bd44ef62c6ca0d3eda4412a"
     end
-    
+
     should "test a webhook for a list" do
       webhook_id = "jiuweoiwueoiwueowiueo"
       stub_get(@api_key, "lists/#{@list.list_id}/webhooks/#{webhook_id}/test.json", nil)
@@ -192,7 +203,7 @@ class ListTest < Test::Unit::TestCase
       stub_delete(@api_key, "lists/#{@list.list_id}/webhooks/#{webhook_id}.json", nil)
       @list.delete_webhook webhook_id
     end
-    
+
     should "activate a webhook for a list" do
       webhook_id = "jiuweoiwueoiwueowiueo"
       stub_put(@api_key, "lists/#{@list.list_id}/webhooks/#{webhook_id}/activate.json", nil)

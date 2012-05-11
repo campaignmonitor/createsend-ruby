@@ -4,10 +4,11 @@ require 'json'
 module CreateSend
   # Represents a subscriber list and associated functionality.
   class List
-    attr_reader :list_id
+    attr_reader :list_id, :title, :confirmed_opt_in, :unsubscribe_page, :confirmation_success_page
 
-    def initialize(list_id)
+    def initialize(list_id, with_details = false)
       @list_id = list_id
+      details if with_details
     end
 
     # Creates a new list for a client.
@@ -54,7 +55,12 @@ module CreateSend
     # Gets the details of this list.
     def details
       response = CreateSend.get "/lists/#{list_id}.json", {}
-      Hashie::Mash.new(response)
+      hash = Hashie::Mash.new(response)
+      hash.each do |k, v|
+        instance_variable_set :"@#{k.underscore}", v
+      end
+
+      hash
     end
 
     # Gets the custom fields for this list.
@@ -77,7 +83,7 @@ module CreateSend
 
     # Gets the active subscribers for this list.
     def active(date, page=1, page_size=1000, order_field="email", order_direction="asc")
-      options = { :query => { 
+      options = { :query => {
         :date => date,
         :page => page,
         :pagesize => page_size,
@@ -89,7 +95,7 @@ module CreateSend
 
     # Gets the bounced subscribers for this list.
     def bounced(date, page=1, page_size=1000, order_field="email", order_direction="asc")
-      options = { :query => { 
+      options = { :query => {
         :date => date,
         :page => page,
         :pagesize => page_size,
@@ -101,7 +107,7 @@ module CreateSend
 
     # Gets the unsubscribed subscribers for this list.
     def unsubscribed(date, page=1, page_size=1000, order_field="email", order_direction="asc")
-      options = { :query => { 
+      options = { :query => {
         :date => date,
         :page => page,
         :pagesize => page_size,
@@ -113,7 +119,7 @@ module CreateSend
 
     # Gets the deleted subscribers for this list.
     def deleted(date, page=1, page_size=1000, order_field="email", order_direction="asc")
-      options = { :query => { 
+      options = { :query => {
         :date => date,
         :page => page,
         :pagesize => page_size,
@@ -139,7 +145,7 @@ module CreateSend
       response.map{|item| Hashie::Mash.new(item)}
     end
 
-    # Creates a new webhook for the specified events (an array of strings). 
+    # Creates a new webhook for the specified events (an array of strings).
     # Valid events are "Subscribe", "Deactivate", and "Update".
     # Valid payload formats are "json", and "xml".
     def create_webhook(events, url, payload_format)
