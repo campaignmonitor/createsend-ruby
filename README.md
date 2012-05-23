@@ -15,9 +15,9 @@ Retrieve a list of all your clients.
 
     require 'createsend'
 
-    CreateSend.api_key 'your_api_key'
-
-    cs = CreateSend::CreateSend.new
+		api_key = 'your_api_key'
+		
+    cs = CreateSend::CreateSend.new(api_key)
     clients = cs.clients
     
     clients.each do |c|
@@ -34,11 +34,11 @@ If the createsend API returns an error, an exception will be thrown. For example
 
     require 'createsend'
 
-    CreateSend.api_key 'your_api_key'
+    api_key = 'your_api_key'
 
     begin
-      cl = CreateSend::Client.new "4a397ccaaa55eb4e6aa1221e1e2d7122"
-      id = CreateSend::Campaign.create cl.client_id, "", "", "", "", "", "", "", [], []
+      cl = CreateSend::Client.new "4a397ccaaa55eb4e6aa1221e1e2d7122", api_key
+      id = CreateSend::Campaign.create cl.client_id, "", "", "", "", "", "", "", [], [], api_key
       puts "New campaign ID: #{id}"
       rescue CreateSend::BadRequest => br
         puts "Bad request error: #{br}"
@@ -62,6 +62,6 @@ For example, if you wanted to find out how to call the CreateSend::Subscriber.ad
     should "add a subscriber with custom fields" do
       stub_post(@api_key, "subscribers/#{@list_id}.json", "add_subscriber.json")
       custom_fields = [ { :Key => 'website', :Value => 'http://example.com/' } ]
-      email_address = CreateSend::Subscriber.add @list_id, "subscriber@example.com", "Subscriber", custom_fields, true
+      email_address = CreateSend::Subscriber.add @list_id, "subscriber@example.com", "Subscriber", custom_fields, true, api_key
       email_address.should == "subscriber@example.com"
     end

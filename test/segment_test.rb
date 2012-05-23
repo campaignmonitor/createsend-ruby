@@ -4,15 +4,14 @@ class SegmentTest < Test::Unit::TestCase
   context "when an api caller is authenticated" do
     setup do
       @api_key = '123123123123123123123'
-      CreateSend.api_key @api_key
-      @segment = CreateSend::Segment.new('98y2e98y289dh89h938389')
+      @segment = CreateSend::Segment.new('98y2e98y289dh89h938389', @api_key)
     end
 
     should "create a new segment" do
       list_id = "2983492834987394879837498"
       rules = [ { :Subject => "EmailAddress", :Clauses => [ "CONTAINS example.com" ] } ]
       stub_post(@api_key, "segments/#{list_id}.json", "create_segment.json")
-      res = CreateSend::Segment.create list_id, "new segment title", rules
+      res = CreateSend::Segment.create list_id, "new segment title", rules, @api_key
       res.should == "0246c2aea610a3545d9780bf6ab89006"
     end
 
@@ -21,7 +20,7 @@ class SegmentTest < Test::Unit::TestCase
       stub_put(@api_key, "segments/#{@segment.segment_id}.json", nil)
       @segment.update "new title for segment", rules
     end
-    
+
     should "add a rule to a segment" do
       clauses = [ "CONTAINS example.com" ]
       stub_post(@api_key, "segments/#{@segment.segment_id}/rules.json", nil)
@@ -47,7 +46,7 @@ class SegmentTest < Test::Unit::TestCase
       res.Results.first.State.should == "Active"
       res.Results.first.CustomFields.should == []
     end
-    
+
     should "delete a segment" do
       stub_delete(@api_key, "segments/#{@segment.segment_id}.json", nil)
       @segment.delete
@@ -64,6 +63,17 @@ class SegmentTest < Test::Unit::TestCase
       res.ListID.should == "2bea949d0bf96148c3e6a209d2e82060"
       res.SegmentID.should == "dba84a225d5ce3d19105d7257baac46f"
       res.Title.should == "My Segment"
+    end
+
+    should "set attributes when getting details" do
+      stub_get(@api_key, "segments/#{@segment.segment_id}.json", "segment_details.json")
+
+      details = @segment.details
+      @segment.active_subscribers.should == details.ActiveSubscribers
+      @segment.rules.should == details.Rules
+      @segment.list_id.should == details.ListID
+      @segment.segment_id.should == details.SegmentID
+      @segment.title.should == details.Title
     end
 
     should "clear a segment's rules" do
