@@ -4,15 +4,14 @@ class TemplateTest < Test::Unit::TestCase
   context "when an api caller is authenticated" do
     setup do
       @api_key = '123123123123123123123'
-      CreateSend.api_key @api_key
-      @template = CreateSend::Template.new('98y2e98y289dh89h938389')
+      @template = CreateSend::Template.new('98y2e98y289dh89h938389', @api_key)
     end
 
     should "create a template" do
       client_id = '87y8d7qyw8d7yq8w7ydwqwd'
       stub_post(@api_key, "templates/#{client_id}.json", "create_template.json")
       template_id = CreateSend::Template.create client_id, "Template One", "http://templates.org/index.html", 
-        "http://templates.org/files.zip"
+        "http://templates.org/files.zip", @api_key
       template_id.should == "98y2e98y289dh89h938389"
     end
 

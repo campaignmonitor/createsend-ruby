@@ -6,17 +6,19 @@ module CreateSend
   class Segment
     attr_reader :segment_id, :active_subscribers, :rules, :list_id, :title
 
-    def initialize(segment_id, with_details = false)
+    def initialize(segment_id, api_key, with_details = false)
       @segment_id = segment_id
+      @api_key = api_key
+      @create_send = CreateSend.new(@api_key)
       details if with_details
     end
 
     # Creates a new segment.
-    def self.create(list_id, title, rules)
+    def self.create(list_id, title, rules, api_key)
       options = { :body => {
         :Title => title,
         :Rules => rules }.to_json }
-      response = CreateSend.post "/segments/#{list_id}.json", options
+      response = CreateSend.new(api_key).post "/segments/#{list_id}.json", options
       response.parsed_response
     end
 
@@ -25,7 +27,7 @@ module CreateSend
       options = { :body => {
         :Title => title,
         :Rules => rules }.to_json }
-      response = CreateSend.put "/segments/#{segment_id}.json", options
+      response = @create_send.put "/segments/#{segment_id}.json", options
     end
 
     # Adds a rule to this segment.
@@ -33,7 +35,7 @@ module CreateSend
       options = { :body => {
         :Subject => subject,
         :Clauses => clauses }.to_json }
-      response = CreateSend.post "/segments/#{segment_id}/rules.json", options
+      response = @create_send.post "/segments/#{segment_id}/rules.json", options
     end
 
     # Gets the active subscribers in this segment.
@@ -50,7 +52,7 @@ module CreateSend
 
     # Gets the details of this segment
     def details
-      response = CreateSend.get "/segments/#{segment_id}.json", {}
+      response = @create_send.get "/segments/#{segment_id}.json", {}
       hash = Hashie::Mash.new(response)
 
       hash.each do |k,v|
@@ -62,26 +64,26 @@ module CreateSend
 
     # Clears all rules of this segment.
     def clear_rules
-      response = CreateSend.delete "/segments/#{segment_id}/rules.json", {}
+      response = @create_send.delete "/segments/#{segment_id}/rules.json", {}
     end
 
     # Deletes this segment.
     def delete
-      response = CreateSend.delete "/segments/#{segment_id}.json", {}
+      response = @create_send.delete "/segments/#{segment_id}.json", {}
     end
 
     private
 
     def get(action, options = {})
-      CreateSend.get uri_for(action), options
+      @create_send.get uri_for(action), options
     end
 
     def post(action, options = {})
-      CreateSend.post uri_for(action), options
+      @create_send.post uri_for(action), options
     end
 
     def put(action, options = {})
-      CreateSend.put uri_for(action), options
+      @create_send.put uri_for(action), options
     end
 
     def uri_for(action)

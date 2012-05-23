@@ -6,13 +6,15 @@ module CreateSend
   class Campaign
     attr_reader :campaign_id
 
-    def initialize(campaign_id)
+    def initialize(campaign_id, api_key)
       @campaign_id = campaign_id
+			@api_key = api_key
+			@create_send = CreateSend.new(@api_key)
     end
 
     # Creates a new campaign for a client.
     def self.create(client_id, subject, name, from_name, from_email, reply_to, html_url,
-      text_url, list_ids, segment_ids)
+      text_url, list_ids, segment_ids, api_key)
       options = { :body => { 
         :Subject => subject,
         :Name => name,
@@ -23,7 +25,7 @@ module CreateSend
         :TextUrl => text_url,
         :ListIDs => list_ids,
         :SegmentIDs => segment_ids }.to_json }
-      response = CreateSend.post "/campaigns/#{client_id}.json", options
+      response = CreateSend.new(api_key).post "/campaigns/#{client_id}.json", options
       response.parsed_response
     end
 
@@ -51,7 +53,7 @@ module CreateSend
 
     # Deletes this campaign.
     def delete
-      response = CreateSend.delete "/campaigns/#{campaign_id}.json", {}
+      response = @create_send.delete "/campaigns/#{campaign_id}.json", {}
     end
 
     # Gets a summary of this campaign
@@ -128,11 +130,11 @@ module CreateSend
     private
 
     def get(action, options = {})
-      CreateSend.get uri_for(action), options
+      @create_send.get uri_for(action), options
     end
 
     def post(action, options = {})
-      CreateSend.post uri_for(action), options
+      @create_send.post uri_for(action), options
     end
 
     def uri_for(action)

@@ -4,15 +4,14 @@ class SegmentTest < Test::Unit::TestCase
   context "when an api caller is authenticated" do
     setup do
       @api_key = '123123123123123123123'
-      CreateSend.api_key @api_key
-      @segment = CreateSend::Segment.new('98y2e98y289dh89h938389')
+      @segment = CreateSend::Segment.new('98y2e98y289dh89h938389', @api_key)
     end
 
     should "create a new segment" do
       list_id = "2983492834987394879837498"
       rules = [ { :Subject => "EmailAddress", :Clauses => [ "CONTAINS example.com" ] } ]
       stub_post(@api_key, "segments/#{list_id}.json", "create_segment.json")
-      res = CreateSend::Segment.create list_id, "new segment title", rules
+      res = CreateSend::Segment.create list_id, "new segment title", rules, @api_key
       res.should == "0246c2aea610a3545d9780bf6ab89006"
     end
 

@@ -4,31 +4,33 @@ require 'json'
 module CreateSend
   # Represents a client and associated functionality.
   class Client
+    attr_reader :api_key
     attr_reader :client_id
     attr_reader :username, :access_level
     attr_reader :company_name, :contact_name, :email_address, :country, :time_zone
     attr_reader :can_purchase_credits, :markup_on_design_spam_test, :client_pays, :base_rate_per_recipient,
         :markup_per_recipient, :markup_on_delivery, :base_delivery_rate, :currency, :base_design_span_test_rate
 
-    def initialize(client_id, with_details = false)
+    def initialize(client_id, api_key, with_details = false)
       @client_id = client_id
+      @api_key = api_key
+      @create_send = CreateSend.new(@api_key)
       details if with_details
     end
 
-    # Creates a client.
-    def self.create(company, contact_name, email, timezone, country)
+    def self.create(company, contact_name, email, timezone, country, api_key)
       options = { :body => {
         :CompanyName => company,
         :ContactName => contact_name,
         :EmailAddress => email,
         :TimeZone => timezone,
         :Country => country }.to_json }
-      CreateSend.post "/clients.json", options
+      CreateSend.new(api_key).post "/clients.json", options
     end
 
     # Gets the details of this client.
     def details
-      response = CreateSend.get "/clients/#{client_id}.json", {}
+      response = @create_send.get "/clients/#{client_id}.json", {}
 
       hash = Hashie::Mash.new(response)
       combined_details = hash.select { |k, v|
@@ -134,21 +136,21 @@ module CreateSend
 
     # Deletes this client.
     def delete
-      CreateSend.delete "/clients/#{client_id}.json", {}
+      @create_send.delete "/clients/#{client_id}.json", {}
     end
 
     private
 
     def get(action, options = {})
-      CreateSend.get uri_for(action), options
+      @create_send.get uri_for(action), options
     end
 
     def post(action, options = {})
-      CreateSend.post uri_for(action), options
+      @create_send.post uri_for(action), options
     end
 
     def put(action, options = {})
-      CreateSend.put uri_for(action), options
+      @create_send.put uri_for(action), options
     end
 
     def uri_for(action)
