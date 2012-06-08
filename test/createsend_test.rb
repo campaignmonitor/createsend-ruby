@@ -54,6 +54,29 @@ class CreateSendTest < Test::Unit::TestCase
       timezones.size.should == 97
       assert timezones.include? "(GMT+12:00) Fiji"
     end
+    
+    should "get all administrators" do
+      stub_get(@api_key, "admins.json", "administrators.json")
+      administrators = @cs.administrators
+      administrators.size.should == 2
+      administrators.first.EmailAddress.should == "admin1@blackhole.com"
+      administrators.first.Name.should == 'Admin One'
+      administrators.first.Status.should == 'Active'
+    end
+      
+    should "set primary contact" do
+      email = 'admin@blackhole.com'
+      stub_put(@api_key, "primarycontact.json?email=#{CGI.escape(email)}", 'admin_set_primary_contact.json')
+      result = @cs.set_primary_contact email
+      result.EmailAddress.should == email
+    end
+    
+    should "get primary contact" do
+      stub_get(@api_key, "primarycontact.json", 'admin_get_primary_contact.json')
+      result = @cs.get_primary_contact
+      result.EmailAddress.should == 'admin@blackhole.com'
+    end
+        
   end
 
   context "when the CreateSend API responds with an error" do

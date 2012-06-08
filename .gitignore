@@ -3,3 +3,5 @@ rdoc
 pkg
 *.gem
 example.rb
+/.buildpath
+/.project

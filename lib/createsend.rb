@@ -13,6 +13,8 @@ require 'createsend/list'
 require 'createsend/segment'
 require 'createsend/subscriber'
 require 'createsend/template'
+require 'createsend/person'
+require 'createsend/administrator'
 
 module CreateSend
 
@@ -109,6 +111,23 @@ module CreateSend
     def timezones
       response = CreateSend.get('/timezones.json')
       response.parsed_response
+    end
+    
+    # Gets the administrators
+    def administrators
+      response = CreateSend.get('/admins.json')
+      response.map{|item| Hashie::Mash.new(item)}
+    end
+    
+    def get_primary_contact
+      response = CreateSend.get('/primarycontact.json')
+      Hashie::Mash.new(response)
+    end
+    
+    def set_primary_contact(email)
+      options = { :query => { :email => email } }
+      response = CreateSend.put("/primarycontact.json", options)
+      Hashie::Mash.new(response)
     end
 
     def self.get(*args); handle_response super end

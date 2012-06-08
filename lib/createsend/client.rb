@@ -56,6 +56,23 @@ module CreateSend
       response = get 'segments'
       response.map{|item| Hashie::Mash.new(item)}
     end
+    
+    # Gets the people associated with this client
+    def people
+      response = get "people"
+      response.map{|item| Hashie::Mash.new(item)}
+    end
+    
+    def get_primary_contact
+      response = get "primarycontact"
+      Hashie::Mash.new(response)
+    end
+    
+    def set_primary_contact(email)
+      options = { :query => { :email => email } }
+      response = put "primarycontact", options
+      Hashie::Mash.new(response)
+    end
 
     # Gets this client's suppression list.
     def suppressionlist(page=1, page_size=1000, order_field="email", order_direction="asc")

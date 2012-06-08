@@ -94,6 +94,16 @@ class ClientTest < Test::Unit::TestCase
       res.Results.first.Date.should == "2010-10-26 10:55:31"
       res.Results.first.State.should == "Suppressed"
     end
+    
+    should "get all people" do
+      stub_get(@api_key, "clients/#{@client.client_id}/people.json", "people.json")
+      people = @client.people
+      people.size.should == 2
+      people.first.EmailAddress.should == "person1@blackhole.com"
+      people.first.Name.should == "Person One"
+      people.first.Status.should == "Active"
+      people.first.AccessLevel.should == 31
+    end
 
     should "get all templates" do
       stub_get(@api_key, "clients/#{@client.client_id}/templates.json", "templates.json")
@@ -101,6 +111,19 @@ class ClientTest < Test::Unit::TestCase
       templates.size.should == 2
       templates.first.TemplateID.should == '5cac213cf061dd4e008de5a82b7a3621'
       templates.first.Name.should == 'Template One'
+    end
+    
+    should "set primary contact" do
+      email = 'person@blackhole.com'
+      stub_put(@api_key, "clients/#{@client.client_id}/primarycontact.json?email=#{CGI.escape(email)}", 'client_set_primary_contact.json')
+      result = @client.set_primary_contact email
+      result.EmailAddress.should == email
+    end
+    
+    should "get primary contact" do
+      stub_get(@api_key, "clients/#{@client.client_id}/primarycontact.json", 'client_get_primary_contact.json')
+      result = @client.get_primary_contact
+      result.EmailAddress.should == 'person@blackhole.com'
     end
     
     should "set basics" do

@@ -1,0 +1,14 @@
+[
+  {
+    "EmailAddress": "person1@blackhole.com",
+    "Name": "Person One",
+    "Status": "Active",
+    "AccessLevel": 31
+  },
+  {
+    "EmailAddress": "person2@blackhole.com",
+    "Name": "Person Two",
+    "Status": "Active",
+    "AccessLevel": 0
+  }
+]

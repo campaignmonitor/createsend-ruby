@@ -1,0 +1,12 @@
+[
+  {
+    "EmailAddress": "admin1@blackhole.com",
+    "Name": "Admin One",
+    "Status": "Active"
+  },
+  {
+    "EmailAddress": "admin2@blackhole.com",
+    "Name": "Admin Two",
+    "Status": "Active"
+  }
+]

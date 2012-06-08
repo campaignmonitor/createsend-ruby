@@ -1,0 +1,6 @@
+{
+    "EmailAddress": "person@example.com",
+    "Name": "Person One",
+    "AccessLevel": 1023,
+    "Status": "Active"
+}
