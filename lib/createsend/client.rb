@@ -12,6 +12,9 @@ module CreateSend
 
     # Creates a client.
     def self.create(company, contact_name, email, timezone, country)
+      warn "[DEPRECATION] Use Person.add or person.update to set name on a particular person in a client. For now, will create a default person with name." unless contact_name.to_s == ''
+      warn "[DEPRECATION] Use Person.add or person.update to set email on a particular person in a client. For now, will create a default person with email." unless email.to_s == ''
+      
       options = { :body => { 
         :CompanyName => company, 
         :ContactName => contact_name,
@@ -93,6 +96,9 @@ module CreateSend
 
     # Sets the basic details for this client.
     def set_basics(company, contact_name, email, timezone, country)
+      warn "[DEPRECATION] Use person.update to set name on a particular person in a client. This will fail if there are multiple persons in a client." unless contact_name.to_s == ''
+      warn "[DEPRECATION] Use person.update to set email on a particular person in a client. This will fail if there are multiple persons in a client." unless email.to_s == ''
+            
       options = { :body => { 
         :CompanyName => company, 
         :ContactName => contact_name,
@@ -104,6 +110,8 @@ module CreateSend
 
     # Sets the access settings for this client.
     def set_access(username, password, access_level)
+      warn "[DEPRECATION] `set_access` is deprecated. Use Person.update to set access on a particular person in a client."
+          
       options = { :body => { 
         :Username => username, 
         :Password => password, 
