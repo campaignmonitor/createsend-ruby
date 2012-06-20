@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>createsend-ruby by campaignmonitor</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>createsend-ruby</h1>
+        <p>A ruby library for v3 of the createsend API</p>
+
+        <p class="view"><a href="https://github.com/campaignmonitor/createsend-ruby">View the Project on GitHub <small>campaignmonitor/createsend-ruby</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/campaignmonitor/createsend-ruby/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/campaignmonitor/createsend-ruby/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/campaignmonitor/createsend-ruby">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>createsend <a href="http://travis-ci.org/campaignmonitor/createsend-ruby"><img src="https://secure.travis-ci.org/campaignmonitor/createsend-ruby.png" alt="Build Status"></a> <a href="https://gemnasium.com/campaignmonitor/createsend-ruby"><img src="https://gemnasium.com/campaignmonitor/createsend-ruby.png" alt="Dependency Status"></a>
+</h1>
+
+<p>A ruby library which implements the complete functionality of v3 of the <a href="http://www.campaignmonitor.com/api/">Campaign Monitor API</a>.</p>
+
+<h2>Installation</h2>
+
+<pre><code>gem install createsend
+</code></pre>
+
+<h2>Examples</h2>
+
+<h3>Basic usage</h3>
+
+<p>Retrieve a list of all your clients.</p>
+
+<pre><code>require 'createsend'
+
+CreateSend.api_key 'your_api_key'
+
+cs = CreateSend::CreateSend.new
+clients = cs.clients
+
+clients.each do |c|
+  puts "#{c.ClientID}: #{c.Name}"
+end
+</code></pre>
+
+<p>Results in:</p>
+
+<pre><code>4a397ccaaa55eb4e6aa1221e1e2d7122: Client One
+a206def0582eec7dae47d937a4109cb2: Client Two
+</code></pre>
+
+<h3>Handling errors</h3>
+
+<p>If the createsend API returns an error, an exception will be thrown. For example, if you attempt to create a campaign and enter empty values for subject etc:</p>
+
+<pre><code>require 'createsend'
+
+CreateSend.api_key 'your_api_key'
+
+begin
+  cl = CreateSend::Client.new "4a397ccaaa55eb4e6aa1221e1e2d7122"
+  id = CreateSend::Campaign.create cl.client_id, "", "", "", "", "", "", "", [], []
+  puts "New campaign ID: #{id}"
+  rescue CreateSend::BadRequest =&gt; br
+    puts "Bad request error: #{br}"
+    puts "Error Code:    #{br.data.Code}"
+    puts "Error Message: #{br.data.Message}"
+  rescue Exception =&gt; e
+    puts "Error: #{e}"
+end
+</code></pre>
+
+<p>Results in:</p>
+
+<pre><code>Bad request error: The CreateSend API responded with the following error - 304: Campaign Subject Required
+Error Code:    304
+Error Message: Campaign Subject Required
+</code></pre>
+
+<h3>Expected input and output</h3>
+
+<p>The best way of finding out the expected input and output of a particular method in a particular class is to use the unit tests as a reference.</p>
+
+<p>For example, if you wanted to find out how to call the CreateSend::Subscriber.add method, you would look at the file test/subscriber_test.rb</p>
+
+<pre><code>should "add a subscriber with custom fields" do
+  stub_post(@api_key, "subscribers/#{@list_id}.json", "add_subscriber.json")
+  custom_fields = [ { :Key =&gt; 'website', :Value =&gt; 'http://example.com/' } ]
+  email_address = CreateSend::Subscriber.add @list_id, "subscriber@example.com", "Subscriber", custom_fields, true
+  email_address.should == "subscriber@example.com"
+end
+</code></pre>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/campaignmonitor">campaignmonitor</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
