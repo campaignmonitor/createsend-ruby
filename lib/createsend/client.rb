@@ -12,8 +12,8 @@ module CreateSend
 
     # Creates a client.
     def self.create(company, contact_name, email, timezone, country)
-      warn "[DEPRECATION] Use Person.add or person.update to set name on a particular person in a client. For now, will create a default person with name." unless contact_name.to_s == ''
-      warn "[DEPRECATION] Use Person.add or person.update to set email on a particular person in a client. For now, will create a default person with email." unless email.to_s == ''
+      warn "[DEPRECATION] Use person.add or person.update to set the name on a particular person in a client. For now, we will create a default person with the name provided." unless contact_name.to_s == ''
+      warn "[DEPRECATION] Use person.add or person.update to set the email on a particular person in a client. For now, we will create a default person with the email provided." unless email.to_s == ''
       
       options = { :body => { 
         :CompanyName => company, 
@@ -108,17 +108,6 @@ module CreateSend
       put 'setbasics', options
     end
 
-    # Sets the access settings for this client.
-    def set_access(username, password, access_level)
-      warn "[DEPRECATION] `set_access` is deprecated. Use Person.update to set access on a particular person in a client."
-          
-      options = { :body => { 
-        :Username => username, 
-        :Password => password, 
-        :AccessLevel => access_level }.to_json }
-      put 'setaccess', options
-    end
-
     # Sets the PAYG billing settings for this client.
     def set_payg_billing(currency, can_purchase_credits, client_pays, markup_percentage, 
       markup_on_delivery=0, markup_per_recipient=0, markup_on_design_spam_test=0)
@@ -163,6 +152,18 @@ module CreateSend
 
     def uri_for(action)
       "/clients/#{client_id}/#{action}.json"
+    end
+
+    # THIS METHOD IS DEPRECATED. It should only be used with existing integrations.
+    # Sets the access settings for this client.
+    def set_access(username, password, access_level)
+      warn "[DEPRECATION] `set_access` is deprecated. Use Person.update to set access on a particular person in a client."
+          
+      options = { :body => { 
+        :Username => username, 
+        :Password => password, 
+        :AccessLevel => access_level }.to_json }
+      put 'setaccess', options
     end
   end
 end
