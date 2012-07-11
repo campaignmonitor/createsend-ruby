@@ -130,6 +130,18 @@ module CreateSend
         :MarkupPercentage => markup_percentage }.to_json }
       put 'setmonthlybilling', options
     end
+    
+    # THIS METHOD IS DEPRECATED. It should only be used with existing integrations.
+    # Sets the access settings for this client.
+    def set_access(username, password, access_level)
+      warn "[DEPRECATION] `set_access` is deprecated. Use Person.update to set access on a particular person in a client."
+          
+      options = { :body => { 
+        :Username => username, 
+        :Password => password, 
+        :AccessLevel => access_level }.to_json }
+      put 'setaccess', options
+    end
 
     # Deletes this client.
     def delete
@@ -152,18 +164,6 @@ module CreateSend
 
     def uri_for(action)
       "/clients/#{client_id}/#{action}.json"
-    end
-
-    # THIS METHOD IS DEPRECATED. It should only be used with existing integrations.
-    # Sets the access settings for this client.
-    def set_access(username, password, access_level)
-      warn "[DEPRECATION] `set_access` is deprecated. Use Person.update to set access on a particular person in a client."
-          
-      options = { :body => { 
-        :Username => username, 
-        :Password => password, 
-        :AccessLevel => access_level }.to_json }
-      put 'setaccess', options
     end
   end
 end
