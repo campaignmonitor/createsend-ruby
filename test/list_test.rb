@@ -10,15 +10,31 @@ class ListTest < Test::Unit::TestCase
       @list = CreateSend::List.new @list_id
     end
 
-    should "create a list" do
+    should "create a list without passing in unsubscribe setting" do
       stub_post(@api_key, "lists/#{@client_id}.json", "create_list.json")
       list_id = CreateSend::List.create @client_id, "List One", "", false, ""
       list_id.should == "e3c5f034d68744f7881fdccf13c2daee"
     end
 
-    should "update a list" do
+    should "create a list passing in unsubscribe setting" do
+      stub_post(@api_key, "lists/#{@client_id}.json", "create_list.json")
+      list_id = CreateSend::List.create @client_id, "List One", "", false, "", "OnlyThisList"
+      list_id.should == "e3c5f034d68744f7881fdccf13c2daee"
+    end
+
+    should "update a list without passing in unsubscribe setting" do
       stub_put(@api_key, "lists/#{@list.list_id}.json", nil)
       @list.update "List One Renamed", "", false, ""
+    end
+
+    should "update a list passing in unsubscribe setting" do
+      stub_put(@api_key, "lists/#{@list.list_id}.json", nil)
+      @list.update "List One Renamed", "", false, "", "OnlyThisList"
+    end
+
+    should "update a list passing in unsubscribe setting and suppression list options" do
+      stub_put(@api_key, "lists/#{@list.list_id}.json", nil)
+      @list.update "List One Renamed", "", false, "", "OnlyThisList", true, true
     end
 
     should "delete a list" do
@@ -53,6 +69,7 @@ class ListTest < Test::Unit::TestCase
       details.UnsubscribePage.should == ""
       details.ListID.should == "2fe4c8f0373ce320e2200596d7ef168f"
       details.ConfirmationSuccessPage.should == ""
+      details.UnsubscribeSetting.should == "AllClientLists"
     end
 
     should "get the custom fields for a list" do

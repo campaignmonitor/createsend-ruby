@@ -11,12 +11,26 @@ module CreateSend
     end
 
     # Creates a new list for a client.
-    def self.create(client_id, title, unsubscribe_page, confirmed_opt_in, confirmation_success_page)
+    # client_id - String representing the ID of the client for whom the list
+    #             will be created
+    # title - String representing the list title/name
+    # unsubscribe_page - String representing the url of the unsubscribe
+    #                    confirmation page
+    # confirmed_opt_in - A Boolean representing whether this should be a
+    #                    confirmed opt-in (double opt-in) list
+    # confirmation_success_page - String representing the url of the 
+    #                             confirmation success page
+    # unsubscribe_setting - A String which must be either "AllClientLists" or
+    #                       "OnlyThisList". See the documentation for details:
+    #                       http://www.campaignmonitor.com/api/lists/#creating_a_list
+    def self.create(client_id, title, unsubscribe_page, confirmed_opt_in,
+      confirmation_success_page, unsubscribe_setting="AllClientLists")
       options = { :body => {
         :Title => title,
         :UnsubscribePage => unsubscribe_page,
         :ConfirmedOptIn => confirmed_opt_in,
-        :ConfirmationSuccessPage => confirmation_success_page }.to_json }
+        :ConfirmationSuccessPage => confirmation_success_page,
+        :UnsubscribeSetting => unsubscribe_setting }.to_json }
       response = CreateSend.post "/lists/#{client_id}.json", options
       response.parsed_response
     end
@@ -124,12 +138,33 @@ module CreateSend
     end
 
     # Updates this list.
-    def update(title, unsubscribe_page, confirmed_opt_in, confirmation_success_page)
+    # title - String representing the list title/name
+    # unsubscribe_page - String representing the url of the unsubscribe
+    #                    confirmation page
+    # confirmed_opt_in - A Boolean representing whether this should be a
+    #                    confirmed opt-in (double opt-in) list
+    # confirmation_success_page - String representing the url of the 
+    #                             confirmation success page
+    # unsubscribe_setting - A String which must be either "AllClientLists" or
+    #                       "OnlyThisList". See the documentation for details:
+    #                       http://www.campaignmonitor.com/api/lists/#updating_a_list
+    # add_unsubscribes_to_supp_list - When unsubscribe_setting is
+    #   "AllClientLists", a Boolean which represents whether unsubscribes from
+    #   this list should be added to the suppression list
+    # scrub_active_with_supp_list - When unsubscribe_setting is
+    #   "AllClientLists", a Boolean which represents whether active sunscriners
+    #   should be scrubbed against the suppression list
+    def update(title, unsubscribe_page, confirmed_opt_in,
+      confirmation_success_page, unsubscribe_setting="AllClientLists",
+      add_unsubscribes_to_supp_list=false, scrub_active_with_supp_list=false)
       options = { :body => {
         :Title => title,
         :UnsubscribePage => unsubscribe_page,
         :ConfirmedOptIn => confirmed_opt_in,
-        :ConfirmationSuccessPage => confirmation_success_page }.to_json }
+        :ConfirmationSuccessPage => confirmation_success_page,
+        :UnsubscribeSetting => unsubscribe_setting,
+        :AddUnsubscribesToSuppList => add_unsubscribes_to_supp_list,
+        :ScrubActiveWithSuppList => scrub_active_with_supp_list }.to_json }
       response = CreateSend.put "/lists/#{list_id}.json", options
     end
 
