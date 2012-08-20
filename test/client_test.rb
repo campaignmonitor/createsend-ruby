@@ -68,7 +68,18 @@ class ClientTest < Test::Unit::TestCase
       lists.first.ListID.should == 'a58ee1d3039b8bec838e6d1482a8a965'
       lists.first.Name.should == 'List One'
     end
-    
+
+    should "get all lists to which a subscriber with a particular email address belongs" do
+      email = "valid@example.com"
+      stub_get(@api_key, "clients/#{@client.client_id}/listsforemail.json?email=#{CGI.escape(email)}", "listsforemail.json")
+      lists = @client.lists_for_email(email)
+      lists.size.should == 2
+      lists.first.ListID.should == 'ab4a2b57c7c8f1ba62f898a1af1a575b'
+      lists.first.ListName.should == 'List Number One'
+      lists.first.SubscriberState.should == 'Active'
+      lists.first.DateSubscriberAdded.should == '2012-08-20 22:32:00'
+    end
+
     should "get all segments for a client" do
       stub_get(@api_key, "clients/#{@client.client_id}/segments.json", "segments.json")
       segments = @client.segments

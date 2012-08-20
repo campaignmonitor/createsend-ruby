@@ -54,6 +54,15 @@ module CreateSend
       response.map{|item| Hashie::Mash.new(item)}
     end
 
+    # Gets the lists across a client, to which a subscriber with a particular
+    # email address belongs.
+    # email_address - A String representing the subcriber's email address
+    def lists_for_email(email_address)
+      options = { :query => { :email => email_address } }
+      response = get 'listsforemail', options
+      response.map{|item| Hashie::Mash.new(item)}
+    end
+
     # Gets the segments belonging to this client.
     def segments
       response = get 'segments'
