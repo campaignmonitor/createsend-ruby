@@ -103,7 +103,7 @@ class CreateSendTest < Test::Unit::TestCase
       context "#{status.first}, a post" do
         should "raise a #{exception.name} error" do
           stub_post(@api_key, "clients.json", (status.first == '400' or status.first == '401') ? 'custom_api_error.json' : nil, status)
-          lambda { CreateSend::Client.create "Client Company Name", "Client Contact Name", "client@example.com", 
+          lambda { CreateSend::Client.create "Client Company Name", 
             "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia" }.should raise_error(exception)
         end
       end
