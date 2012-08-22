@@ -11,7 +11,7 @@ class ClientTest < Test::Unit::TestCase
 
     should "create a client" do
       stub_post(@api_key, "clients.json", "create_client.json")
-      client_id = CreateSend::Client.create "Client Company Name", "Client Contact Name", "client@example.com", "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia"
+      client_id = CreateSend::Client.create "Client Company Name", "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia"
       client_id.should == "32a381c49a2df99f1d0c6f3c112352b9"
     end
     
@@ -68,7 +68,18 @@ class ClientTest < Test::Unit::TestCase
       lists.first.ListID.should == 'a58ee1d3039b8bec838e6d1482a8a965'
       lists.first.Name.should == 'List One'
     end
-    
+
+    should "get all lists to which a subscriber with a particular email address belongs" do
+      email = "valid@example.com"
+      stub_get(@api_key, "clients/#{@client.client_id}/listsforemail.json?email=#{CGI.escape(email)}", "listsforemail.json")
+      lists = @client.lists_for_email(email)
+      lists.size.should == 2
+      lists.first.ListID.should == 'ab4a2b57c7c8f1ba62f898a1af1a575b'
+      lists.first.ListName.should == 'List Number One'
+      lists.first.SubscriberState.should == 'Active'
+      lists.first.DateSubscriberAdded.should == '2012-08-20 22:32:00'
+    end
+
     should "get all segments for a client" do
       stub_get(@api_key, "clients/#{@client.client_id}/segments.json", "segments.json")
       segments = @client.segments
@@ -94,7 +105,7 @@ class ClientTest < Test::Unit::TestCase
       res.Results.first.Date.should == "2010-10-26 10:55:31"
       res.Results.first.State.should == "Suppressed"
     end
-    
+
     should "get all people" do
       stub_get(@api_key, "clients/#{@client.client_id}/people.json", "people.json")
       people = @client.people
@@ -112,40 +123,35 @@ class ClientTest < Test::Unit::TestCase
       templates.first.TemplateID.should == '5cac213cf061dd4e008de5a82b7a3621'
       templates.first.Name.should == 'Template One'
     end
-    
+
     should "set primary contact" do
       email = 'person@blackhole.com'
       stub_put(@api_key, "clients/#{@client.client_id}/primarycontact.json?email=#{CGI.escape(email)}", 'client_set_primary_contact.json')
       result = @client.set_primary_contact email
       result.EmailAddress.should == email
     end
-    
+
     should "get primary contact" do
       stub_get(@api_key, "clients/#{@client.client_id}/primarycontact.json", 'client_get_primary_contact.json')
       result = @client.get_primary_contact
       result.EmailAddress.should == 'person@blackhole.com'
     end
-    
+
     should "set basics" do
       stub_put(@api_key, "clients/#{@client.client_id}/setbasics.json", nil)
-      @client.set_basics "Client Company Name", "Client Contact Name", "client@example.com", "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia"
+      @client.set_basics "Client Company Name", "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia"
     end
-    
-    should "set access" do
-      stub_put(@api_key, "clients/#{@client.client_id}/setaccess.json", nil)
-      @client.set_access "username", "password", 321
-    end
-    
+
     should "set payg billing" do
       stub_put(@api_key, "clients/#{@client.client_id}/setpaygbilling.json", nil)
       @client.set_payg_billing "CAD", true, true, 150
     end
-    
+
     should "set monthly billing" do
       stub_put(@api_key, "clients/#{@client.client_id}/setmonthlybilling.json", nil)
       @client.set_monthly_billing "CAD", true, 150
     end
-    
+
     should "delete a client" do
       stub_delete(@api_key, "clients/#{@client.client_id}.json", nil)
       @client.delete

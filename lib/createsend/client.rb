@@ -11,14 +11,9 @@ module CreateSend
     end
 
     # Creates a client.
-    def self.create(company, contact_name, email, timezone, country)
-      warn "[DEPRECATION] Use person.add or person.update to set the name on a particular person in a client. For now, we will create a default person with the name provided." unless contact_name.to_s == ''
-      warn "[DEPRECATION] Use person.add or person.update to set the email on a particular person in a client. For now, we will create a default person with the email provided." unless email.to_s == ''
-      
-      options = { :body => { 
-        :CompanyName => company, 
-        :ContactName => contact_name,
-        :EmailAddress => email,
+    def self.create(company, timezone, country)
+      options = { :body => {
+        :CompanyName => company,
         :TimeZone => timezone,
         :Country => country }.to_json }
       CreateSend.post "/clients.json", options
@@ -51,6 +46,15 @@ module CreateSend
     # Gets the subscriber lists belonging to this client.
     def lists
       response = get 'lists'
+      response.map{|item| Hashie::Mash.new(item)}
+    end
+
+    # Gets the lists across a client, to which a subscriber with a particular
+    # email address belongs.
+    # email_address - A String representing the subcriber's email address
+    def lists_for_email(email_address)
+      options = { :query => { :email => email_address } }
+      response = get 'listsforemail', options
       response.map{|item| Hashie::Mash.new(item)}
     end
 
@@ -95,14 +99,9 @@ module CreateSend
     end
 
     # Sets the basic details for this client.
-    def set_basics(company, contact_name, email, timezone, country)
-      warn "[DEPRECATION] Use person.update to set name on a particular person in a client. This will fail if there are multiple persons in a client." unless contact_name.to_s == ''
-      warn "[DEPRECATION] Use person.update to set email on a particular person in a client. This will fail if there are multiple persons in a client." unless email.to_s == ''
-            
-      options = { :body => { 
-        :CompanyName => company, 
-        :ContactName => contact_name,
-        :EmailAddress => email,
+    def set_basics(company, timezone, country)
+      options = { :body => {
+        :CompanyName => company,
         :TimeZone => timezone,
         :Country => country }.to_json }
       put 'setbasics', options
@@ -129,18 +128,6 @@ module CreateSend
         :ClientPays => client_pays,
         :MarkupPercentage => markup_percentage }.to_json }
       put 'setmonthlybilling', options
-    end
-    
-    # THIS METHOD IS DEPRECATED. It should only be used with existing integrations.
-    # Sets the access settings for this client.
-    def set_access(username, password, access_level)
-      warn "[DEPRECATION] `set_access` is deprecated. Use Person.update to set access on a particular person in a client."
-          
-      options = { :body => { 
-        :Username => username, 
-        :Password => password, 
-        :AccessLevel => access_level }.to_json }
-      put 'setaccess', options
     end
 
     # Deletes this client.
