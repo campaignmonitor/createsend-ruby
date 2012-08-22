@@ -30,7 +30,7 @@ module CreateSend
       response = get 'campaigns'
       response.map{|item| Hashie::Mash.new(item)}
     end
-    
+
     # Gets the currently scheduled campaigns belonging to this client.
     def scheduled
       response = get 'scheduled'
@@ -63,18 +63,18 @@ module CreateSend
       response = get 'segments'
       response.map{|item| Hashie::Mash.new(item)}
     end
-    
+
     # Gets the people associated with this client
     def people
       response = get "people"
       response.map{|item| Hashie::Mash.new(item)}
     end
-    
+
     def get_primary_contact
       response = get "primarycontact"
       Hashie::Mash.new(response)
     end
-    
+
     def set_primary_contact(email)
       options = { :query => { :email => email } }
       response = put "primarycontact", options
@@ -82,8 +82,9 @@ module CreateSend
     end
 
     # Gets this client's suppression list.
-    def suppressionlist(page=1, page_size=1000, order_field="email", order_direction="asc")
-      options = { :query => { 
+    def suppressionlist(page=1, page_size=1000, order_field="email",
+      order_direction="asc")
+      options = { :query => {
         :page => page,
         :pagesize => page_size,
         :orderfield => order_field,
@@ -108,9 +109,10 @@ module CreateSend
     end
 
     # Sets the PAYG billing settings for this client.
-    def set_payg_billing(currency, can_purchase_credits, client_pays, markup_percentage, 
-      markup_on_delivery=0, markup_per_recipient=0, markup_on_design_spam_test=0)
-      options = { :body => { 
+    def set_payg_billing(currency, can_purchase_credits, client_pays,
+      markup_percentage, markup_on_delivery=0, markup_per_recipient=0,
+      markup_on_design_spam_test=0)
+      options = { :body => {
         :Currency => currency,
         :CanPurchaseCredits => can_purchase_credits,
         :ClientPays => client_pays,
@@ -123,7 +125,7 @@ module CreateSend
 
     # Sets the monthly billing settings for this client.
     def set_monthly_billing(currency, client_pays, markup_percentage)
-      options = { :body => { 
+      options = { :body => {
         :Currency => currency,
         :ClientPays => client_pays,
         :MarkupPercentage => markup_percentage }.to_json }

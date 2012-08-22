@@ -12,17 +12,17 @@ module CreateSend
 
     # Creates a new list for a client.
     # client_id - String representing the ID of the client for whom the list
-    #             will be created
+    #   will be created
     # title - String representing the list title/name
     # unsubscribe_page - String representing the url of the unsubscribe
-    #                    confirmation page
+    #   confirmation page
     # confirmed_opt_in - A Boolean representing whether this should be a
-    #                    confirmed opt-in (double opt-in) list
-    # confirmation_success_page - String representing the url of the 
-    #                             confirmation success page
+    #   confirmed opt-in (double opt-in) list
+    # confirmation_success_page - String representing the url of the
+    #   confirmation success page
     # unsubscribe_setting - A String which must be either "AllClientLists" or
-    #                       "OnlyThisList". See the documentation for details:
-    #                       http://www.campaignmonitor.com/api/lists/#creating_a_list
+    #   "OnlyThisList". See the documentation for details:
+    #   http://www.campaignmonitor.com/api/lists/#creating_a_list
     def self.create(client_id, title, unsubscribe_page, confirmed_opt_in,
       confirmation_success_page, unsubscribe_setting="AllClientLists")
       options = { :body => {
@@ -53,11 +53,13 @@ module CreateSend
     # Deletes a custom field associated with this list.
     def delete_custom_field(custom_field_key)
       custom_field_key = CGI.escape(custom_field_key)
-      response = CreateSend.delete "/lists/#{list_id}/customfields/#{custom_field_key}.json", {}
+      response = CreateSend.delete(
+        "/lists/#{list_id}/customfields/#{custom_field_key}.json", {})
     end
 
     # Updates the options of a multi-optioned custom field on this list.
-    def update_custom_field_options(custom_field_key, new_options, keep_existing_options)
+    def update_custom_field_options(custom_field_key, new_options,
+      keep_existing_options)
       custom_field_key = CGI.escape(custom_field_key)
       options = { :body => {
         :Options => new_options,
@@ -90,8 +92,9 @@ module CreateSend
     end
 
     # Gets the active subscribers for this list.
-    def active(date, page=1, page_size=1000, order_field="email", order_direction="asc")
-      options = { :query => { 
+    def active(date, page=1, page_size=1000, order_field="email",
+      order_direction="asc")
+      options = { :query => {
         :date => date,
         :page => page,
         :pagesize => page_size,
@@ -102,8 +105,9 @@ module CreateSend
     end
 
     # Gets the bounced subscribers for this list.
-    def bounced(date, page=1, page_size=1000, order_field="email", order_direction="asc")
-      options = { :query => { 
+    def bounced(date, page=1, page_size=1000, order_field="email",
+      order_direction="asc")
+      options = { :query => {
         :date => date,
         :page => page,
         :pagesize => page_size,
@@ -114,8 +118,9 @@ module CreateSend
     end
 
     # Gets the unsubscribed subscribers for this list.
-    def unsubscribed(date, page=1, page_size=1000, order_field="email", order_direction="asc")
-      options = { :query => { 
+    def unsubscribed(date, page=1, page_size=1000, order_field="email",
+      order_direction="asc")
+      options = { :query => {
         :date => date,
         :page => page,
         :pagesize => page_size,
@@ -126,8 +131,9 @@ module CreateSend
     end
 
     # Gets the deleted subscribers for this list.
-    def deleted(date, page=1, page_size=1000, order_field="email", order_direction="asc")
-      options = { :query => { 
+    def deleted(date, page=1, page_size=1000, order_field="email",
+      order_direction="asc")
+      options = { :query => {
         :date => date,
         :page => page,
         :pagesize => page_size,
@@ -140,19 +146,19 @@ module CreateSend
     # Updates this list.
     # title - String representing the list title/name
     # unsubscribe_page - String representing the url of the unsubscribe
-    #                    confirmation page
+    #   confirmation page
     # confirmed_opt_in - A Boolean representing whether this should be a
-    #                    confirmed opt-in (double opt-in) list
-    # confirmation_success_page - String representing the url of the 
-    #                             confirmation success page
+    #   confirmed opt-in (double opt-in) list
+    # confirmation_success_page - String representing the url of the
+    #   confirmation success page
     # unsubscribe_setting - A String which must be either "AllClientLists" or
-    #                       "OnlyThisList". See the documentation for details:
-    #                       http://www.campaignmonitor.com/api/lists/#updating_a_list
+    #   "OnlyThisList". See the documentation for details:
+    #   http://www.campaignmonitor.com/api/lists/#updating_a_list
     # add_unsubscribes_to_supp_list - When unsubscribe_setting is
     #   "AllClientLists", a Boolean which represents whether unsubscribes from
     #   this list should be added to the suppression list
     # scrub_active_with_supp_list - When unsubscribe_setting is
-    #   "AllClientLists", a Boolean which represents whether active sunscriners
+    #   "AllClientLists", a Boolean which represents whether active sunscribers
     #   should be scrubbed against the suppression list
     def update(title, unsubscribe_page, confirmed_opt_in,
       confirmation_success_page, unsubscribe_setting="AllClientLists",
@@ -174,7 +180,7 @@ module CreateSend
       response.map{|item| Hashie::Mash.new(item)}
     end
 
-    # Creates a new webhook for the specified events (an array of strings). 
+    # Creates a new webhook for the specified events (an array of strings).
     # Valid events are "Subscribe", "Deactivate", and "Update".
     # Valid payload formats are "json", and "xml".
     def create_webhook(events, url, payload_format)
@@ -195,7 +201,8 @@ module CreateSend
 
     # Deletes a webhook associated with this list.
     def delete_webhook(webhook_id)
-      response = CreateSend.delete "/lists/#{list_id}/webhooks/#{webhook_id}.json", {}
+      response = CreateSend.delete(
+        "/lists/#{list_id}/webhooks/#{webhook_id}.json", {})
     end
 
     # Activates a webhook associated with this list.
