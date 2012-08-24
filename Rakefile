@@ -3,10 +3,27 @@ require "bundler/version"
 require "rake/testtask"
 require "./lib/createsend"
 
+begin
+  require 'cane/rake_task'
+
+  desc "Run cane (checks quality metrics)"
+  Cane::RakeTask.new(:quality) do |cane|
+    cane.abc_glob = '{lib,test}/**/*.rb'
+    cane.abc_max = 10
+    puts "running cane."
+  end
+
+  task :default => :quality
+rescue LoadError
+  warn "cane not available, quality task not provided."
+end
+
+desc "Run tests"
 Rake::TestTask.new(:test) do |test|
   test.ruby_opts = ["-rubygems"] if defined? Gem
   test.libs << "lib" << "test"
   test.pattern = "test/**/*_test.rb"
+  puts "running tests."
 end
 
 desc "Build the gem"
