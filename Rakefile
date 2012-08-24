@@ -4,16 +4,18 @@ require "rake/testtask"
 require "./lib/createsend"
 
 begin
-  require 'cane/rake_task'
+  if RUBY_VERSION != "1.8.7" # cane not supported on < 1.8.7
+    require 'cane/rake_task'
 
-  desc "Run cane (checks quality metrics)"
-  Cane::RakeTask.new(:quality) do |cane|
-    cane.abc_glob = '{lib,test}/**/*.rb'
-    cane.abc_max = 10
-    puts "running cane."
+    desc "Run cane (checks quality metrics)"
+    Cane::RakeTask.new(:quality) do |cane|
+      cane.abc_glob = '{lib,test}/**/*.rb'
+      cane.abc_max = 10
+      puts "running cane."
+    end
+
+    task :default => :quality
   end
-
-  task :default => :quality
 rescue LoadError
   warn "cane not available, quality task not provided."
 end
