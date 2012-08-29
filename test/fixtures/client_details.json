@@ -21,6 +21,7 @@
      "MarkupOnDelivery": 0.0,
      "BaseDeliveryRate": 5.0,
      "Currency": "USD",
-     "BaseDesignSpamTestRate": 5.0
+     "BaseDesignSpamTestRate": 5.0,
+     "MonthlyScheme": "Basic"
   }
 }

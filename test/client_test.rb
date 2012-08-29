@@ -23,6 +23,7 @@ class ClientTest < Test::Unit::TestCase
       cl.BasicDetails.ContactName.should == "Client One (contact)"
       cl.AccessDetails.Username.should == "clientone"
       cl.AccessDetails.AccessLevel.should == 23
+      cl.BillingDetails.MonthlyScheme.should == "Basic"
     end
 
     should "get all campaigns" do
@@ -141,11 +142,32 @@ class ClientTest < Test::Unit::TestCase
       @client.set_payg_billing "CAD", true, true, 150
     end
     
-    should "set monthly billing" do
+    should "set monthly billing (old)" do
       stub_put(@api_key, "clients/#{@client.client_id}/setmonthlybilling.json", nil)
       @client.set_monthly_billing "CAD", true, 150
     end
     
+    should "set monthly billing (implicit)" do
+      stub_put(@api_key, "clients/#{@client.client_id}/setmonthlybilling.json", nil)
+      @client.set_monthly_billing "CAD", true, 150 
+      request = FakeWeb.last_request.body
+      assert_equal("{\"Currency\":\"CAD\",\"ClientPays\":true,\"MarkupPercentage\":150,\"MonthlyScheme\":null}", request, "Request wasn't as expected")
+    end
+
+    should "set monthly billing (basic)" do
+      stub_put(@api_key, "clients/#{@client.client_id}/setmonthlybilling.json", nil)
+      @client.set_monthly_billing "CAD", true, 150, "Basic"
+      request = FakeWeb.last_request.body
+      assert_equal("{\"Currency\":\"CAD\",\"ClientPays\":true,\"MarkupPercentage\":150,\"MonthlyScheme\":\"Basic\"}", request, "Request wasn't as expected")
+    end
+       
+    should "set monthly billing (unlimited)" do
+      stub_put(@api_key, "clients/#{@client.client_id}/setmonthlybilling.json", nil)
+      @client.set_monthly_billing "CAD", false, 120, "Unlimited"
+      request = FakeWeb.last_request.body
+      assert_equal("{\"Currency\":\"CAD\",\"ClientPays\":false,\"MarkupPercentage\":120,\"MonthlyScheme\":\"Unlimited\"}", request, "Request wasn't as expected")
+    end
+     
     should "delete a client" do
       stub_delete(@api_key, "clients/#{@client.client_id}.json", nil)
       @client.delete
