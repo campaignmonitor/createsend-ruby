@@ -124,12 +124,14 @@ module CreateSend
     end
 
     # Sets the monthly billing settings for this client.
-    def set_monthly_billing(currency, client_pays, markup_percentage, monthly_scheme = nil)
-      options = { :body => { 
+    # monthly_scheme must be nil, Basic or Unlimited
+    def set_monthly_billing(currency, client_pays, markup_percentage,
+      monthly_scheme = nil)
+      options = { :body => {
         :Currency => currency,
         :ClientPays => client_pays,
         :MarkupPercentage => markup_percentage,
-        :MonthlyScheme => monthly_scheme }.to_json } # monthly_scheme must be nil, Basic or Unlimited
+        :MonthlyScheme => monthly_scheme }.to_json }
       put 'setmonthlybilling', options
     end
 
