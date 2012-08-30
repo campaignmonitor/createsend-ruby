@@ -20,31 +20,39 @@ module CreateSend
     end
 
     # Adds a subscriber to a subscriber list.
-    def self.add(list_id, email_address, name, custom_fields, resubscribe, restart_subscription_based_autoresponders=false)
+    def self.add(list_id, email_address, name, custom_fields, resubscribe,
+      restart_subscription_based_autoresponders=false)
       options = { :body => {
         :EmailAddress => email_address,
         :Name => name,
         :CustomFields => custom_fields,
         :Resubscribe => resubscribe,
-        :RestartSubscriptionBasedAutoresponders => restart_subscription_based_autoresponders }.to_json }
+        :RestartSubscriptionBasedAutoresponders =>
+          restart_subscription_based_autoresponders }.to_json }
       response = CreateSend.post "/subscribers/#{list_id}.json", options
       response.parsed_response
     end
 
     # Imports subscribers into a subscriber list.
-    def self.import(list_id, subscribers, resubscribe, queue_subscription_based_autoresponders=false, restart_subscription_based_autoresponders=false)
+    def self.import(list_id, subscribers, resubscribe,
+      queue_subscription_based_autoresponders=false,
+      restart_subscription_based_autoresponders=false)
       options = { :body => {
         :Subscribers => subscribers,
         :Resubscribe => resubscribe,
-        :QueueSubscriptionBasedAutoresponders => queue_subscription_based_autoresponders,
-        :RestartSubscriptionBasedAutoresponders => restart_subscription_based_autoresponders }.to_json }
+        :QueueSubscriptionBasedAutoresponders =>
+          queue_subscription_based_autoresponders,
+        :RestartSubscriptionBasedAutoresponders =>
+          restart_subscription_based_autoresponders }.to_json }
       begin
-        response = CreateSend.post "/subscribers/#{list_id}/import.json", options
+        response = CreateSend.post(
+          "/subscribers/#{list_id}/import.json", options)
       rescue BadRequest => br
-        # Subscriber import will throw BadRequest if some subscribers are not imported
-        # successfully. If this occurs, we want to return the ResultData property of
-        # the BadRequest exception (which is of the same "form" as the response we'd 
-        # receive upon a completely successful import)
+        # Subscriber import will throw BadRequest if some subscribers are not
+        # imported successfully. If this occurs, we want to return the
+        # ResultData property of the BadRequest exception (which is of the
+        # same "form" as the response we would receive upon a completely
+        # successful import).
         if br.data.ResultData
           return br.data.ResultData
         else
@@ -54,9 +62,10 @@ module CreateSend
       Hashie::Mash.new(response)
     end
 
-    # Updates any aspect of a subscriber, including email address, name, and 
+    # Updates any aspect of a subscriber, including email address, name, and
     # custom field data if supplied.
-    def update(new_email_address, name, custom_fields, resubscribe, restart_subscription_based_autoresponders=false)
+    def update(new_email_address, name, custom_fields, resubscribe,
+      restart_subscription_based_autoresponders=false)
       options = {
         :query => { :email => @email_address },
         :body => {
@@ -64,7 +73,8 @@ module CreateSend
           :Name => name,
           :CustomFields => custom_fields,
           :Resubscribe => resubscribe,
-          :RestartSubscriptionBasedAutoresponders => restart_subscription_based_autoresponders }.to_json }
+          :RestartSubscriptionBasedAutoresponders =>
+            restart_subscription_based_autoresponders }.to_json }
       CreateSend.put "/subscribers/#{@list_id}.json", options
       # Update @email_address, so this object can continue to be used reliably
       @email_address = new_email_address

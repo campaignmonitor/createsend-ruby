@@ -36,7 +36,8 @@ module CreateSend
     end
 
     # Gets the active subscribers in this segment.
-    def subscribers(date, page=1, page_size=1000, order_field="email", order_direction="asc")
+    def subscribers(date, page=1, page_size=1000, order_field="email",
+      order_direction="asc")
       options = { :query => {
         :date => date,
         :page => page,
@@ -62,7 +63,7 @@ module CreateSend
     def delete
       response = CreateSend.delete "/segments/#{segment_id}.json", {}
     end
-  
+
     private
 
     def get(action, options = {})

@@ -19,7 +19,7 @@ module CreateSend
       Hashie::Mash.new(response)
     end
 
-    # Adds a person to the client. password is optional. if ommitted, an 
+    # Adds a person to the client. password is optional. if ommitted, an
     # email invitation will be sent to the person
     def self.add(client_id, email_address, name, access_level, password)
       options = { :body => {
@@ -30,8 +30,9 @@ module CreateSend
       response = CreateSend.post "/clients/#{client_id}/people.json", options
       Hashie::Mash.new(response)
     end
-  
-    # Updates the person details. password is optional and will only be updated if supplied
+
+    # Updates the person details. password is optional and will only be
+    # updated if supplied
     def update(new_email_address, name, access_level, password)
       options = {
         :query => { :email => @email_address },
@@ -50,7 +51,7 @@ module CreateSend
       options = { :query => { :email => @email_address } }
       CreateSend.delete uri_for(client_id), options
     end
-    
+
     def uri_for(client_id)
          "/clients/#{client_id}/people.json"
     end

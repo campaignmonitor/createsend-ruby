@@ -26,7 +26,7 @@ module CreateSend
       response = CreateSend.post "/admins.json", options
       Hashie::Mash.new(response)
     end
-  
+
     # Updates the administator details
     def update(new_email_address, name)
       options = {
@@ -44,6 +44,6 @@ module CreateSend
     def delete
       options = { :query => { :email => @email_address } }
       CreateSend.delete '/admins.json', options
-    end   
+    end
   end
 end
