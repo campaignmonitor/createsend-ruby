@@ -66,7 +66,7 @@ For example, if you wanted to find out how to call the CreateSend::Subscriber.ad
       email_address.should == "subscriber@example.com"
     end
 
-### Contributing
+## Contributing
 1. Fork the repository
 2. Make your changes, including tests for your changes.
 3. Ensure that the build passes, by running `bundle exec rake` (CI runs on: `1.8.7`, `1.9.2`, `1.9.3`, and `ree`)
