@@ -147,26 +147,35 @@ class ClientTest < Test::Unit::TestCase
       stub_put(@api_key, "clients/#{@client.client_id}/setpaygbilling.json", nil)
       @client.set_payg_billing "CAD", true, true, 150
     end
-    
+
     should "set monthly billing (implicit)" do
       stub_put(@api_key, "clients/#{@client.client_id}/setmonthlybilling.json", nil)
       @client.set_monthly_billing "CAD", true, 150 
       request = FakeWeb.last_request.body
-      assert_equal("{\"Currency\":\"CAD\",\"ClientPays\":true,\"MarkupPercentage\":150,\"MonthlyScheme\":null}", request, "Request wasn't as expected")
+      request.include?("\"Currency\":\"CAD\"").should == true
+      request.include?("\"ClientPays\":true").should == true
+      request.include?("\"MarkupPercentage\":150").should == true
+      request.include?("\"MonthlyScheme\":null").should == true
     end
 
     should "set monthly billing (basic)" do
       stub_put(@api_key, "clients/#{@client.client_id}/setmonthlybilling.json", nil)
       @client.set_monthly_billing "CAD", true, 150, "Basic"
       request = FakeWeb.last_request.body
-      assert_equal("{\"Currency\":\"CAD\",\"ClientPays\":true,\"MarkupPercentage\":150,\"MonthlyScheme\":\"Basic\"}", request, "Request wasn't as expected")
+      request.include?("\"Currency\":\"CAD\"").should == true
+      request.include?("\"ClientPays\":true").should == true
+      request.include?("\"MarkupPercentage\":150").should == true
+      request.include?("\"MonthlyScheme\":\"Basic\"").should == true
     end
        
     should "set monthly billing (unlimited)" do
       stub_put(@api_key, "clients/#{@client.client_id}/setmonthlybilling.json", nil)
       @client.set_monthly_billing "CAD", false, 120, "Unlimited"
       request = FakeWeb.last_request.body
-      assert_equal("{\"Currency\":\"CAD\",\"ClientPays\":false,\"MarkupPercentage\":120,\"MonthlyScheme\":\"Unlimited\"}", request, "Request wasn't as expected")
+      request.include?("\"Currency\":\"CAD\"").should == true
+      request.include?("\"ClientPays\":false").should == true
+      request.include?("\"MarkupPercentage\":120").should == true
+      request.include?("\"MonthlyScheme\":\"Unlimited\"").should == true
     end
      
     should "delete a client" do
