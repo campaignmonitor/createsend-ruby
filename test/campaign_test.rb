@@ -50,6 +50,7 @@ class CampaignTest < Test::Unit::TestCase
       summary.Forwards.should == 11
       summary.Likes.should == 32
       summary.WebVersionURL.should == "http://createsend.com/t/r-3A433FC72FFE3B8B"
+      summary.WorldviewURL.should == "http://client.createsend.com/reports/wv/r/3A433FC72FFE3B8B"
     end
     
     should "get the lists and segments for a campaign" do
@@ -88,6 +89,12 @@ class CampaignTest < Test::Unit::TestCase
       opens.Results.first.ListID.should == "512a3bc577a58fdf689c654329b50fa0"
       opens.Results.first.Date.should == "2010-10-11 08:29:00"
       opens.Results.first.IPAddress.should == "192.168.126.87"
+      opens.Results.first.Latitude.should == -33.8683
+      opens.Results.first.Longitude.should == 151.2086
+      opens.Results.first.City.should == "Sydney"
+      opens.Results.first.Region.should == "New South Wales"
+      opens.Results.first.CountryCode.should == "AU"
+      opens.Results.first.CountryName.should == "Australia"
       opens.ResultsOrderedBy.should == "date"
       opens.OrderDirection.should == "asc"
       opens.PageNumber.should == 1
@@ -107,6 +114,12 @@ class CampaignTest < Test::Unit::TestCase
       clicks.Results.first.ListID.should == "512a3bc577a58fdf689c654329b50fa0"
       clicks.Results.first.Date.should == "2010-10-11 08:29:00"
       clicks.Results.first.IPAddress.should == "192.168.126.87"
+      clicks.Results.first.Latitude.should == -33.8683
+      clicks.Results.first.Longitude.should == 151.2086
+      clicks.Results.first.City.should == "Sydney"
+      clicks.Results.first.Region.should == "New South Wales"
+      clicks.Results.first.CountryCode.should == "AU"
+      clicks.Results.first.CountryName.should == "Australia"
       clicks.ResultsOrderedBy.should == "date"
       clicks.OrderDirection.should == "asc"
       clicks.PageNumber.should == 1
