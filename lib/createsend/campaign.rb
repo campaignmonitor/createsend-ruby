@@ -27,6 +27,25 @@ module CreateSend
       response.parsed_response
     end
 
+    # Creates a new campaign for a client, from a template.
+    def self.create_from_template(client_id, subject, name, from_name,
+      from_email, reply_to, list_ids, segment_ids, template_id,
+      template_content)
+      options = { :body => {
+        :Subject => subject,
+        :Name => name,
+        :FromName => from_name,
+        :FromEmail => from_email,
+        :ReplyTo => reply_to,
+        :ListIDs => list_ids,
+        :SegmentIDs => segment_ids,
+        :TemplateID => template_id,
+        :TemplateContent => template_content }.to_json }
+      response = CreateSend.post(
+        "/campaigns/#{client_id}/fromtemplate.json", options)
+      response.parsed_response
+    end
+
     # Sends a preview of this campaign.
     def send_preview(recipients, personalize="fallback")
       options = { :body => {

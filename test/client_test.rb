@@ -14,7 +14,7 @@ class ClientTest < Test::Unit::TestCase
       client_id = CreateSend::Client.create "Client Company Name", "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia"
       client_id.should == "32a381c49a2df99f1d0c6f3c112352b9"
     end
-    
+
     should "get details of a client" do
       stub_get(@api_key, "clients/#{@client.client_id}.json", "client_details.json")
       cl = @client.details
