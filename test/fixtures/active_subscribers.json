@@ -11,6 +11,14 @@
           "Value": "http://example.com"
         },
         {
+          "Key": "multi select field",
+          "Value": "option one"
+        },
+        {
+          "Key": "multi select field",
+          "Value": "option two"
+        },
+        {
           "Key": "age",
           "Value": "24"
         },

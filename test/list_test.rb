@@ -117,7 +117,13 @@ class ListTest < Test::Unit::TestCase
       res.Results.first.Name.should =="Person One"
       res.Results.first.Date.should == "2010-10-25 10:28:00"
       res.Results.first.State.should == "Active"
-      res.Results.first.CustomFields.size.should == 3
+      res.Results.first.CustomFields.size.should == 5
+      res.Results.first.CustomFields[0].Key.should == "website"
+      res.Results.first.CustomFields[0].Value.should == "http://example.com"
+      res.Results.first.CustomFields[1].Key.should == "multi select field"
+      res.Results.first.CustomFields[1].Value.should == "option one"
+      res.Results.first.CustomFields[2].Key.should == "multi select field"
+      res.Results.first.CustomFields[2].Value.should == "option two"
     end
     
     should "get the unsubscribed subscribers for a list" do
