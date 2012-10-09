@@ -93,6 +93,13 @@ module CreateSend
       Hashie::Mash.new(response)
     end
 
+    # Unsuppresses an email address by removing it from the the client's
+    # suppression list
+    def unsuppress(email)
+      options = { :query => { :email => email }, :body => '' }
+      response = put "unsuppress", options
+    end
+
     # Gets the templates belonging to this client.
     def templates
       response = get 'templates'

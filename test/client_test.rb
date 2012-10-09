@@ -107,6 +107,12 @@ class ClientTest < Test::Unit::TestCase
       res.Results.first.State.should == "Suppressed"
     end
 
+    should "unsuppress an email address" do
+      email = "example@example.com"
+      stub_put(@api_key, "clients/#{@client.client_id}/unsuppress.json?email=#{CGI.escape(email)}", nil)
+      result = @client.unsuppress email
+    end
+
     should "get all people" do
       stub_get(@api_key, "clients/#{@client.client_id}/people.json", "people.json")
       people = @client.people
