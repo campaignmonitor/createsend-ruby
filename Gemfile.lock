@@ -18,7 +18,7 @@ GEM
     httparty (0.8.1)
       multi_json
       multi_xml
-    i18n (0.6.0)
+    i18n (0.6.1)
     jnunemaker-matchy (0.4.0)
     json (1.7.4)
     metaclass (0.0.1)
@@ -27,11 +27,11 @@ GEM
     multi_json (1.0.3)
     multi_xml (0.4.1)
     rake (0.9.2.2)
-    shoulda (3.1.1)
+    shoulda (3.3.0)
       shoulda-context (~> 1.0)
-      shoulda-matchers (~> 1.2)
+      shoulda-matchers (~> 1.4)
     shoulda-context (1.0.0)
-    shoulda-matchers (1.2.0)
+    shoulda-matchers (1.4.0)
       activesupport (>= 3.0.0)
 
 PLATFORMS
@@ -44,4 +44,4 @@ DEPENDENCIES
   jnunemaker-matchy (~> 0.4)
   mocha (~> 0.9)
   rake
-  shoulda (~> 3.1.1)
+  shoulda (~> 3.3.0)
