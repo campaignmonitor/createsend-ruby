@@ -22,7 +22,6 @@ class CampaignTest < Test::Unit::TestCase
         :Singlelines => [
           {
             :Content => "This is a heading",
-            :Alt => "This is alt text",
             :Href => "http://example.com/"
           }
         ],
