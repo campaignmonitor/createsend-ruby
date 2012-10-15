@@ -124,6 +124,7 @@ class ListTest < Test::Unit::TestCase
       res.Results.first.CustomFields[1].Value.should == "option one"
       res.Results.first.CustomFields[2].Key.should == "multi select field"
       res.Results.first.CustomFields[2].Value.should == "option two"
+      res.Results.first.ReadsEmailWith.should == "Gmail"
     end
     
     should "get the unsubscribed subscribers for a list" do
@@ -144,6 +145,7 @@ class ListTest < Test::Unit::TestCase
       res.Results.first.Date.should == "2010-10-25 13:11:00"
       res.Results.first.State.should == "Unsubscribed"
       res.Results.first.CustomFields.size.should == 0
+      res.Results.first.ReadsEmailWith.should == "Gmail"
     end
 
     should "get the deleted subscribers for a list" do
@@ -164,6 +166,7 @@ class ListTest < Test::Unit::TestCase
       res.Results.first.Date.should == "2010-10-25 13:11:00"
       res.Results.first.State.should == "Deleted"
       res.Results.first.CustomFields.size.should == 0
+      res.Results.first.ReadsEmailWith.should == "Gmail"
     end
 
     should "get the bounced subscribers for a list" do
@@ -184,6 +187,7 @@ class ListTest < Test::Unit::TestCase
       res.Results.first.Date.should == "2010-10-25 13:11:00"
       res.Results.first.State.should == "Bounced"
       res.Results.first.CustomFields.size.should == 0
+      res.Results.first.ReadsEmailWith.should == ""
     end
 
     should "get the webhooks for a list" do

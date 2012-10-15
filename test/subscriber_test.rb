@@ -20,6 +20,7 @@ class SubscriberTest < Test::Unit::TestCase
       subscriber.CustomFields.size.should == 3
       subscriber.CustomFields.first.Key.should == 'website'
       subscriber.CustomFields.first.Value.should == 'http://example.com'
+      subscriber.ReadsEmailWith.should == "Gmail"
     end
 
     should "add a subscriber without custom fields" do
