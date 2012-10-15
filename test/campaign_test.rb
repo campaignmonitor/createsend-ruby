@@ -133,7 +133,17 @@ class CampaignTest < Test::Unit::TestCase
       summary.WebVersionURL.should == "http://createsend.com/t/r-3A433FC72FFE3B8B"
       summary.WorldviewURL.should == "http://client.createsend.com/reports/wv/r/3A433FC72FFE3B8B"
     end
-    
+
+    should "get the email client usage for a campaign" do
+      stub_get(@api_key, "campaigns/#{@campaign.campaign_id}/emailclientusage.json", "email_client_usage.json")
+      ecu = @campaign.email_client_usage
+      ecu.size.should == 6
+      ecu.first.Client.should == "iOS Devices"
+      ecu.first.Version.should == "iPhone"
+      ecu.first.Percentage.should == 19.83
+      ecu.first.Subscribers.should == 7056
+    end
+
     should "get the lists and segments for a campaign" do
       stub_get(@api_key, "campaigns/#{@campaign.campaign_id}/listsandsegments.json", "campaign_listsandsegments.json")
       ls = @campaign.lists_and_segments

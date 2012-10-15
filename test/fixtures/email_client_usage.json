@@ -1,0 +1,38 @@
+[
+    {
+        "Client": "iOS Devices",
+        "Version": "iPhone",
+        "Percentage": 19.83,
+        "Subscribers": 7056
+    },
+    {
+        "Client": "Apple Mail",
+        "Version": "Apple Mail 6",
+        "Percentage": 13.02,
+        "Subscribers": 4633
+    },
+    {
+        "Client": "Apple Mail",
+        "Version": "Apple Mail 5",
+        "Percentage": 10.60,
+        "Subscribers": 3773
+    },
+    {
+        "Client": "Microsoft Outlook",
+        "Version": "Outlook 2010",
+        "Percentage": 7.18,
+        "Subscribers": 2556
+    },
+    {
+        "Client": "iOS Devices",
+        "Version": "iPad",
+        "Percentage": 4.43,
+        "Subscribers": 1577
+    },
+    {
+        "Client": "Undetectable",
+        "Version": "Undetectable",
+        "Percentage": 4.94,
+        "Subscribers": 1632
+    }
+]

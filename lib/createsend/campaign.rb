@@ -80,6 +80,12 @@ module CreateSend
       Hashie::Mash.new(response)
     end
 
+    # Gets the email clients that subscribers used to open the campaign
+    def email_client_usage
+      response = get "emailclientusage", {}
+      response.map{|item| Hashie::Mash.new(item)}
+    end
+
     # Retrieves the lists and segments to which this campaaign will
     # be (or was) sent.
     def lists_and_segments
