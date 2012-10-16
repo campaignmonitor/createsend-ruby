@@ -104,6 +104,19 @@ module CreateSend
       Hashie::Mash.new(response)
     end
 
+    # Gets the unconfirmed subscribers for this list.
+    def unconfirmed(date, page=1, page_size=1000, order_field="email",
+      order_direction="asc")
+      options = { :query => {
+        :date => date,
+        :page => page,
+        :pagesize => page_size,
+        :orderfield => order_field,
+        :orderdirection => order_direction } }
+      response = get "unconfirmed", options
+      Hashie::Mash.new(response)
+    end
+
     # Gets the bounced subscribers for this list.
     def bounced(date, page=1, page_size=1000, order_field="email",
       order_direction="asc")

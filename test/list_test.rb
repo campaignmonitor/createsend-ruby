@@ -126,7 +126,25 @@ class ListTest < Test::Unit::TestCase
       res.Results.first.CustomFields[2].Value.should == "option two"
       res.Results.first.ReadsEmailWith.should == "Gmail"
     end
-    
+
+    should "get the unconfirmed subscribers for a list" do
+      min_date = "2010-01-01"
+      stub_get(@api_key, "lists/#{@list.list_id}/unconfirmed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}",
+        "unconfirmed_subscribers.json")
+      res = @list.unconfirmed min_date
+      res.ResultsOrderedBy.should == "email"
+      res.OrderDirection.should == "asc"
+      res.PageNumber.should == 1
+      res.PageSize.should == 1000
+      res.RecordsOnThisPage.should == 2
+      res.TotalNumberOfRecords.should == 2
+      res.NumberOfPages.should == 1
+      res.Results.size.should == 2
+      res.Results.first.EmailAddress.should == "subs+7t8787Y@example.com"
+      res.Results.first.Name.should =="Unconfirmed One"
+      res.Results.first.State.should == "Unconfirmed"
+    end
+
     should "get the unsubscribed subscribers for a list" do
       min_date = "2010-01-01"
       stub_get(@api_key, "lists/#{@list.list_id}/unsubscribed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}", 

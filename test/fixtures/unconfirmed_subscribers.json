@@ -1,0 +1,37 @@
+{
+    "Results": [
+        {
+            "EmailAddress": "subs+7t8787Y@example.com",
+            "Name": "Unconfirmed One",
+            "Date": "2010-10-25 10:28:00",
+            "State": "Unconfirmed",
+            "CustomFields": [
+                {
+                    "Key": "website",
+                    "Value": "http://example.com"
+                }
+            ],
+            "ReadsEmailWith": ""
+        },
+        {
+            "EmailAddress": "subs+7878787y8ggg@example.com",
+            "Name": "Unconfirmed Two",
+            "Date": "2010-10-25 12:17:00",
+            "State": "Unconfirmed",
+            "CustomFields": [
+                {
+                    "Key": "website",
+                    "Value": "http://subdomain.example.com"
+                }
+            ],
+            "ReadsEmailWith": ""
+        }
+    ],
+    "ResultsOrderedBy": "email",
+    "OrderDirection": "asc",
+    "PageNumber": 1,
+    "PageSize": 1000,
+    "RecordsOnThisPage": 2,
+    "TotalNumberOfRecords": 2,
+    "NumberOfPages": 1
+}
