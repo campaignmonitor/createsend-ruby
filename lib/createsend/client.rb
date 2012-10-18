@@ -93,6 +93,14 @@ module CreateSend
       Hashie::Mash.new(response)
     end
 
+    # Adds email addresses to a client's suppression list
+    def suppress(emails)
+      options = { :body => {
+        :EmailAddresses => emails.kind_of?(String) ?
+          [ emails ] : emails }.to_json }
+      response = post "suppress", options
+    end
+
     # Unsuppresses an email address by removing it from the the client's
     # suppression list
     def unsuppress(email)
