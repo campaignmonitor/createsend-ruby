@@ -247,18 +247,18 @@ class CampaignTest < Test::Unit::TestCase
     should "get the spam complaints for a campaign" do
       min_date = "2010-01-01"
       stub_get(@api_key, "campaigns/#{@campaign.campaign_id}/spam.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_spam.json")
-      unsubscribes = @campaign.spam min_date
-      unsubscribes.Results.size.should == 1
-      unsubscribes.Results.first.EmailAddress.should == "subs+6576576576@example.com"
-      unsubscribes.Results.first.ListID.should == "512a3bc577a58fdf689c654329b50fa0"
-      unsubscribes.Results.first.Date.should == "2010-10-11 08:29:00"
-      unsubscribes.ResultsOrderedBy.should == "date"
-      unsubscribes.OrderDirection.should == "asc"
-      unsubscribes.PageNumber.should == 1
-      unsubscribes.PageSize.should == 1000
-      unsubscribes.RecordsOnThisPage.should == 1
-      unsubscribes.TotalNumberOfRecords.should == 1
-      unsubscribes.NumberOfPages.should == 1
+      spam = @campaign.spam min_date
+      spam.Results.size.should == 1
+      spam.Results.first.EmailAddress.should == "subs+6576576576@example.com"
+      spam.Results.first.ListID.should == "512a3bc577a58fdf689c654329b50fa0"
+      spam.Results.first.Date.should == "2010-10-11 08:29:00"
+      spam.ResultsOrderedBy.should == "date"
+      spam.OrderDirection.should == "asc"
+      spam.PageNumber.should == 1
+      spam.PageSize.should == 1000
+      spam.RecordsOnThisPage.should == 1
+      spam.TotalNumberOfRecords.should == 1
+      spam.NumberOfPages.should == 1
     end
 
     should "get the bounces for a campaign" do
