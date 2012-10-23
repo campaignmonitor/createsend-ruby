@@ -144,6 +144,19 @@ module CreateSend
       Hashie::Mash.new(response)
     end
 
+    # Retrieves the spam complaints for this campaign.
+    def spam(date, page=1, page_size=1000, order_field="date",
+      order_direction="asc")
+      options = { :query => {
+        :date => date,
+        :page => page,
+        :pagesize => page_size,
+        :orderfield => order_field,
+        :orderdirection => order_direction } }
+      response = get "spam", options
+      Hashie::Mash.new(response)
+    end
+
     # Retrieves the bounces for this campaign.
     def bounces(date="1900-01-01", page=1, page_size=1000, order_field="date",
       order_direction="asc")
