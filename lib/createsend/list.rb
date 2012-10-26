@@ -41,12 +41,37 @@ module CreateSend
     end
 
     # Creates a new custom field for this list.
-    def create_custom_field(field_name, data_type, options=[])
+    # field_name - String representing the name to be given to the field
+    # data_type - String repreesnting the data type of the field. Valid data
+    #   types are 'Text', 'Number', 'MultiSelectOne', 'MultiSelectMany',
+    #   'Date', 'Country', and 'USState'.
+    # options - Array of Strings representing the options for the field if it
+    #   is of type 'MultiSelectOne' or 'MultiSelectMany'.
+    # visible_in_preference_center - Boolean indicating whether or not the
+    #    field should be visible in the subscriber preference center
+    def create_custom_field(field_name, data_type, options=[],
+      visible_in_preference_center=true)
       options = { :body => {
         :FieldName => field_name,
         :DataType => data_type,
-        :Options => options }.to_json }
+        :Options => options,
+        :VisibleInPreferenceCenter => visible_in_preference_center }.to_json }
       response = post "customfields", options
+      response.parsed_response
+    end
+
+    # Updates a custom field belonging to this list.
+    # custom_field_key - String which represents the key for the custom field
+    # field_name - String representing the name to be given to the field
+    # visible_in_preference_center - Boolean indicating whether or not the
+    #    field should be visible in the subscriber preference center
+    def update_custom_field(custom_field_key, field_name,
+      visible_in_preference_center)
+      custom_field_key = CGI.escape(custom_field_key)
+      options = { :body => {
+        :FieldName => field_name,
+        :VisibleInPreferenceCenter => visible_in_preference_center }.to_json }
+      response = put "customfields/#{custom_field_key}", options
       response.parsed_response
     end
 

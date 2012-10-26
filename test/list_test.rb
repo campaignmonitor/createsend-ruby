@@ -45,7 +45,35 @@ class ListTest < Test::Unit::TestCase
     should "create a custom field" do
       stub_post(@api_key, "lists/#{@list.list_id}/customfields.json", "create_custom_field.json")
       personalisation_tag = @list.create_custom_field "new date field", "Date"
+      request = FakeWeb.last_request.body
+      request.include?("\"FieldName\":\"new date field\"").should == true
+      request.include?("\"DataType\":\"Date\"").should == true
+      request.include?("\"Options\":[]").should == true
+      request.include?("\"VisibleInPreferenceCenter\":true").should == true
       personalisation_tag.should == "[newdatefield]"
+    end
+
+    should "create a custom field with options and visible_in_preference_center" do
+      stub_post(@api_key, "lists/#{@list.list_id}/customfields.json", "create_custom_field.json")
+      options = ["one", "two"]
+      personalisation_tag = @list.create_custom_field("newsletter format",
+        "MultiSelectOne", options, false)
+      request = FakeWeb.last_request.body
+      request.include?("\"FieldName\":\"newsletter format\"").should == true
+      request.include?("\"DataType\":\"MultiSelectOne\"").should == true
+      request.include?("\"Options\":[\"one\",\"two\"]").should == true
+      request.include?("\"VisibleInPreferenceCenter\":false").should == true
+      personalisation_tag.should == "[newdatefield]"
+    end
+
+    should "update a custom field" do
+      key = "[mycustomfield]"
+      stub_put(@api_key, "lists/#{@list.list_id}/customfields/#{CGI.escape(key)}.json", "update_custom_field.json")
+      personalisation_tag = @list.update_custom_field key, "my renamed custom field", true
+      request = FakeWeb.last_request.body
+      request.include?("\"FieldName\":\"my renamed custom field\"").should == true
+      request.include?("\"VisibleInPreferenceCenter\":true").should == true
+      personalisation_tag.should == "[myrenamedcustomfield]"
     end
 
     should "delete a custom field" do
@@ -80,6 +108,7 @@ class ListTest < Test::Unit::TestCase
       cfs.first.Key.should == "[website]"
       cfs.first.DataType.should == "Text"
       cfs.first.FieldOptions.should == []
+      cfs.first.VisibleInPreferenceCenter.should == true
     end
 
     should "get the segments for a list" do
