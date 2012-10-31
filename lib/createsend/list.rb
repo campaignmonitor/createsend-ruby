@@ -42,7 +42,7 @@ module CreateSend
 
     # Creates a new custom field for this list.
     # field_name - String representing the name to be given to the field
-    # data_type - String repreesnting the data type of the field. Valid data
+    # data_type - String representing the data type of the field. Valid data
     #   types are 'Text', 'Number', 'MultiSelectOne', 'MultiSelectMany',
     #   'Date', 'Country', and 'USState'.
     # options - Array of Strings representing the options for the field if it

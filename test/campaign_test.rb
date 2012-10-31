@@ -14,6 +14,19 @@ class CampaignTest < Test::Unit::TestCase
       campaign_id = CreateSend::Campaign.create client_id, "subject", "name", "g'day", "good.day@example.com", "good.day@example.com", 
       "http://example.com/campaign.html", "http://example.com/campaign.txt", [ '7y12989e82ue98u2e', 'dh9w89q8w98wudwd989' ],
       [ 'y78q9w8d9w8ud9q8uw', 'djw98quw9duqw98uwd98' ]
+      request = FakeWeb.last_request.body
+      request.include?("\"TextUrl\":\"http://example.com/campaign.txt\"").should == true
+      campaign_id.should == "787y87y87y87y87y87y87"
+    end
+
+    should "create a campaign with a nil text_url param" do
+      client_id = '87y8d7qyw8d7yq8w7ydwqwd'
+      stub_post(@api_key, "campaigns/#{client_id}.json", "create_campaign.json")
+      campaign_id = CreateSend::Campaign.create client_id, "subject", "name", "g'day", "good.day@example.com", "good.day@example.com", 
+      "http://example.com/campaign.html", nil, [ '7y12989e82ue98u2e', 'dh9w89q8w98wudwd989' ],
+      [ 'y78q9w8d9w8ud9q8uw', 'djw98quw9duqw98uwd98' ]
+      request = FakeWeb.last_request.body
+      request.include?("\"TextUrl\":null").should == true
       campaign_id.should == "787y87y87y87y87y87y87"
     end
 

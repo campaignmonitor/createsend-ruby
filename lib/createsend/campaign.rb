@@ -11,6 +11,21 @@ module CreateSend
     end
 
     # Creates a new campaign for a client.
+    # client_id - String representing the ID of the client for whom the
+    #   campaign will be created.
+    # subject - String representing the subject of the campaign.
+    # name - String representing the name of the campaign.
+    # from_name - String representing the from name for the campaign.
+    # from_email - String representing the from address for the campaign.
+    # reply_to - String representing the reply-to address for the campaign.
+    # html_url - String representing the URL for the campaign HTML content.
+    # text_url - String representing the URL for the campaign text content.
+    #  Note that text_url is optional and if nil or an empty string, text
+    #  content will be automatically generated from the HTML content.
+    # list_ids - Array of Strings representing the IDs of the lists to
+    #   which the campaign will be sent.
+    # segment_ids - Array of Strings representing the IDs of the segments to
+    #   which the campaign will be sent.
     def self.create(client_id, subject, name, from_name, from_email,
       reply_to, html_url, text_url, list_ids, segment_ids)
       options = { :body => {
@@ -28,6 +43,23 @@ module CreateSend
     end
 
     # Creates a new campaign for a client, from a template.
+    # client_id - String representing the ID of the client for whom the
+    #   campaign will be created.
+    # subject - String representing the subject of the campaign.
+    # name - String representing the name of the campaign.
+    # from_name - String representing the from name for the campaign.
+    # from_email - String representing the from address for the campaign.
+    # reply_to - String representing the reply-to address for the campaign.
+    # list_ids - Array of Strings representing the IDs of the lists to
+    #   which the campaign will be sent.
+    # segment_ids - Array of Strings representing the IDs of the segments to
+    #   which the campaign will be sent.
+    # template_id - String representing the ID of the template on which
+    #   the campaign will be based.
+    # template_content - Hash representing the content to be used for the
+    #   editable areas of the template. See documentation at
+    #   campaignmonitor.com/api/campaigns/#creating_a_campaign_from_template
+    #   for full details of template content format.
     def self.create_from_template(client_id, subject, name, from_name,
       from_email, reply_to, list_ids, segment_ids, template_id,
       template_content)
