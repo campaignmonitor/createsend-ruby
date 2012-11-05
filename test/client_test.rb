@@ -107,6 +107,17 @@ class ClientTest < Test::Unit::TestCase
       res.Results.first.State.should == "Suppressed"
     end
 
+    should "suppress a single email address" do
+      email = "example@example.com"
+      stub_post(@api_key, "clients/#{@client.client_id}/suppress.json", nil)
+      result = @client.suppress email
+    end
+
+    should "suppress multiple email address" do
+      stub_post(@api_key, "clients/#{@client.client_id}/suppress.json", nil)
+      result = @client.suppress [ "one@example.com", "two@example.com" ]
+    end
+
     should "unsuppress an email address" do
       email = "example@example.com"
       stub_put(@api_key, "clients/#{@client.client_id}/unsuppress.json?email=#{CGI.escape(email)}", nil)

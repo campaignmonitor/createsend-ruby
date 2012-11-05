@@ -14,6 +14,19 @@ class CampaignTest < Test::Unit::TestCase
       campaign_id = CreateSend::Campaign.create client_id, "subject", "name", "g'day", "good.day@example.com", "good.day@example.com", 
       "http://example.com/campaign.html", "http://example.com/campaign.txt", [ '7y12989e82ue98u2e', 'dh9w89q8w98wudwd989' ],
       [ 'y78q9w8d9w8ud9q8uw', 'djw98quw9duqw98uwd98' ]
+      request = FakeWeb.last_request.body
+      request.include?("\"TextUrl\":\"http://example.com/campaign.txt\"").should == true
+      campaign_id.should == "787y87y87y87y87y87y87"
+    end
+
+    should "create a campaign with a nil text_url param" do
+      client_id = '87y8d7qyw8d7yq8w7ydwqwd'
+      stub_post(@api_key, "campaigns/#{client_id}.json", "create_campaign.json")
+      campaign_id = CreateSend::Campaign.create client_id, "subject", "name", "g'day", "good.day@example.com", "good.day@example.com", 
+      "http://example.com/campaign.html", nil, [ '7y12989e82ue98u2e', 'dh9w89q8w98wudwd989' ],
+      [ 'y78q9w8d9w8ud9q8uw', 'djw98quw9duqw98uwd98' ]
+      request = FakeWeb.last_request.body
+      request.include?("\"TextUrl\":null").should == true
       campaign_id.should == "787y87y87y87y87y87y87"
     end
 
@@ -98,7 +111,12 @@ class CampaignTest < Test::Unit::TestCase
       campaign_id.should == "787y87y87y87y87y87y87"
     end
 
-    should "send a preview of a draft campaign" do
+    should "send a preview of a draft campaign to a single recipient" do
+      stub_post(@api_key, "campaigns/#{@campaign.campaign_id}/sendpreview.json", nil)
+      @campaign.send_preview "test+89898u9@example.com", "random"
+    end
+
+    should "send a preview of a draft campaign to multiple recipients" do
       stub_post(@api_key, "campaigns/#{@campaign.campaign_id}/sendpreview.json", nil)
       @campaign.send_preview [ "test+89898u9@example.com", "test+787y8y7y8@example.com" ], "random"
     end
@@ -132,8 +150,19 @@ class CampaignTest < Test::Unit::TestCase
       summary.Likes.should == 32
       summary.WebVersionURL.should == "http://createsend.com/t/r-3A433FC72FFE3B8B"
       summary.WorldviewURL.should == "http://client.createsend.com/reports/wv/r/3A433FC72FFE3B8B"
+      summary.SpamComplaints.should == 23
     end
-    
+
+    should "get the email client usage for a campaign" do
+      stub_get(@api_key, "campaigns/#{@campaign.campaign_id}/emailclientusage.json", "email_client_usage.json")
+      ecu = @campaign.email_client_usage
+      ecu.size.should == 6
+      ecu.first.Client.should == "iOS Devices"
+      ecu.first.Version.should == "iPhone"
+      ecu.first.Percentage.should == 19.83
+      ecu.first.Subscribers.should == 7056
+    end
+
     should "get the lists and segments for a campaign" do
       stub_get(@api_key, "campaigns/#{@campaign.campaign_id}/listsandsegments.json", "campaign_listsandsegments.json")
       ls = @campaign.lists_and_segments
@@ -226,6 +255,23 @@ class CampaignTest < Test::Unit::TestCase
       unsubscribes.RecordsOnThisPage.should == 1
       unsubscribes.TotalNumberOfRecords.should == 1
       unsubscribes.NumberOfPages.should == 1
+    end
+
+    should "get the spam complaints for a campaign" do
+      min_date = "2010-01-01"
+      stub_get(@api_key, "campaigns/#{@campaign.campaign_id}/spam.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_spam.json")
+      spam = @campaign.spam min_date
+      spam.Results.size.should == 1
+      spam.Results.first.EmailAddress.should == "subs+6576576576@example.com"
+      spam.Results.first.ListID.should == "512a3bc577a58fdf689c654329b50fa0"
+      spam.Results.first.Date.should == "2010-10-11 08:29:00"
+      spam.ResultsOrderedBy.should == "date"
+      spam.OrderDirection.should == "asc"
+      spam.PageNumber.should == 1
+      spam.PageSize.should == 1000
+      spam.RecordsOnThisPage.should == 1
+      spam.TotalNumberOfRecords.should == 1
+      spam.NumberOfPages.should == 1
     end
 
     should "get the bounces for a campaign" do

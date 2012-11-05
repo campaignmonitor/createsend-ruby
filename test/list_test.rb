@@ -45,7 +45,35 @@ class ListTest < Test::Unit::TestCase
     should "create a custom field" do
       stub_post(@api_key, "lists/#{@list.list_id}/customfields.json", "create_custom_field.json")
       personalisation_tag = @list.create_custom_field "new date field", "Date"
+      request = FakeWeb.last_request.body
+      request.include?("\"FieldName\":\"new date field\"").should == true
+      request.include?("\"DataType\":\"Date\"").should == true
+      request.include?("\"Options\":[]").should == true
+      request.include?("\"VisibleInPreferenceCenter\":true").should == true
       personalisation_tag.should == "[newdatefield]"
+    end
+
+    should "create a custom field with options and visible_in_preference_center" do
+      stub_post(@api_key, "lists/#{@list.list_id}/customfields.json", "create_custom_field.json")
+      options = ["one", "two"]
+      personalisation_tag = @list.create_custom_field("newsletter format",
+        "MultiSelectOne", options, false)
+      request = FakeWeb.last_request.body
+      request.include?("\"FieldName\":\"newsletter format\"").should == true
+      request.include?("\"DataType\":\"MultiSelectOne\"").should == true
+      request.include?("\"Options\":[\"one\",\"two\"]").should == true
+      request.include?("\"VisibleInPreferenceCenter\":false").should == true
+      personalisation_tag.should == "[newdatefield]"
+    end
+
+    should "update a custom field" do
+      key = "[mycustomfield]"
+      stub_put(@api_key, "lists/#{@list.list_id}/customfields/#{CGI.escape(key)}.json", "update_custom_field.json")
+      personalisation_tag = @list.update_custom_field key, "my renamed custom field", true
+      request = FakeWeb.last_request.body
+      request.include?("\"FieldName\":\"my renamed custom field\"").should == true
+      request.include?("\"VisibleInPreferenceCenter\":true").should == true
+      personalisation_tag.should == "[myrenamedcustomfield]"
     end
 
     should "delete a custom field" do
@@ -80,6 +108,7 @@ class ListTest < Test::Unit::TestCase
       cfs.first.Key.should == "[website]"
       cfs.first.DataType.should == "Text"
       cfs.first.FieldOptions.should == []
+      cfs.first.VisibleInPreferenceCenter.should == true
     end
 
     should "get the segments for a list" do
@@ -124,8 +153,27 @@ class ListTest < Test::Unit::TestCase
       res.Results.first.CustomFields[1].Value.should == "option one"
       res.Results.first.CustomFields[2].Key.should == "multi select field"
       res.Results.first.CustomFields[2].Value.should == "option two"
+      res.Results.first.ReadsEmailWith.should == "Gmail"
     end
-    
+
+    should "get the unconfirmed subscribers for a list" do
+      min_date = "2010-01-01"
+      stub_get(@api_key, "lists/#{@list.list_id}/unconfirmed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}",
+        "unconfirmed_subscribers.json")
+      res = @list.unconfirmed min_date
+      res.ResultsOrderedBy.should == "email"
+      res.OrderDirection.should == "asc"
+      res.PageNumber.should == 1
+      res.PageSize.should == 1000
+      res.RecordsOnThisPage.should == 2
+      res.TotalNumberOfRecords.should == 2
+      res.NumberOfPages.should == 1
+      res.Results.size.should == 2
+      res.Results.first.EmailAddress.should == "subs+7t8787Y@example.com"
+      res.Results.first.Name.should =="Unconfirmed One"
+      res.Results.first.State.should == "Unconfirmed"
+    end
+
     should "get the unsubscribed subscribers for a list" do
       min_date = "2010-01-01"
       stub_get(@api_key, "lists/#{@list.list_id}/unsubscribed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}", 
@@ -144,6 +192,7 @@ class ListTest < Test::Unit::TestCase
       res.Results.first.Date.should == "2010-10-25 13:11:00"
       res.Results.first.State.should == "Unsubscribed"
       res.Results.first.CustomFields.size.should == 0
+      res.Results.first.ReadsEmailWith.should == "Gmail"
     end
 
     should "get the deleted subscribers for a list" do
@@ -164,6 +213,7 @@ class ListTest < Test::Unit::TestCase
       res.Results.first.Date.should == "2010-10-25 13:11:00"
       res.Results.first.State.should == "Deleted"
       res.Results.first.CustomFields.size.should == 0
+      res.Results.first.ReadsEmailWith.should == "Gmail"
     end
 
     should "get the bounced subscribers for a list" do
@@ -184,6 +234,7 @@ class ListTest < Test::Unit::TestCase
       res.Results.first.Date.should == "2010-10-25 13:11:00"
       res.Results.first.State.should == "Bounced"
       res.Results.first.CustomFields.size.should == 0
+      res.Results.first.ReadsEmailWith.should == ""
     end
 
     should "get the webhooks for a list" do
