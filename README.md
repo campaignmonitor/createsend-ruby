@@ -8,10 +8,14 @@ A ruby library which implements the complete functionality of v3 of the [Campaig
 
     gem install createsend
 
+## Documentation
+
+Full documentation is hosted by [RubyDoc.info](http://rubydoc.info/gems/createsend/frames).
+
 ## Examples
 
 ### Basic usage
-Retrieve a list of all your clients.
+This example of listing all your clients demonstrates basic usage of the library:
 
     require 'createsend'
 
@@ -24,13 +28,13 @@ Retrieve a list of all your clients.
       puts "#{c.ClientID}: #{c.Name}"
     end
 
-Results in:
-    
+Running this example will result in something like:
+
     4a397ccaaa55eb4e6aa1221e1e2d7122: Client One
     a206def0582eec7dae47d937a4109cb2: Client Two
 
 ### Handling errors
-If the createsend API returns an error, an exception will be thrown. For example, if you attempt to create a campaign and enter empty values for subject etc:
+If the Campaign Monitor API returns an error, an exception will be thrown. For example, if you attempt to create a campaign and enter empty values for subject etc:
 
     require 'createsend'
 
