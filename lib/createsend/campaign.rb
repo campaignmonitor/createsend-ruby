@@ -138,7 +138,7 @@ module CreateSend
     end
 
     # Retrieves the opens for this campaign.
-    def opens(date, page=1, page_size=1000, order_field="date",
+    def opens(date="", page=1, page_size=1000, order_field="date",
       order_direction="asc")
       options = { :query => {
         :date => date,
@@ -151,7 +151,7 @@ module CreateSend
     end
 
     # Retrieves the subscriber clicks for this campaign.
-    def clicks(date, page=1, page_size=1000, order_field="date",
+    def clicks(date="", page=1, page_size=1000, order_field="date",
       order_direction="asc")
       options = { :query => {
         :date => date,
@@ -164,7 +164,7 @@ module CreateSend
     end
 
     # Retrieves the unsubscribes for this campaign.
-    def unsubscribes(date, page=1, page_size=1000, order_field="date",
+    def unsubscribes(date="", page=1, page_size=1000, order_field="date",
       order_direction="asc")
       options = { :query => {
         :date => date,
@@ -177,7 +177,7 @@ module CreateSend
     end
 
     # Retrieves the spam complaints for this campaign.
-    def spam(date, page=1, page_size=1000, order_field="date",
+    def spam(date="", page=1, page_size=1000, order_field="date",
       order_direction="asc")
       options = { :query => {
         :date => date,
@@ -190,7 +190,7 @@ module CreateSend
     end
 
     # Retrieves the bounces for this campaign.
-    def bounces(date="1900-01-01", page=1, page_size=1000, order_field="date",
+    def bounces(date="", page=1, page_size=1000, order_field="date",
       order_direction="asc")
       options = { :query => {
         :date => date,
