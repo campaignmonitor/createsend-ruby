@@ -24,6 +24,7 @@ class ClientTest < Test::Unit::TestCase
       cl.AccessDetails.Username.should == "clientone"
       cl.AccessDetails.AccessLevel.should == 23
       cl.BillingDetails.MonthlyScheme.should == "Basic"
+      cl.BillingDetails.Credits.should == 500
     end
 
     should "get all campaigns" do

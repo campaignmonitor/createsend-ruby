@@ -102,6 +102,12 @@ module CreateSend
       response.map{|item| Hashie::Mash.new(item)}
     end
 
+    # Get your billing details.
+    def billing_details
+      response = CreateSend.get('/billingdetails.json')
+      Hashie::Mash.new(response)
+    end
+
     # Gets valid countries.
     def countries
       response = CreateSend.get('/countries.json')

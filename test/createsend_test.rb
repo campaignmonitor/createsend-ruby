@@ -34,7 +34,13 @@ class CreateSendTest < Test::Unit::TestCase
       clients.first.ClientID.should == '4a397ccaaa55eb4e6aa1221e1e2d7122'
       clients.first.Name.should == 'Client One'
     end
-    
+
+    should "get billing details" do
+      stub_get(@api_key, "billingdetails.json", "billingdetails.json")
+      bd = @cs.billing_details
+      bd.Credits.should == 3021
+    end
+
     should "get all countries" do
       stub_get(@api_key, "countries.json", "countries.json")
       countries = @cs.countries
