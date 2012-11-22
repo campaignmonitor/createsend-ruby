@@ -150,6 +150,33 @@ module CreateSend
       put 'setmonthlybilling', options
     end
 
+    # Transfer credits to or from this client.
+    #
+    # credits - An Integer representing the number of credits to transfer.
+    #   This value may be either positive if you want to allocate credits from
+    #   your account to the client, or negative if you want to deduct credits
+    #   from the client back into your account.
+    # can_use_my_credits_when_they_run_out - A Boolean value representing
+    #   which, if set to true, will allow the client to continue sending using
+    #   your credits or payment details once they run out of credits, and if
+    #   set to false, will prevent the client from using your credits to
+    #   continue sending until you allocate more credits to them.
+    #
+    # Returns an object of the following form representing the result:
+    # {
+    #   AccountCredits # Integer representing credits in your account now
+    #   ClientCredits # Integer representing credits in this client's
+    #     account now
+    # }
+    def transfer_credits(credits, can_use_my_credits_when_they_run_out)
+      options = { :body => {
+        :Credits => credits,
+        :CanUseMyCreditsWhenTheyRunOut => can_use_my_credits_when_they_run_out
+      }.to_json }
+      response = post 'credits', options
+      Hashie::Mash.new(response)
+    end
+
     # Deletes this client.
     def delete
       CreateSend.delete "/clients/#{client_id}.json", {}

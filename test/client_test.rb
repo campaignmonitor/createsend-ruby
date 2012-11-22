@@ -195,7 +195,14 @@ class ClientTest < Test::Unit::TestCase
       request.include?("\"MarkupPercentage\":120").should == true
       request.include?("\"MonthlyScheme\":\"Unlimited\"").should == true
     end
-     
+
+    should "transfer credits to a client" do
+      stub_post(@api_key, "clients/#{@client.client_id}/credits.json", "transfer_credits.json")
+      result = @client.transfer_credits 200, false
+      result.AccountCredits.should == 800
+      result.ClientCredits.should == 200
+    end
+
     should "delete a client" do
       stub_delete(@api_key, "clients/#{@client.client_id}.json", nil)
       @client.delete
