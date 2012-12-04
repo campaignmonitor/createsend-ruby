@@ -33,6 +33,7 @@ class ClientTest < Test::Unit::TestCase
       campaigns.size.should == 2
       campaigns.first.CampaignID.should == 'fc0ce7105baeaf97f47c99be31d02a91'
       campaigns.first.WebVersionURL.should == 'http://createsend.com/t/r-765E86829575EE2C'
+      campaigns.first.WebVersionTextURL.should == 'http://createsend.com/t/r-765E86829575EE2C/t'
       campaigns.first.Subject.should == 'Campaign One'
       campaigns.first.Name.should == 'Campaign One'
       campaigns.first.SentDate.should == '2010-10-12 12:58:00'
@@ -50,6 +51,7 @@ class ClientTest < Test::Unit::TestCase
       campaigns.first.Subject.should == "Magic Issue One"
       campaigns.first.DateCreated.should == "2011-05-24 10:37:00"
       campaigns.first.PreviewURL.should == "http://createsend.com/t/r-DD543521A87C9B8B"
+      campaigns.first.PreviewTextURL.should == "http://createsend.com/t/r-DD543521A87C9B8B/t"
     end
 
     should "get all drafts" do
@@ -61,6 +63,7 @@ class ClientTest < Test::Unit::TestCase
       drafts.first.Subject.should == 'Draft One'
       drafts.first.DateCreated.should == '2010-08-19 16:08:00'
       drafts.first.PreviewURL.should == 'http://createsend.com/t/r-E97A7BB2E6983DA1'
+      drafts.first.PreviewTextURL.should == 'http://createsend.com/t/r-E97A7BB2E6983DA1/t'
     end
 
     should "get all lists" do

@@ -149,6 +149,7 @@ class CampaignTest < Test::Unit::TestCase
       summary.Forwards.should == 11
       summary.Likes.should == 32
       summary.WebVersionURL.should == "http://createsend.com/t/r-3A433FC72FFE3B8B"
+      summary.WebVersionTextURL.should == "http://createsend.com/t/r-3A433FC72FFE3B8B/t"
       summary.WorldviewURL.should == "http://client.createsend.com/reports/wv/r/3A433FC72FFE3B8B"
       summary.SpamComplaints.should == 23
     end

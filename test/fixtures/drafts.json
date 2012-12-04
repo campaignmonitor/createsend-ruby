@@ -4,13 +4,15 @@
     "Name": "Draft One",
     "Subject": "Draft One",
     "DateCreated": "2010-08-19 16:08:00",
-    "PreviewURL": "http://createsend.com/t/r-E97A7BB2E6983DA1"
+    "PreviewURL": "http://createsend.com/t/r-E97A7BB2E6983DA1",
+    "PreviewTextURL": "http://createsend.com/t/r-E97A7BB2E6983DA1/t"
   },
   {
     "CampaignID": "2e928e982065d92627139208c8c01db1",
     "Name": "Draft Two",
     "Subject": "Draft Two",
     "DateCreated": "2010-08-19 16:08:00",
-    "PreviewURL": "http://createsend.com/t/r-E97A7BB2E6983DA1"
+    "PreviewURL": "http://createsend.com/t/r-E97A7BB2E6983DA1",
+    "PreviewTextURL": "http://createsend.com/t/r-E97A7BB2E6983DA1/t"
   }
 ]
