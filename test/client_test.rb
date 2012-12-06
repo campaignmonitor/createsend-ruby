@@ -38,6 +38,9 @@ class ClientTest < Test::Unit::TestCase
       campaigns.first.Name.should == 'Campaign One'
       campaigns.first.SentDate.should == '2010-10-12 12:58:00'
       campaigns.first.TotalRecipients.should == 2245
+      campaigns.first.FromName.should == 'My Name'
+      campaigns.first.FromEmail.should == 'myemail@example.com'
+      campaigns.first.ReplyTo.should == 'myemail@example.com'
     end
 
     should "get scheduled campaigns" do
@@ -52,6 +55,9 @@ class ClientTest < Test::Unit::TestCase
       campaigns.first.DateCreated.should == "2011-05-24 10:37:00"
       campaigns.first.PreviewURL.should == "http://createsend.com/t/r-DD543521A87C9B8B"
       campaigns.first.PreviewTextURL.should == "http://createsend.com/t/r-DD543521A87C9B8B/t"
+      campaigns.first.FromName.should == 'My Name'
+      campaigns.first.FromEmail.should == 'myemail@example.com'
+      campaigns.first.ReplyTo.should == 'myemail@example.com'
     end
 
     should "get all drafts" do
@@ -64,6 +70,9 @@ class ClientTest < Test::Unit::TestCase
       drafts.first.DateCreated.should == '2010-08-19 16:08:00'
       drafts.first.PreviewURL.should == 'http://createsend.com/t/r-E97A7BB2E6983DA1'
       drafts.first.PreviewTextURL.should == 'http://createsend.com/t/r-E97A7BB2E6983DA1/t'
+      drafts.first.FromName.should == 'My Name'
+      drafts.first.FromEmail.should == 'myemail@example.com'
+      drafts.first.ReplyTo.should == 'myemail@example.com'
     end
 
     should "get all lists" do
