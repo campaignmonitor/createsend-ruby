@@ -1,5 +1,14 @@
 # createsend-ruby history
 
+## v2.5.0 - 11 Dec, 2012   (3054885)
+
+* Added support for including from name, from email, and reply to email in
+drafts, scheduled, and sent campaigns.
+* Added support for campaign text version urls.
+* Added support for transferring credits to/from a client.
+* Added support for getting account billing details as well as client credits.
+* Made all date fields optional when getting paged results.
+
 ## v2.4.0 - 5 Nov, 2012   (4277d8d9)
 
 * Added CreateSend::Campaign#email_client_usage.
