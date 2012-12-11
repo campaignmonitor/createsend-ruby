@@ -117,7 +117,7 @@ module CreateSend
     end
 
     # Gets the active subscribers for this list.
-    def active(date, page=1, page_size=1000, order_field="email",
+    def active(date="", page=1, page_size=1000, order_field="email",
       order_direction="asc")
       options = { :query => {
         :date => date,
@@ -130,7 +130,7 @@ module CreateSend
     end
 
     # Gets the unconfirmed subscribers for this list.
-    def unconfirmed(date, page=1, page_size=1000, order_field="email",
+    def unconfirmed(date="", page=1, page_size=1000, order_field="email",
       order_direction="asc")
       options = { :query => {
         :date => date,
@@ -143,7 +143,7 @@ module CreateSend
     end
 
     # Gets the bounced subscribers for this list.
-    def bounced(date, page=1, page_size=1000, order_field="email",
+    def bounced(date="", page=1, page_size=1000, order_field="email",
       order_direction="asc")
       options = { :query => {
         :date => date,
@@ -156,7 +156,7 @@ module CreateSend
     end
 
     # Gets the unsubscribed subscribers for this list.
-    def unsubscribed(date, page=1, page_size=1000, order_field="email",
+    def unsubscribed(date="", page=1, page_size=1000, order_field="email",
       order_direction="asc")
       options = { :query => {
         :date => date,
@@ -169,7 +169,7 @@ module CreateSend
     end
 
     # Gets the deleted subscribers for this list.
-    def deleted(date, page=1, page_size=1000, order_field="email",
+    def deleted(date="", page=1, page_size=1000, order_field="email",
       order_direction="asc")
       options = { :query => {
         :date => date,

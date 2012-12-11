@@ -14,6 +14,7 @@
   },
   "BillingDetails": {
      "CanPurchaseCredits": true,
+     "Credits": 500,
      "MarkupOnDesignSpamTest": 0.0,
      "ClientPays": true,
      "BaseRatePerRecipient": 1.0,

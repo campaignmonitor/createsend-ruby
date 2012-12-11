@@ -36,7 +36,7 @@ module CreateSend
     end
 
     # Gets the active subscribers in this segment.
-    def subscribers(date, page=1, page_size=1000, order_field="email",
+    def subscribers(date="", page=1, page_size=1000, order_field="email",
       order_direction="asc")
       options = { :query => {
         :date => date,

@@ -149,6 +149,7 @@ class CampaignTest < Test::Unit::TestCase
       summary.Forwards.should == 11
       summary.Likes.should == 32
       summary.WebVersionURL.should == "http://createsend.com/t/r-3A433FC72FFE3B8B"
+      summary.WebVersionTextURL.should == "http://createsend.com/t/r-3A433FC72FFE3B8B/t"
       summary.WorldviewURL.should == "http://client.createsend.com/reports/wv/r/3A433FC72FFE3B8B"
       summary.SpamComplaints.should == 23
     end
@@ -189,7 +190,7 @@ class CampaignTest < Test::Unit::TestCase
       res.Results.first.EmailAddress.should == "subs+6g76t7t0@example.com"
       res.Results.first.ListID.should == "a994a3caf1328a16af9a69a730eaa706"
     end
-    
+
     should "get the opens for a campaign" do
       min_date = "2010-01-01"
       stub_get(@api_key, "campaigns/#{@campaign.campaign_id}/opens.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_opens.json")
@@ -238,7 +239,7 @@ class CampaignTest < Test::Unit::TestCase
       clicks.TotalNumberOfRecords.should == 3
       clicks.NumberOfPages.should == 1
     end
-    
+
     should "get the unsubscribes for a campaign" do
       min_date = "2010-01-01"
       stub_get(@api_key, "campaigns/#{@campaign.campaign_id}/unsubscribes.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_unsubscribes.json")

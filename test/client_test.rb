@@ -24,6 +24,7 @@ class ClientTest < Test::Unit::TestCase
       cl.AccessDetails.Username.should == "clientone"
       cl.AccessDetails.AccessLevel.should == 23
       cl.BillingDetails.MonthlyScheme.should == "Basic"
+      cl.BillingDetails.Credits.should == 500
     end
 
     should "get all campaigns" do
@@ -32,10 +33,14 @@ class ClientTest < Test::Unit::TestCase
       campaigns.size.should == 2
       campaigns.first.CampaignID.should == 'fc0ce7105baeaf97f47c99be31d02a91'
       campaigns.first.WebVersionURL.should == 'http://createsend.com/t/r-765E86829575EE2C'
+      campaigns.first.WebVersionTextURL.should == 'http://createsend.com/t/r-765E86829575EE2C/t'
       campaigns.first.Subject.should == 'Campaign One'
       campaigns.first.Name.should == 'Campaign One'
       campaigns.first.SentDate.should == '2010-10-12 12:58:00'
       campaigns.first.TotalRecipients.should == 2245
+      campaigns.first.FromName.should == 'My Name'
+      campaigns.first.FromEmail.should == 'myemail@example.com'
+      campaigns.first.ReplyTo.should == 'myemail@example.com'
     end
 
     should "get scheduled campaigns" do
@@ -49,6 +54,10 @@ class ClientTest < Test::Unit::TestCase
       campaigns.first.Subject.should == "Magic Issue One"
       campaigns.first.DateCreated.should == "2011-05-24 10:37:00"
       campaigns.first.PreviewURL.should == "http://createsend.com/t/r-DD543521A87C9B8B"
+      campaigns.first.PreviewTextURL.should == "http://createsend.com/t/r-DD543521A87C9B8B/t"
+      campaigns.first.FromName.should == 'My Name'
+      campaigns.first.FromEmail.should == 'myemail@example.com'
+      campaigns.first.ReplyTo.should == 'myemail@example.com'
     end
 
     should "get all drafts" do
@@ -60,6 +69,10 @@ class ClientTest < Test::Unit::TestCase
       drafts.first.Subject.should == 'Draft One'
       drafts.first.DateCreated.should == '2010-08-19 16:08:00'
       drafts.first.PreviewURL.should == 'http://createsend.com/t/r-E97A7BB2E6983DA1'
+      drafts.first.PreviewTextURL.should == 'http://createsend.com/t/r-E97A7BB2E6983DA1/t'
+      drafts.first.FromName.should == 'My Name'
+      drafts.first.FromEmail.should == 'myemail@example.com'
+      drafts.first.ReplyTo.should == 'myemail@example.com'
     end
 
     should "get all lists" do
@@ -194,7 +207,14 @@ class ClientTest < Test::Unit::TestCase
       request.include?("\"MarkupPercentage\":120").should == true
       request.include?("\"MonthlyScheme\":\"Unlimited\"").should == true
     end
-     
+
+    should "transfer credits to a client" do
+      stub_post(@api_key, "clients/#{@client.client_id}/credits.json", "transfer_credits.json")
+      result = @client.transfer_credits 200, false
+      result.AccountCredits.should == 800
+      result.ClientCredits.should == 200
+    end
+
     should "delete a client" do
       stub_delete(@api_key, "clients/#{@client.client_id}.json", nil)
       @client.delete
