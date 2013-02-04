@@ -3,7 +3,7 @@ require 'pathname'
 
 require 'shoulda'
 require 'matchy'
-require 'mocha'
+require 'mocha/setup'
 require 'fakeweb'
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
