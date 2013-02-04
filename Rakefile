@@ -3,23 +3,6 @@ require "bundler/version"
 require "rake/testtask"
 require "./lib/createsend"
 
-begin
-  if RUBY_VERSION != "1.8.7" # cane not supported on < 1.8.7
-    require 'cane/rake_task'
-
-    desc "Run cane (checks quality metrics)"
-    Cane::RakeTask.new(:quality) do |cane|
-      cane.abc_glob = '{lib,test}/**/*.rb'
-      cane.abc_max = 10
-      puts "running cane."
-    end
-
-    task :default => :quality
-  end
-rescue LoadError
-  warn "cane not available, quality task not provided."
-end
-
 desc "Run tests"
 Rake::TestTask.new(:test) do |test|
   test.ruby_opts = ["-rubygems"] if defined? Gem

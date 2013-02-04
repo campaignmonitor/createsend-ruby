@@ -9,7 +9,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency('jnunemaker-matchy', '~> 0.4')
   s.add_development_dependency('mocha', '~> 0.13')
   s.add_development_dependency('shoulda', '~> 3.3')
-  s.add_development_dependency('cane')
   s.add_runtime_dependency('json', '>= 0')
   s.add_runtime_dependency('hashie', '~> 1.0')
   s.add_runtime_dependency('httparty', '~> 0.10')
