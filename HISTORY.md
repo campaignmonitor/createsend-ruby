@@ -1,5 +1,9 @@
 # createsend-ruby history
 
+## v2.5.1 - 4 Feb, 2013   (f0a35ae)
+
+* Updated dependencies in gemspec. Removed cane as a development dependency.
+
 ## v2.5.0 - 11 Dec, 2012   (3054885)
 
 * Added support for including from name, from email, and reply to email in
