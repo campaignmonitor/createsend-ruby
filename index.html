@@ -16,7 +16,7 @@
     <div class="wrapper">
       <header>
         <h1>createsend-ruby</h1>
-        <p>A ruby library for v3 of the createsend API</p>
+        <p>A ruby library for the Campaign Monitor API</p>
 
         <p class="view"><a href="https://github.com/campaignmonitor/createsend-ruby">View the Project on GitHub <small>campaignmonitor/createsend-ruby</small></a></p>
 
@@ -28,21 +28,26 @@
         </ul>
       </header>
       <section>
-        <h1>createsend <a href="http://travis-ci.org/campaignmonitor/createsend-ruby"><img src="https://secure.travis-ci.org/campaignmonitor/createsend-ruby.png" alt="Build Status"></a> <a href="https://gemnasium.com/campaignmonitor/createsend-ruby"><img src="https://gemnasium.com/campaignmonitor/createsend-ruby.png" alt="Dependency Status"></a>
-</h1>
+        <h1>createsend</h1>
 
-<p>A ruby library which implements the complete functionality of v3 of the <a href="http://www.campaignmonitor.com/api/">Campaign Monitor API</a>.</p>
+<p><a href="http://travis-ci.org/campaignmonitor/createsend-ruby"><img src="https://secure.travis-ci.org/campaignmonitor/createsend-ruby.png" alt="Build Status"></a> <a href="https://gemnasium.com/campaignmonitor/createsend-ruby"><img src="https://gemnasium.com/campaignmonitor/createsend-ruby.png" alt="Dependency Status"></a> <a href="http://badge.fury.io/rb/createsend"><img src="https://badge.fury.io/rb/createsend.png" alt="Gem Version"></a></p>
+
+<p>A ruby library which implements the complete functionality of the <a href="http://www.campaignmonitor.com/api/">Campaign Monitor API</a>.</p>
 
 <h2>Installation</h2>
 
 <pre><code>gem install createsend
 </code></pre>
 
+<h2>Documentation</h2>
+
+<p>Full documentation is hosted by <a href="http://rubydoc.info/gems/createsend/frames">RubyDoc.info</a>.</p>
+
 <h2>Examples</h2>
 
 <h3>Basic usage</h3>
 
-<p>Retrieve a list of all your clients.</p>
+<p>This example of listing all your clients demonstrates basic usage of the library:</p>
 
 <pre><code>require 'createsend'
 
@@ -56,7 +61,7 @@ clients.each do |c|
 end
 </code></pre>
 
-<p>Results in:</p>
+<p>Running this example will result in something like:</p>
 
 <pre><code>4a397ccaaa55eb4e6aa1221e1e2d7122: Client One
 a206def0582eec7dae47d937a4109cb2: Client Two
@@ -64,7 +69,7 @@ a206def0582eec7dae47d937a4109cb2: Client Two
 
 <h3>Handling errors</h3>
 
-<p>If the createsend API returns an error, an exception will be thrown. For example, if you attempt to create a campaign and enter empty values for subject etc:</p>
+<p>If the Campaign Monitor API returns an error, an exception will be thrown. For example, if you attempt to create a campaign and enter empty values for subject etc:</p>
 
 <pre><code>require 'createsend'
 
@@ -109,7 +114,7 @@ end
 <ol>
 <li>Fork the repository</li>
 <li>Make your changes, including tests for your changes.</li>
-<li>Ensure that the build passes, by running <code>bundle exec rake</code> (CI runs on: <code>1.8.7</code>, <code>1.9.2</code>, <code>1.9.3</code>, and <code>ree</code>)</li>
+<li>Ensure that the build passes, by running <code>bundle exec rake</code> (CI runs on: <code>1.9.3</code>, <code>1.9.2</code>, <code>1.8.7</code> and <code>ree</code>)</li>
 <li>It should go without saying, but do not increment the version number in your commits.</li>
 <li>Submit a pull request.</li>
 </ol>
