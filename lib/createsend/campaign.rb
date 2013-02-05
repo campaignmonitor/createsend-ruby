@@ -140,69 +140,51 @@ module CreateSend
     # Retrieves the opens for this campaign.
     def opens(date="", page=1, page_size=1000, order_field="date",
       order_direction="asc")
-      options = { :query => {
-        :date => date,
-        :page => page,
-        :pagesize => page_size,
-        :orderfield => order_field,
-        :orderdirection => order_direction } }
-      response = get "opens", options
-      Hashie::Mash.new(response)
+      paged_result_by_date("opens", date, page, page_size, order_field,
+        order_direction)
     end
 
     # Retrieves the subscriber clicks for this campaign.
     def clicks(date="", page=1, page_size=1000, order_field="date",
       order_direction="asc")
-      options = { :query => {
-        :date => date,
-        :page => page,
-        :pagesize => page_size,
-        :orderfield => order_field,
-        :orderdirection => order_direction } }
-      response = get "clicks", options
-      Hashie::Mash.new(response)
+      paged_result_by_date("clicks", date, page, page_size, order_field,
+        order_direction)
     end
 
     # Retrieves the unsubscribes for this campaign.
     def unsubscribes(date="", page=1, page_size=1000, order_field="date",
       order_direction="asc")
-      options = { :query => {
-        :date => date,
-        :page => page,
-        :pagesize => page_size,
-        :orderfield => order_field,
-        :orderdirection => order_direction } }
-      response = get "unsubscribes", options
-      Hashie::Mash.new(response)
+      paged_result_by_date("unsubscribes", date, page, page_size, order_field,
+        order_direction)
     end
 
     # Retrieves the spam complaints for this campaign.
     def spam(date="", page=1, page_size=1000, order_field="date",
       order_direction="asc")
-      options = { :query => {
-        :date => date,
-        :page => page,
-        :pagesize => page_size,
-        :orderfield => order_field,
-        :orderdirection => order_direction } }
-      response = get "spam", options
-      Hashie::Mash.new(response)
+      paged_result_by_date("spam", date, page, page_size, order_field,
+        order_direction)
     end
 
     # Retrieves the bounces for this campaign.
     def bounces(date="", page=1, page_size=1000, order_field="date",
       order_direction="asc")
+      paged_result_by_date("bounces", date, page, page_size, order_field,
+        order_direction)
+    end
+
+    private
+
+    def paged_result_by_date(resource, date, page, page_size, order_field,
+      order_direction)
       options = { :query => {
         :date => date,
         :page => page,
         :pagesize => page_size,
         :orderfield => order_field,
         :orderdirection => order_direction } }
-      response = get "bounces", options
+      response = get resource, options
       Hashie::Mash.new(response)
     end
-
-    private
 
     def get(action, options = {})
       CreateSend.get uri_for(action), options

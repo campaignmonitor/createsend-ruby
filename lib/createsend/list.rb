@@ -119,66 +119,36 @@ module CreateSend
     # Gets the active subscribers for this list.
     def active(date="", page=1, page_size=1000, order_field="email",
       order_direction="asc")
-      options = { :query => {
-        :date => date,
-        :page => page,
-        :pagesize => page_size,
-        :orderfield => order_field,
-        :orderdirection => order_direction } }
-      response = get "active", options
-      Hashie::Mash.new(response)
+      paged_result_by_date("active", date, page, page_size, order_field,
+        order_direction)
     end
 
     # Gets the unconfirmed subscribers for this list.
     def unconfirmed(date="", page=1, page_size=1000, order_field="email",
       order_direction="asc")
-      options = { :query => {
-        :date => date,
-        :page => page,
-        :pagesize => page_size,
-        :orderfield => order_field,
-        :orderdirection => order_direction } }
-      response = get "unconfirmed", options
-      Hashie::Mash.new(response)
+      paged_result_by_date("unconfirmed", date, page, page_size, order_field,
+        order_direction)
     end
 
     # Gets the bounced subscribers for this list.
     def bounced(date="", page=1, page_size=1000, order_field="email",
       order_direction="asc")
-      options = { :query => {
-        :date => date,
-        :page => page,
-        :pagesize => page_size,
-        :orderfield => order_field,
-        :orderdirection => order_direction } }
-      response = get "bounced", options
-      Hashie::Mash.new(response)
+      paged_result_by_date("bounced", date, page, page_size, order_field,
+        order_direction)
     end
 
     # Gets the unsubscribed subscribers for this list.
     def unsubscribed(date="", page=1, page_size=1000, order_field="email",
       order_direction="asc")
-      options = { :query => {
-        :date => date,
-        :page => page,
-        :pagesize => page_size,
-        :orderfield => order_field,
-        :orderdirection => order_direction } }
-      response = get "unsubscribed", options
-      Hashie::Mash.new(response)
+      paged_result_by_date("unsubscribed", date, page, page_size, order_field,
+        order_direction)
     end
 
     # Gets the deleted subscribers for this list.
     def deleted(date="", page=1, page_size=1000, order_field="email",
       order_direction="asc")
-      options = { :query => {
-        :date => date,
-        :page => page,
-        :pagesize => page_size,
-        :orderfield => order_field,
-        :orderdirection => order_direction } }
-      response = get "deleted", options
-      Hashie::Mash.new(response)
+      paged_result_by_date("deleted", date, page, page_size, order_field,
+        order_direction)
     end
 
     # Updates this list.
@@ -256,6 +226,18 @@ module CreateSend
     end
 
     private
+    
+    def paged_result_by_date(resource, date, page, page_size, order_field,
+      order_direction)
+      options = { :query => {
+        :date => date,
+        :page => page,
+        :pagesize => page_size,
+        :orderfield => order_field,
+        :orderdirection => order_direction } }
+      response = get resource, options
+      Hashie::Mash.new(response)
+    end
 
     def get(action, options = {})
       CreateSend.get uri_for(action), options
