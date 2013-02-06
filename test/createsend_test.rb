@@ -114,49 +114,50 @@ class CreateSendTest < Test::Unit::TestCase
   end
 
   context "when the CreateSend API responds with an error" do
-    setup do
-      @api_key = '123123123123123123123'
-      @auth_options = {:access_token => nil, :api_key => @api_key}
-      @base_uri = 'https://api.createsend.com/api/v3'
-      CreateSend.api_key @api_key
-      @cs = CreateSend::CreateSend.new
-      @template = CreateSend::Template.new('98y2e98y289dh89h938389')
+
+    multiple_contexts "authenticated_using_oauth_context", "authenticated_using_api_key_context" do
+      setup do
+        @cs = CreateSend::CreateSend.new
+        @template = CreateSend::Template.new('98y2e98y289dh89h938389')
+      end
+
+      { ["400", "Bad Request"]  => CreateSend::BadRequest,
+        ["401", "Unauthorized"] => CreateSend::Unauthorized,
+        ["404", "Not Found"]    => CreateSend::NotFound,
+        ["500", "Server Error"] => CreateSend::ServerError
+      }.each do |status, exception|
+        context "#{status.first}, a get" do
+          should "raise a #{exception.name} error" do
+            stub_get(@auth_options, "countries.json", (status.first == '400' or status.first == '401') ? 'custom_api_error.json' : nil, status)
+            lambda { c = @cs.countries }.should raise_error(exception)
+          end
+        end
+
+        context "#{status.first}, a post" do
+          should "raise a #{exception.name} error" do
+            stub_post(@auth_options, "clients.json", (status.first == '400' or status.first == '401') ? 'custom_api_error.json' : nil, status)
+            lambda { CreateSend::Client.create "Client Company Name", 
+              "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia" }.should raise_error(exception)
+          end
+        end
+
+        context "#{status.first}, a put" do
+          should "raise a #{exception.name} error" do
+            stub_put(@auth_options, "templates/#{@template.template_id}.json", (status.first == '400' or status.first == '401') ? 'custom_api_error.json' : nil, status)
+            lambda { @template.update "Template One Updated", "http://templates.org/index.html", 
+              "http://templates.org/files.zip" }.should raise_error(exception)
+          end
+        end
+
+        context "#{status.first}, a delete" do
+          should "raise a #{exception.name} error" do
+            stub_delete(@auth_options, "templates/#{@template.template_id}.json", (status.first == '400' or status.first == '401') ? 'custom_api_error.json' : nil, status)
+            lambda { @template.delete }.should raise_error(exception)
+          end
+        end
+      end
     end
-    
-    { ["400", "Bad Request"]  => CreateSend::BadRequest,
-      ["401", "Unauthorized"] => CreateSend::Unauthorized,
-      ["404", "Not Found"]    => CreateSend::NotFound,
-      ["500", "Server Error"] => CreateSend::ServerError
-    }.each do |status, exception|
-      context "#{status.first}, a get" do
-        should "raise a #{exception.name} error" do
-          stub_get(@auth_options, "countries.json", (status.first == '400' or status.first == '401') ? 'custom_api_error.json' : nil, status)
-          lambda { c = @cs.countries }.should raise_error(exception)
-        end
-      end
 
-      context "#{status.first}, a post" do
-        should "raise a #{exception.name} error" do
-          stub_post(@auth_options, "clients.json", (status.first == '400' or status.first == '401') ? 'custom_api_error.json' : nil, status)
-          lambda { CreateSend::Client.create "Client Company Name", 
-            "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia" }.should raise_error(exception)
-        end
-      end
-
-      context "#{status.first}, a put" do
-        should "raise a #{exception.name} error" do
-          stub_put(@auth_options, "templates/#{@template.template_id}.json", (status.first == '400' or status.first == '401') ? 'custom_api_error.json' : nil, status)
-          lambda { @template.update "Template One Updated", "http://templates.org/index.html", 
-            "http://templates.org/files.zip" }.should raise_error(exception)
-        end
-      end
-
-      context "#{status.first}, a delete" do
-        should "raise a #{exception.name} error" do
-          stub_delete(@auth_options, "templates/#{@template.template_id}.json", (status.first == '400' or status.first == '401') ? 'custom_api_error.json' : nil, status)
-          lambda { @template.delete }.should raise_error(exception)
-        end
-      end
-    end
   end
+
 end
