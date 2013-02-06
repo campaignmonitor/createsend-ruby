@@ -4,19 +4,20 @@ class ClientTest < Test::Unit::TestCase
   context "when an api caller is authenticated" do
     setup do
       @api_key = '123123123123123123123'
+      @auth_options = {:access_token => nil, :api_key => @api_key}
       CreateSend.api_key @api_key
       @client = CreateSend::Client.new('321iuhiuhi1u23hi2u3')
       @client.client_id.should == '321iuhiuhi1u23hi2u3'
     end
 
     should "create a client" do
-      stub_post(@api_key, "clients.json", "create_client.json")
+      stub_post(@auth_options, "clients.json", "create_client.json")
       client_id = CreateSend::Client.create "Client Company Name", "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia"
       client_id.should == "32a381c49a2df99f1d0c6f3c112352b9"
     end
 
     should "get details of a client" do
-      stub_get(@api_key, "clients/#{@client.client_id}.json", "client_details.json")
+      stub_get(@auth_options, "clients/#{@client.client_id}.json", "client_details.json")
       cl = @client.details
       cl.ApiKey.should == "639d8cc27198202f5fe6037a8b17a29a59984b86d3289bc9"
       cl.BasicDetails.ClientID.should == "4a397ccaaa55eb4e6aa1221e1e2d7122"
@@ -28,7 +29,7 @@ class ClientTest < Test::Unit::TestCase
     end
 
     should "get all campaigns" do
-      stub_get(@api_key, "clients/#{@client.client_id}/campaigns.json", "campaigns.json")
+      stub_get(@auth_options, "clients/#{@client.client_id}/campaigns.json", "campaigns.json")
       campaigns = @client.campaigns
       campaigns.size.should == 2
       campaigns.first.CampaignID.should == 'fc0ce7105baeaf97f47c99be31d02a91'
@@ -44,7 +45,7 @@ class ClientTest < Test::Unit::TestCase
     end
 
     should "get scheduled campaigns" do
-      stub_get(@api_key, "clients/#{@client.client_id}/scheduled.json", "scheduled_campaigns.json")
+      stub_get(@auth_options, "clients/#{@client.client_id}/scheduled.json", "scheduled_campaigns.json")
       campaigns = @client.scheduled
       campaigns.size.should == 2
       campaigns.first.DateScheduled.should == "2011-05-25 10:40:00"
@@ -61,7 +62,7 @@ class ClientTest < Test::Unit::TestCase
     end
 
     should "get all drafts" do
-      stub_get(@api_key, "clients/#{@client.client_id}/drafts.json", "drafts.json")
+      stub_get(@auth_options, "clients/#{@client.client_id}/drafts.json", "drafts.json")
       drafts = @client.drafts
       drafts.size.should == 2
       drafts.first.CampaignID.should == '7c7424792065d92627139208c8c01db1'
@@ -76,7 +77,7 @@ class ClientTest < Test::Unit::TestCase
     end
 
     should "get all lists" do
-      stub_get(@api_key, "clients/#{@client.client_id}/lists.json", "lists.json")
+      stub_get(@auth_options, "clients/#{@client.client_id}/lists.json", "lists.json")
       lists = @client.lists
       lists.size.should == 2
       lists.first.ListID.should == 'a58ee1d3039b8bec838e6d1482a8a965'
@@ -85,7 +86,7 @@ class ClientTest < Test::Unit::TestCase
 
     should "get all lists to which a subscriber with a particular email address belongs" do
       email = "valid@example.com"
-      stub_get(@api_key, "clients/#{@client.client_id}/listsforemail.json?email=#{CGI.escape(email)}", "listsforemail.json")
+      stub_get(@auth_options, "clients/#{@client.client_id}/listsforemail.json?email=#{CGI.escape(email)}", "listsforemail.json")
       lists = @client.lists_for_email(email)
       lists.size.should == 2
       lists.first.ListID.should == 'ab4a2b57c7c8f1ba62f898a1af1a575b'
@@ -95,7 +96,7 @@ class ClientTest < Test::Unit::TestCase
     end
 
     should "get all segments for a client" do
-      stub_get(@api_key, "clients/#{@client.client_id}/segments.json", "segments.json")
+      stub_get(@auth_options, "clients/#{@client.client_id}/segments.json", "segments.json")
       segments = @client.segments
       segments.size.should == 2
       segments.first.ListID.should == 'a58ee1d3039b8bec838e6d1482a8a965'
@@ -104,7 +105,7 @@ class ClientTest < Test::Unit::TestCase
     end
 
     should "get suppression list" do
-      stub_get(@api_key, "clients/#{@client.client_id}/suppressionlist.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc", "suppressionlist.json")
+      stub_get(@auth_options, "clients/#{@client.client_id}/suppressionlist.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc", "suppressionlist.json")
       res = @client.suppressionlist
       res.ResultsOrderedBy.should == "email"
       res.OrderDirection.should == "asc"
@@ -122,23 +123,23 @@ class ClientTest < Test::Unit::TestCase
 
     should "suppress a single email address" do
       email = "example@example.com"
-      stub_post(@api_key, "clients/#{@client.client_id}/suppress.json", nil)
+      stub_post(@auth_options, "clients/#{@client.client_id}/suppress.json", nil)
       result = @client.suppress email
     end
 
     should "suppress multiple email address" do
-      stub_post(@api_key, "clients/#{@client.client_id}/suppress.json", nil)
+      stub_post(@auth_options, "clients/#{@client.client_id}/suppress.json", nil)
       result = @client.suppress [ "one@example.com", "two@example.com" ]
     end
 
     should "unsuppress an email address" do
       email = "example@example.com"
-      stub_put(@api_key, "clients/#{@client.client_id}/unsuppress.json?email=#{CGI.escape(email)}", nil)
+      stub_put(@auth_options, "clients/#{@client.client_id}/unsuppress.json?email=#{CGI.escape(email)}", nil)
       result = @client.unsuppress email
     end
 
     should "get all people" do
-      stub_get(@api_key, "clients/#{@client.client_id}/people.json", "people.json")
+      stub_get(@auth_options, "clients/#{@client.client_id}/people.json", "people.json")
       people = @client.people
       people.size.should == 2
       people.first.EmailAddress.should == "person1@blackhole.com"
@@ -148,7 +149,7 @@ class ClientTest < Test::Unit::TestCase
     end
 
     should "get all templates" do
-      stub_get(@api_key, "clients/#{@client.client_id}/templates.json", "templates.json")
+      stub_get(@auth_options, "clients/#{@client.client_id}/templates.json", "templates.json")
       templates = @client.templates
       templates.size.should == 2
       templates.first.TemplateID.should == '5cac213cf061dd4e008de5a82b7a3621'
@@ -157,29 +158,29 @@ class ClientTest < Test::Unit::TestCase
 
     should "set primary contact" do
       email = 'person@blackhole.com'
-      stub_put(@api_key, "clients/#{@client.client_id}/primarycontact.json?email=#{CGI.escape(email)}", 'client_set_primary_contact.json')
+      stub_put(@auth_options, "clients/#{@client.client_id}/primarycontact.json?email=#{CGI.escape(email)}", 'client_set_primary_contact.json')
       result = @client.set_primary_contact email
       result.EmailAddress.should == email
     end
 
     should "get primary contact" do
-      stub_get(@api_key, "clients/#{@client.client_id}/primarycontact.json", 'client_get_primary_contact.json')
+      stub_get(@auth_options, "clients/#{@client.client_id}/primarycontact.json", 'client_get_primary_contact.json')
       result = @client.get_primary_contact
       result.EmailAddress.should == 'person@blackhole.com'
     end
 
     should "set basics" do
-      stub_put(@api_key, "clients/#{@client.client_id}/setbasics.json", nil)
+      stub_put(@auth_options, "clients/#{@client.client_id}/setbasics.json", nil)
       @client.set_basics "Client Company Name", "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia"
     end
 
     should "set payg billing" do
-      stub_put(@api_key, "clients/#{@client.client_id}/setpaygbilling.json", nil)
+      stub_put(@auth_options, "clients/#{@client.client_id}/setpaygbilling.json", nil)
       @client.set_payg_billing "CAD", true, true, 150
     end
 
     should "set monthly billing (implicit)" do
-      stub_put(@api_key, "clients/#{@client.client_id}/setmonthlybilling.json", nil)
+      stub_put(@auth_options, "clients/#{@client.client_id}/setmonthlybilling.json", nil)
       @client.set_monthly_billing "CAD", true, 150 
       request = FakeWeb.last_request.body
       request.include?("\"Currency\":\"CAD\"").should == true
@@ -189,7 +190,7 @@ class ClientTest < Test::Unit::TestCase
     end
 
     should "set monthly billing (basic)" do
-      stub_put(@api_key, "clients/#{@client.client_id}/setmonthlybilling.json", nil)
+      stub_put(@auth_options, "clients/#{@client.client_id}/setmonthlybilling.json", nil)
       @client.set_monthly_billing "CAD", true, 150, "Basic"
       request = FakeWeb.last_request.body
       request.include?("\"Currency\":\"CAD\"").should == true
@@ -199,7 +200,7 @@ class ClientTest < Test::Unit::TestCase
     end
        
     should "set monthly billing (unlimited)" do
-      stub_put(@api_key, "clients/#{@client.client_id}/setmonthlybilling.json", nil)
+      stub_put(@auth_options, "clients/#{@client.client_id}/setmonthlybilling.json", nil)
       @client.set_monthly_billing "CAD", false, 120, "Unlimited"
       request = FakeWeb.last_request.body
       request.include?("\"Currency\":\"CAD\"").should == true
@@ -209,14 +210,14 @@ class ClientTest < Test::Unit::TestCase
     end
 
     should "transfer credits to a client" do
-      stub_post(@api_key, "clients/#{@client.client_id}/credits.json", "transfer_credits.json")
+      stub_post(@auth_options, "clients/#{@client.client_id}/credits.json", "transfer_credits.json")
       result = @client.transfer_credits 200, false
       result.AccountCredits.should == 800
       result.ClientCredits.should == 200
     end
 
     should "delete a client" do
-      stub_delete(@api_key, "clients/#{@client.client_id}.json", nil)
+      stub_delete(@auth_options, "clients/#{@client.client_id}.json", nil)
       @client.delete
     end
     

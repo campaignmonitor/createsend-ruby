@@ -104,7 +104,7 @@ For example, if you wanted to find out how to call the CreateSend::Subscriber.ad
 
 ```ruby
 should "add a subscriber with custom fields" do
-  stub_post(@api_key, "subscribers/#{@list_id}.json", "add_subscriber.json")
+  stub_post(@auth_options, "subscribers/#{@list_id}.json", "add_subscriber.json")
   custom_fields = [ { :Key => 'website', :Value => 'http://example.com/' } ]
   email_address = CreateSend::Subscriber.add @list_id, "subscriber@example.com", "Subscriber", custom_fields, true
   email_address.should == "subscriber@example.com"

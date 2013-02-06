@@ -93,6 +93,7 @@ module CreateSend
       @@access_token = nil
       @@refresh_token = nil
       @@api_key = nil
+      default_options[:basic_auth] = nil
     end
 
     # Gets/sets the base OAuth URI.

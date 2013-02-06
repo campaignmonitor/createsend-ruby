@@ -4,6 +4,7 @@ class ListTest < Test::Unit::TestCase
   context "when an api caller is authenticated" do
     setup do
       @api_key = '123123123123123123123'
+      @auth_options = {:access_token => nil, :api_key => @api_key}
       CreateSend.api_key @api_key
       @client_id = "87y8d7qyw8d7yq8w7ydwqwd"
       @list_id = "e3c5f034d68744f7881fdccf13c2daee"
@@ -11,39 +12,39 @@ class ListTest < Test::Unit::TestCase
     end
 
     should "create a list without passing in unsubscribe setting" do
-      stub_post(@api_key, "lists/#{@client_id}.json", "create_list.json")
+      stub_post(@auth_options, "lists/#{@client_id}.json", "create_list.json")
       list_id = CreateSend::List.create @client_id, "List One", "", false, ""
       list_id.should == "e3c5f034d68744f7881fdccf13c2daee"
     end
 
     should "create a list passing in unsubscribe setting" do
-      stub_post(@api_key, "lists/#{@client_id}.json", "create_list.json")
+      stub_post(@auth_options, "lists/#{@client_id}.json", "create_list.json")
       list_id = CreateSend::List.create @client_id, "List One", "", false, "", "OnlyThisList"
       list_id.should == "e3c5f034d68744f7881fdccf13c2daee"
     end
 
     should "update a list without passing in unsubscribe setting" do
-      stub_put(@api_key, "lists/#{@list.list_id}.json", nil)
+      stub_put(@auth_options, "lists/#{@list.list_id}.json", nil)
       @list.update "List One Renamed", "", false, ""
     end
 
     should "update a list passing in unsubscribe setting" do
-      stub_put(@api_key, "lists/#{@list.list_id}.json", nil)
+      stub_put(@auth_options, "lists/#{@list.list_id}.json", nil)
       @list.update "List One Renamed", "", false, "", "OnlyThisList"
     end
 
     should "update a list passing in unsubscribe setting and suppression list options" do
-      stub_put(@api_key, "lists/#{@list.list_id}.json", nil)
+      stub_put(@auth_options, "lists/#{@list.list_id}.json", nil)
       @list.update "List One Renamed", "", false, "", "OnlyThisList", true, true
     end
 
     should "delete a list" do
-      stub_delete(@api_key, "lists/#{@list.list_id}.json", nil)
+      stub_delete(@auth_options, "lists/#{@list.list_id}.json", nil)
       @list.delete
     end
 
     should "create a custom field" do
-      stub_post(@api_key, "lists/#{@list.list_id}/customfields.json", "create_custom_field.json")
+      stub_post(@auth_options, "lists/#{@list.list_id}/customfields.json", "create_custom_field.json")
       personalisation_tag = @list.create_custom_field "new date field", "Date"
       request = FakeWeb.last_request.body
       request.include?("\"FieldName\":\"new date field\"").should == true
@@ -54,7 +55,7 @@ class ListTest < Test::Unit::TestCase
     end
 
     should "create a custom field with options and visible_in_preference_center" do
-      stub_post(@api_key, "lists/#{@list.list_id}/customfields.json", "create_custom_field.json")
+      stub_post(@auth_options, "lists/#{@list.list_id}/customfields.json", "create_custom_field.json")
       options = ["one", "two"]
       personalisation_tag = @list.create_custom_field("newsletter format",
         "MultiSelectOne", options, false)
@@ -68,7 +69,7 @@ class ListTest < Test::Unit::TestCase
 
     should "update a custom field" do
       key = "[mycustomfield]"
-      stub_put(@api_key, "lists/#{@list.list_id}/customfields/#{CGI.escape(key)}.json", "update_custom_field.json")
+      stub_put(@auth_options, "lists/#{@list.list_id}/customfields/#{CGI.escape(key)}.json", "update_custom_field.json")
       personalisation_tag = @list.update_custom_field key, "my renamed custom field", true
       request = FakeWeb.last_request.body
       request.include?("\"FieldName\":\"my renamed custom field\"").should == true
@@ -78,19 +79,19 @@ class ListTest < Test::Unit::TestCase
 
     should "delete a custom field" do
       custom_field_key = "[newdatefield]"
-      stub_delete(@api_key, "lists/#{@list.list_id}/customfields/#{CGI.escape(custom_field_key)}.json", nil)
+      stub_delete(@auth_options, "lists/#{@list.list_id}/customfields/#{CGI.escape(custom_field_key)}.json", nil)
       @list.delete_custom_field custom_field_key
     end
     
     should "update the options of a multi-optioned custom field" do
       custom_field_key = "[newdatefield]"
       new_options = [ "one", "two", "three" ]
-      stub_put(@api_key, "lists/#{@list.list_id}/customfields/#{CGI.escape(custom_field_key)}/options.json", nil)
+      stub_put(@auth_options, "lists/#{@list.list_id}/customfields/#{CGI.escape(custom_field_key)}/options.json", nil)
       @list.update_custom_field_options custom_field_key, new_options, true
     end
 
     should "get the details of a list" do
-      stub_get(@api_key, "lists/#{@list.list_id}.json", "list_details.json")
+      stub_get(@auth_options, "lists/#{@list.list_id}.json", "list_details.json")
       details = @list.details
       details.ConfirmedOptIn.should == false
       details.Title.should == "a non-basic list :)"
@@ -101,7 +102,7 @@ class ListTest < Test::Unit::TestCase
     end
 
     should "get the custom fields for a list" do
-      stub_get(@api_key, "lists/#{@list.list_id}/customfields.json", "custom_fields.json")
+      stub_get(@auth_options, "lists/#{@list.list_id}/customfields.json", "custom_fields.json")
       cfs = @list.custom_fields
       cfs.size.should == 3
       cfs.first.FieldName.should == "website"
@@ -112,7 +113,7 @@ class ListTest < Test::Unit::TestCase
     end
 
     should "get the segments for a list" do
-      stub_get(@api_key, "lists/#{@list.list_id}/segments.json", "segments.json")
+      stub_get(@auth_options, "lists/#{@list.list_id}/segments.json", "segments.json")
       segments = @list.segments
       segments.size.should == 2
       segments.first.ListID.should == 'a58ee1d3039b8bec838e6d1482a8a965'
@@ -121,7 +122,7 @@ class ListTest < Test::Unit::TestCase
     end
     
     should "get the stats for a list" do
-      stub_get(@api_key, "lists/#{@list.list_id}/stats.json", "list_stats.json")
+      stub_get(@auth_options, "lists/#{@list.list_id}/stats.json", "list_stats.json")
       stats = @list.stats
       stats.TotalActiveSubscribers.should == 6
       stats.TotalUnsubscribes.should == 2
@@ -131,7 +132,7 @@ class ListTest < Test::Unit::TestCase
     
     should "get the active subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@api_key, "lists/#{@list.list_id}/active.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}",
+      stub_get(@auth_options, "lists/#{@list.list_id}/active.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}",
         "active_subscribers.json")
       res = @list.active min_date
       res.ResultsOrderedBy.should == "email"
@@ -158,7 +159,7 @@ class ListTest < Test::Unit::TestCase
 
     should "get the unconfirmed subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@api_key, "lists/#{@list.list_id}/unconfirmed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}",
+      stub_get(@auth_options, "lists/#{@list.list_id}/unconfirmed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}",
         "unconfirmed_subscribers.json")
       res = @list.unconfirmed min_date
       res.ResultsOrderedBy.should == "email"
@@ -176,7 +177,7 @@ class ListTest < Test::Unit::TestCase
 
     should "get the unsubscribed subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@api_key, "lists/#{@list.list_id}/unsubscribed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}", 
+      stub_get(@auth_options, "lists/#{@list.list_id}/unsubscribed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}", 
         "unsubscribed_subscribers.json")
       res = @list.unsubscribed min_date
       res.ResultsOrderedBy.should == "email"
@@ -197,7 +198,7 @@ class ListTest < Test::Unit::TestCase
 
     should "get the deleted subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@api_key, "lists/#{@list.list_id}/deleted.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}", 
+      stub_get(@auth_options, "lists/#{@list.list_id}/deleted.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}", 
         "deleted_subscribers.json")
       res = @list.deleted min_date
       res.ResultsOrderedBy.should == "email"
@@ -218,7 +219,7 @@ class ListTest < Test::Unit::TestCase
 
     should "get the bounced subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@api_key, "lists/#{@list.list_id}/bounced.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}",
+      stub_get(@auth_options, "lists/#{@list.list_id}/bounced.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}",
         "bounced_subscribers.json")
       res = @list.bounced min_date
       res.ResultsOrderedBy.should == "email"
@@ -238,7 +239,7 @@ class ListTest < Test::Unit::TestCase
     end
 
     should "get the webhooks for a list" do
-      stub_get(@api_key, "lists/#{@list.list_id}/webhooks.json", "list_webhooks.json")
+      stub_get(@auth_options, "lists/#{@list.list_id}/webhooks.json", "list_webhooks.json")
       hooks = @list.webhooks
       hooks.size.should == 2
       hooks.first.WebhookID.should == "943678317049bc13"
@@ -250,32 +251,32 @@ class ListTest < Test::Unit::TestCase
     end
 
     should "create a webhook for a list" do
-      stub_post(@api_key, "lists/#{@list.list_id}/webhooks.json", "create_list_webhook.json")
+      stub_post(@auth_options, "lists/#{@list.list_id}/webhooks.json", "create_list_webhook.json")
       webhook_id = @list.create_webhook ["Unsubscribe", "Spam"], "http://example.com/unsub", "json"
       webhook_id.should == "6a783d359bd44ef62c6ca0d3eda4412a"
     end
     
     should "test a webhook for a list" do
       webhook_id = "jiuweoiwueoiwueowiueo"
-      stub_get(@api_key, "lists/#{@list.list_id}/webhooks/#{webhook_id}/test.json", nil)
+      stub_get(@auth_options, "lists/#{@list.list_id}/webhooks/#{webhook_id}/test.json", nil)
       @list.test_webhook webhook_id
     end
 
     should "delete a webhook for a list" do
       webhook_id = "jiuweoiwueoiwueowiueo"
-      stub_delete(@api_key, "lists/#{@list.list_id}/webhooks/#{webhook_id}.json", nil)
+      stub_delete(@auth_options, "lists/#{@list.list_id}/webhooks/#{webhook_id}.json", nil)
       @list.delete_webhook webhook_id
     end
     
     should "activate a webhook for a list" do
       webhook_id = "jiuweoiwueoiwueowiueo"
-      stub_put(@api_key, "lists/#{@list.list_id}/webhooks/#{webhook_id}/activate.json", nil)
+      stub_put(@auth_options, "lists/#{@list.list_id}/webhooks/#{webhook_id}/activate.json", nil)
       @list.activate_webhook webhook_id
     end
 
     should "de-activate a webhook for a list" do
       webhook_id = "jiuweoiwueoiwueowiueo"
-      stub_put(@api_key, "lists/#{@list.list_id}/webhooks/#{webhook_id}/deactivate.json", nil)
+      stub_put(@auth_options, "lists/#{@list.list_id}/webhooks/#{webhook_id}/deactivate.json", nil)
       @list.deactivate_webhook webhook_id
     end
   end
