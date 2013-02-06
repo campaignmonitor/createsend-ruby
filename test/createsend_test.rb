@@ -1,6 +1,36 @@
 require File.dirname(__FILE__) + '/helper'
 
 class CreateSendTest < Test::Unit::TestCase
+
+  context "when an api caller requires createsend" do
+    setup do
+      @access_token = "h9898wu98u9dqjoijnwld"
+      @refresh_token = "iuh98h9iq8whiquwd"
+      @api_key = "hiuhqiw78hiqhwdwdqwdqw2s2e2"
+    end
+
+    should "authenticate using an oauth access token" do
+      CreateSend.oauth @access_token
+      CreateSend.oauth.should == [@access_token, nil]
+      CreateSend.api_key.should == nil
+      CreateSend::CreateSend.headers['Authorization'].should == "Bearer #{@access_token}"
+    end
+
+    should "authenticate using an oauth access token and refresh token" do
+      CreateSend.oauth @access_token, @refresh_token
+      CreateSend.oauth.should == [@access_token, @refresh_token]
+      CreateSend.api_key.should == nil
+      CreateSend::CreateSend.headers['Authorization'].should == "Bearer #{@access_token}"
+    end
+
+    should "authenticate using an api key" do
+      CreateSend.api_key @api_key
+      CreateSend.api_key.should == @api_key
+      CreateSend.oauth.should == [nil, nil]
+      CreateSend::CreateSend.default_options[:basic_auth].should == {:username => @api_key, :password => 'x'}
+    end
+  end
+
   context "when an api caller is authenticated" do
     setup do
       @api_key = '123123123123123123123'
@@ -8,7 +38,7 @@ class CreateSendTest < Test::Unit::TestCase
       CreateSend.api_key @api_key
       @cs = CreateSend::CreateSend.new
     end
-    
+
     should "include the CreateSend module VERSION constant as part of the user agent when making a call" do
       # This test is done to ensure that the version from HTTParty isn't included instead
       assert CreateSend::CreateSend.headers["User-Agent"] == "createsend-ruby-#{CreateSend::VERSION}"

@@ -18,15 +18,23 @@ require 'createsend/administrator'
 
 module CreateSend
 
-  # Just allows callers to do CreateSend.api_key "..." rather than
-  # CreateSend::CreateSend.api_key "..." etc
+  # Just allows callers to do CreateSend.oauth '...', '...' rather than
+  # CreateSend::CreateSend.oauth '...', '...'
   class << self
+    def oauth(access_token=nil, refresh_token=nil)
+      r = CreateSend.oauth access_token, refresh_token
+    end
+
     def api_key(api_key=nil)
       r = CreateSend.api_key api_key
     end
 
     def base_uri(uri)
       r = CreateSend.base_uri uri
+    end
+
+    def base_oauth_uri(uri)
+      r = CreateSend.base_oauth_uri uri
     end
   end
 
@@ -71,17 +79,41 @@ module CreateSend
     end
     parser Parser::DealWithCreateSendInvalidJson
     @@base_uri = "https://api.createsend.com/api/v3"
-    @@api_key = ""
+    @@base_oauth_uri = "https://api.createsend.com"
+    @@api_key = ''
     headers({
       'User-Agent' => "createsend-ruby-#{VERSION}",
       'Content-Type' => 'application/json; charset=utf-8',
       'Accept-Encoding' => 'gzip, deflate' })
     base_uri @@base_uri
-    basic_auth @@api_key, 'x'
 
-    # Sets the API key which will be used to make calls to the CreateSend API.
+    # Resets authentication. Used before setting either CreateSend::CreateSend.access_token
+    # or CreateSend::CreateSend.api_key.
+    def self.reset_auth
+      @@access_token = nil
+      @@refresh_token = nil
+      @@api_key = nil
+    end
+
+    # Gets/sets the base OAuth URI.
+    def self.base_oauth_uri(uri=nil)
+      return @@base_oauth_uri unless uri
+      @@base_oauth_uri = uri
+    end
+
+    # Authenticate using an OAuth token
+    def self.oauth(access_token=nil, refresh_token=nil)
+      return @@access_token, @@refresh_token unless access_token
+      CreateSend.reset_auth
+      @@access_token = access_token
+      @@refresh_token = refresh_token if refresh_token
+      headers({"Authorization" => "Bearer #{@@access_token}"})
+    end
+
+    # Authenticate using an API key.
     def self.api_key(api_key=nil)
       return @@api_key unless api_key
+      CreateSend.reset_auth
       @@api_key = api_key
       basic_auth @@api_key, 'x'
     end
