@@ -37,8 +37,8 @@ module CreateSend
       r = CreateSend.base_uri uri
     end
 
-    def base_oauth_uri(uri)
-      r = CreateSend.base_oauth_uri uri
+    def oauth_token_uri(uri)
+      r = CreateSend.oauth_token_uri uri
     end
   end
 
@@ -87,7 +87,7 @@ module CreateSend
     end
     parser Parser::DealWithCreateSendInvalidJson
     @@base_uri = "https://api.createsend.com/api/v3"
-    @@base_oauth_uri = "https://api.createsend.com"
+    @@oauth_token_uri = "https://api.createsend.com/oauth/token"
     @@api_key = ''
     headers({
       'User-Agent' => "createsend-ruby-#{VERSION}",
@@ -104,10 +104,10 @@ module CreateSend
       default_options[:basic_auth] = nil
     end
 
-    # Gets/sets the base OAuth URI.
-    def self.base_oauth_uri(uri=nil)
-      return @@base_oauth_uri unless uri
-      @@base_oauth_uri = uri
+    # Gets/sets the OAuth token URI.
+    def self.oauth_token_uri(uri=nil)
+      return @@oauth_token_uri unless uri
+      @@oauth_token_uri = uri
     end
 
     # Authenticate using an OAuth token (and refresh token)
@@ -121,10 +121,15 @@ module CreateSend
 
     # Refresh an OAuth token using a refresh token.
     def self.refresh_token(refresh_token=nil)
-
-      # TODO: Refresh the token!
-
-      ["new access token", "new refresh token"]
+      refresh_token = @@refresh_token if !refresh_token
+      options = {
+        :body => "grant_type=refresh_token&refresh_token=#{refresh_token}" }
+      new_access_token, new_refresh_token = nil, nil
+      response = HTTParty.post(@@oauth_token_uri, options)
+      r = Hashie::Mash.new(response)
+      new_access_token, new_refresh_token = r.access_token, r.refresh_token
+      CreateSend.oauth new_access_token, new_refresh_token
+      [new_access_token, new_refresh_token]
     end
 
     # Authenticate using an API key.

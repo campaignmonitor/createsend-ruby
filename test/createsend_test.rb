@@ -5,7 +5,7 @@ class CreateSendTest < Test::Unit::TestCase
   context "when an api caller requires createsend" do
     setup do
       @access_token = "h9898wu98u9dqjoijnwld"
-      @refresh_token = "iuh98h9iq8whiquwd"
+      @refresh_token = "tGzv3JOkF0XG5Qx2TlKWIA"
       @api_key = "hiuhqiw78hiqhwdwdqwdqw2s2e2"
     end
 
@@ -28,6 +28,42 @@ class CreateSendTest < Test::Unit::TestCase
       CreateSend.api_key.should == @api_key
       CreateSend.oauth.should == [nil, nil]
       CreateSend::CreateSend.default_options[:basic_auth].should == {:username => @api_key, :password => 'x'}
+    end
+
+    should "refresh an access token given a refresh token" do
+      options = {
+        :body => fixture_file("refresh_oauth_token.json"),
+        :content_type => "application/json; charset=utf-8" }
+      FakeWeb.register_uri(:post, "https://api.createsend.com/oauth/token", options)
+      new_access_token, new_refresh_token = CreateSend.refresh_token @refresh_token
+
+      new_access_token.should == "SlAV32hkKG2e12e"
+      new_refresh_token.should == "tGzv3JOkF0XG5Qx2TlKWIA"
+      CreateSend.oauth.should == [new_access_token, new_refresh_token]
+      CreateSend::CreateSend.headers['Authorization'].should == "Bearer #{new_access_token}"
+    end
+
+  end
+
+  context "when an api caller is authenticated using oauth" do
+    setup do
+      @access_token = 'joidjOkF2e2e25Qx2Tli3je'
+      @refresh_token = 'tGzv3JOkF0XG5Qx2TlKWIA'
+      @auth_options = {:access_token => @access_token, :api_key => nil}
+      CreateSend.oauth @access_token, @refresh_token
+    end
+
+    should "refresh the current access token" do
+      options = {
+        :body => fixture_file("refresh_oauth_token.json"),
+        :content_type => "application/json; charset=utf-8" }
+      FakeWeb.register_uri(:post, "https://api.createsend.com/oauth/token", options)
+      new_access_token, new_refresh_token = CreateSend.refresh_token
+
+      new_access_token.should == "SlAV32hkKG2e12e"
+      new_refresh_token.should == "tGzv3JOkF0XG5Qx2TlKWIA"
+      CreateSend.oauth.should == [new_access_token, new_refresh_token]
+      CreateSend::CreateSend.headers['Authorization'].should == "Bearer #{new_access_token}"
     end
   end
 
