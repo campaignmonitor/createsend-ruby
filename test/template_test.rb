@@ -1,11 +1,8 @@
 require File.dirname(__FILE__) + '/helper'
 
 class TemplateTest < Test::Unit::TestCase
-  context "when an api caller is authenticated" do
+  multiple_contexts "authenticated_using_oauth_context", "authenticated_using_api_key_context" do
     setup do
-      @api_key = '123123123123123123123'
-      @auth_options = {:access_token => nil, :api_key => @api_key}
-      CreateSend.api_key @api_key
       @template = CreateSend::Template.new('98y2e98y289dh89h938389')
     end
 

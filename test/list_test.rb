@@ -1,11 +1,8 @@
 require File.dirname(__FILE__) + '/helper'
 
 class ListTest < Test::Unit::TestCase
-  context "when an api caller is authenticated" do
+  multiple_contexts "authenticated_using_oauth_context", "authenticated_using_api_key_context" do
     setup do
-      @api_key = '123123123123123123123'
-      @auth_options = {:access_token => nil, :api_key => @api_key}
-      CreateSend.api_key @api_key
       @client_id = "87y8d7qyw8d7yq8w7ydwqwd"
       @list_id = "e3c5f034d68744f7881fdccf13c2daee"
       @list = CreateSend::List.new @list_id
