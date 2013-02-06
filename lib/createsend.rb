@@ -124,8 +124,9 @@ module CreateSend
       site_url = CGI.escape(site_url)
       self.class.basic_auth username, password
       response = CreateSend.get("/apikey.json?SiteUrl=#{site_url}")
-      # Revert basic_auth to use @@api_key, 'x'
-      self.class.basic_auth @@api_key, 'x'
+      self.class.default_options[:basic_auth] = nil
+      # If an api key was being used, revert basic_auth to use @@api_key
+      self.class.basic_auth(@@api_key, 'x') if @@api_key
       Hashie::Mash.new(response)
     end
 

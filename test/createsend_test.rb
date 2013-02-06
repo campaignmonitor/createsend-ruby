@@ -43,7 +43,7 @@ class CreateSendTest < Test::Unit::TestCase
       clients = @cs.clients
       clients.size.should == 2
     end
-    
+
     should "get api key" do
       uri = URI.parse(@base_uri)
       site_url = "http://iamadesigner.createsend.com/"
@@ -53,6 +53,11 @@ class CreateSendTest < Test::Unit::TestCase
       stub_get(auth_options, "https://#{username}:#{password}@#{uri.host}#{uri.path}/apikey.json?SiteUrl=#{CGI.escape(site_url)}", "apikey.json")
       apikey = @cs.apikey(site_url, username, password).ApiKey
       apikey.should == "981298u298ue98u219e8u2e98u2"
+      if @auth_options[:api_key]
+        CreateSend::CreateSend.default_options[:basic_auth].should == {:username => @auth_options[:api_key], :password => 'x'}
+      elsif
+        CreateSend::CreateSend.default_options[:basic_auth].should == nil
+      end
     end
 
     should "get all clients" do
