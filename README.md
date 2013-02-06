@@ -28,7 +28,7 @@ We recommend using [omniauth-createsend](https://github.com/campaignmonitor/omni
 ```ruby
 require 'createsend'
 
-CreateSend.oauth 'your_access_token_', 'your_refresh_token'
+CreateSend.oauth 'your_access_token', 'your_refresh_token'
 cs = CreateSend::CreateSend.new
 clients = cs.clients
 ```
