@@ -25,6 +25,10 @@ module CreateSend
       r = CreateSend.oauth access_token, refresh_token
     end
 
+    def refresh_token(refresh_token=nil)
+      CreateSend.refresh_token refresh_token
+    end
+
     def api_key(api_key=nil)
       r = CreateSend.api_key api_key
     end
@@ -46,7 +50,7 @@ module CreateSend
       # @data should contain Code, Message and optionally ResultData
       extra = @data.ResultData ? "\nExtra result data: #{@data.ResultData}" : ""
       super "The CreateSend API responded with the following error"\
-            " - #{@data.Code}: #{@data.Message}#{extra}"
+        " - #{@data.Code}: #{@data.Message}#{extra}"
     end
   end
 
@@ -60,6 +64,10 @@ module CreateSend
   class Unauthorized < CreateSendError; end
   # Raised for HTTP response code of 404
   class NotFound < ClientError; end
+
+  # Raised for HTTP response code of 401, specifically when an OAuth token
+  # has expired (Code: 121, Message: 'Expired OAuth Token')
+  class ExpiredOAuthToken < Unauthorized; end
 
   # Provides high level CreateSend functionality/data you'll probably need.
   class CreateSend
@@ -102,13 +110,21 @@ module CreateSend
       @@base_oauth_uri = uri
     end
 
-    # Authenticate using an OAuth token
+    # Authenticate using an OAuth token (and refresh token)
     def self.oauth(access_token=nil, refresh_token=nil)
       return @@access_token, @@refresh_token unless access_token
       CreateSend.reset_auth
       @@access_token = access_token
       @@refresh_token = refresh_token if refresh_token
       headers({"Authorization" => "Bearer #{@@access_token}"})
+    end
+
+    # Refresh an OAuth token using a refresh token.
+    def self.refresh_token(refresh_token=nil)
+
+      # TODO: Refresh the token!
+
+      ["new access token", "new refresh token"]
     end
 
     # Authenticate using an API key.
@@ -187,7 +203,11 @@ module CreateSend
       when 400
         raise BadRequest.new(Hashie::Mash.new response)
       when 401
-        raise Unauthorized.new(Hashie::Mash.new response)
+        data = Hashie::Mash.new(response)
+        if data.Code == 121
+          raise ExpiredOAuthToken.new(data)
+        end
+        raise Unauthorized.new(data)
       when 404
         raise NotFound.new
       when 400...500

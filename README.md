@@ -35,6 +35,26 @@ clients = cs.clients
 
 If you choose not to use [omniauth-createsend](https://github.com/campaignmonitor/omniauth-createsend), you'll need to get access tokens for your users by following the instructions included in the Campaign Monitor API [documentation](http://www.campaignmonitor.com/api/getting-started/#authenticating_with_oauth).
 
+All OAuth tokens have an expiry time, and can be renewed with a corresponding refresh token. If your access token expires when attempting to make an API call, the `CreateSend::ExpiredOAuthToken` exception will be raised, so your code should handle this. Here's an example of how you could do this:
+
+```ruby
+require 'createsend'
+
+CreateSend.oauth 'your_access_token', 'your_refresh_token'
+
+begin
+  tries ||= 1
+  cs = CreateSend::CreateSend.new
+  clients = cs.clients
+  rescue CreateSend::ExpiredOAuthToken => eot
+    access_token, refresh_token = CreateSend.refresh_token
+    retry if (tries -= 1) >= 0
+    p "Error: #{eot}"
+  rescue Exception => e
+    p "Error: #{e}"
+end
+```
+
 #### Using an API key
 
 ```ruby
@@ -57,7 +77,7 @@ cs = CreateSend::CreateSend.new
 clients = cs.clients
     
 clients.each do |c|
-  puts "#{c.ClientID}: #{c.Name}"
+  p "#{c.ClientID}: #{c.Name}"
 end
 ```
 
@@ -69,7 +89,7 @@ a206def0582eec7dae47d937a4109cb2: Client Two
 ```
 
 ### Handling errors
-If the Campaign Monitor API returns an error, an exception will be thrown. For example, if you attempt to create a campaign and enter empty values for subject etc:
+If the Campaign Monitor API returns an error, an exception will be raised. For example, if you attempt to create a campaign and enter empty values for subject and other required fields:
 
 ```ruby
 require 'createsend'
@@ -79,13 +99,13 @@ CreateSend.oauth 'your_access_token', 'your_refresh_token'
 begin
   cl = CreateSend::Client.new "4a397ccaaa55eb4e6aa1221e1e2d7122"
   id = CreateSend::Campaign.create cl.client_id, "", "", "", "", "", "", "", [], []
-  puts "New campaign ID: #{id}"
+  p "New campaign ID: #{id}"
   rescue CreateSend::BadRequest => br
-    puts "Bad request error: #{br}"
-    puts "Error Code:    #{br.data.Code}"
-    puts "Error Message: #{br.data.Message}"
+    p "Bad request error: #{br}"
+    p "Error Code:    #{br.data.Code}"
+    p "Error Message: #{br.data.Message}"
   rescue Exception => e
-    puts "Error: #{e}"
+    p "Error: #{e}"
 end
 ```
 

@@ -163,6 +163,22 @@ class CreateSendTest < Test::Unit::TestCase
       end
     end
 
+    context "when authenticated using oauth and the access token has expired" do
+      setup do
+        @access_token = '98y98u98u98ue212'
+        @refresh_token = 'kj9wud09wi0qi0w'
+        @base_uri = 'https://api.createsend.com/api/v3'
+        @auth_options = {:access_token => @access_token, :api_key => nil}
+        CreateSend.oauth @access_token, @refresh_token
+        @cs = CreateSend::CreateSend.new
+      end
+
+      should "raise a CreateSend::ExpiredOAuthToken error" do
+        stub_get(@auth_options, "countries.json", "expired_oauth_token_api_error.json", ["401", "Unauthorized"])
+        lambda { c = @cs.countries }.should raise_error(CreateSend::ExpiredOAuthToken)
+      end
+    end
+
   end
 
 end
