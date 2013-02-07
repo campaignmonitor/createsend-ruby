@@ -9,19 +9,23 @@ A ruby library which implements the complete functionality of the [Campaign Moni
 
 ## Installation
 
-    gem install createsend
+To install:
 
-## Documentation
+```
+gem install createsend
+```
 
-Full documentation is hosted by [RubyDoc.info](http://rubydoc.info/gems/createsend/frames).
+Or, add a dependency to your `Gemfile` then `bundle install`.
 
-## Examples
+```ruby
+gem 'createsend'
+```
 
-### Authenticating
+## Authenticating
 
 The Campaign Monitor API supports authentication using either OAuth or an API key.
 
-#### Using OAuth
+### Using OAuth
 
 We recommend using [omniauth-createsend](https://github.com/campaignmonitor/omniauth-createsend) to authenticate users of your application, then once you have an access token and refresh token for your user, authenticate with the createsend gem like so:
 
@@ -55,7 +59,7 @@ begin
 end
 ```
 
-#### Using an API key
+### Using an API key
 
 ```ruby
 require 'createsend'
@@ -65,8 +69,8 @@ cs = CreateSend::CreateSend.new
 clients = cs.clients
 ```
 
-### Basic usage
-This example of listing all your clients demonstrates basic usage of the library:
+## Basic usage
+This example of listing all your clients demonstrates basic usage of the library and the data returned from the API:
 
 ```ruby
 require 'createsend'
@@ -75,7 +79,7 @@ CreateSend.oauth 'your_access_token', 'your_refresh_token'
 
 cs = CreateSend::CreateSend.new
 clients = cs.clients
-    
+
 clients.each do |c|
   p "#{c.ClientID}: #{c.Name}"
 end
@@ -88,7 +92,7 @@ Running this example will result in something like:
 a206def0582eec7dae47d937a4109cb2: Client Two
 ```
 
-### Handling errors
+## Handling errors
 If the Campaign Monitor API returns an error, an exception will be raised. For example, if you attempt to create a campaign and enter empty values for subject and other required fields:
 
 ```ruby
@@ -130,6 +134,10 @@ should "add a subscriber with custom fields" do
   email_address.should == "subscriber@example.com"
 end
 ```
+
+## Documentation
+
+Full documentation is hosted by [RubyDoc.info](http://rubydoc.info/gems/createsend/frames).
 
 ## Contributing
 1. Fork the repository
