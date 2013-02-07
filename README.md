@@ -43,12 +43,12 @@ require 'createsend'
 CreateSend.oauth 'your_access_token', 'your_refresh_token'
 
 begin
-  tries ||= 1
+  tries ||= 2
   cs = CreateSend::CreateSend.new
   clients = cs.clients
   rescue CreateSend::ExpiredOAuthToken => eot
     access_token, refresh_token = CreateSend.refresh_token
-    retry if (tries -= 1) >= 0
+    retry unless (tries -= 1).zero?
     p "Error: #{eot}"
   rescue Exception => e
     p "Error: #{e}"
