@@ -32,7 +32,7 @@ We recommend using [omniauth-createsend](https://github.com/campaignmonitor/omni
 ```ruby
 require 'createsend'
 
-CreateSend.oauth 'your_access_token', 'your_refresh_token'
+CreateSend.oauth 'your access token', 'your refresh token'
 cs = CreateSend::CreateSend.new
 clients = cs.clients
 ```
@@ -44,7 +44,7 @@ All OAuth tokens have an expiry time, and can be renewed with a corresponding re
 ```ruby
 require 'createsend'
 
-CreateSend.oauth 'your_access_token', 'your_refresh_token'
+CreateSend.oauth 'your access token', 'your refresh token'
 
 begin
   tries ||= 2
@@ -64,7 +64,7 @@ end
 ```ruby
 require 'createsend'
 
-CreateSend.api_key 'your_api_key'
+CreateSend.api_key 'your api key'
 cs = CreateSend::CreateSend.new
 clients = cs.clients
 ```
@@ -75,7 +75,7 @@ This example of listing all your clients demonstrates basic usage of the library
 ```ruby
 require 'createsend'
 
-CreateSend.oauth 'your_access_token', 'your_refresh_token'
+CreateSend.oauth 'your access token', 'your refresh token'
 
 cs = CreateSend::CreateSend.new
 clients = cs.clients
@@ -98,7 +98,7 @@ If the Campaign Monitor API returns an error, an exception will be raised. For e
 ```ruby
 require 'createsend'
 
-CreateSend.oauth 'your_access_token', 'your_refresh_token'
+CreateSend.oauth 'your access token', 'your refresh token'
 
 begin
   cl = CreateSend::Client.new "4a397ccaaa55eb4e6aa1221e1e2d7122"
