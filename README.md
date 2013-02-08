@@ -52,6 +52,7 @@ begin
   clients = cs.clients
   rescue CreateSend::ExpiredOAuthToken => eot
     access_token, refresh_token = CreateSend.refresh_token
+    # Save your updated access token and refresh token
     retry unless (tries -= 1).zero?
     p "Error: #{eot}"
   rescue Exception => e
