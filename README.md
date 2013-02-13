@@ -27,7 +27,42 @@ The Campaign Monitor API supports authentication using either OAuth or an API ke
 
 ### Using OAuth
 
-We recommend using [omniauth-createsend](https://github.com/campaignmonitor/omniauth-createsend) to authenticate users of your application, then once you have an access token and refresh token for your user, authenticate with the createsend gem like so:
+If you're developing a Rails or Rack based application, we recommend using [omniauth-createsend](https://github.com/campaignmonitor/omniauth-createsend) to authenticate with the Campaign Monitor API. You might find this [example application](https://gist.github.com/jdennes/4730102) helpful.
+
+If you don't use [omniauth-createsend](https://github.com/campaignmonitor/omniauth-createsend), you'll need to get access tokens for your users by following the instructions included in the Campaign Monitor API [documentation](http://www.campaignmonitor.com/api/getting-started/#authenticating_with_oauth). This gem provides functionality to help you do this, as described below. There's also another [example application](https://gist.github.com/jdennes/4945412) you may wish to reference, which doesn't depend on any OAuth libraries.
+
+The first thing your application should do is redirect your user to the Campaign Monitor authorization URL where they will have the opportunity to approve your application to access their Campaign Monitor account. You can get this authorization URL by using `CreateSend::CreateSend.authorize_url`, like so:
+
+```ruby
+require 'createsend'
+
+authorize_url = CreateSend::CreateSend.authorize_url(
+  'Client ID for your application',
+  'Client Secret for your application',
+  'Redirect URI for your application',
+  'The permission level your application requires',
+  'Optional state data to be included'
+)
+# Redirect your users to authorize_url.
+```
+
+If your user approves your application, they will then be redirected to the `redirect_uri` you specified, which will include a `code` parameter, and optionally a `state` parameter in the query string. Your application should implement a handler which can exchange the code passed to it for an access token, using `CreateSend::CreateSend.exchange_token` like so:
+
+```ruby
+require 'createsend'
+
+access_token, expires_in, refresh_token = CreateSend::CreateSend.exchange_token(
+  'Client ID for your application',
+  'Client Secret for your application',
+  'Redirect URI for your application',
+  'A unique code for your user' # Get the code parameter from the query string
+)
+# Save access_token, expires_in, and refresh_token.
+```
+
+At this point you have an access token and refresh token for your user which you should store somewhere convenient so that your application can look up these values when your user wants to make future Campaign Monitor API calls.
+
+Once you have an access token and refresh token for your user, you can use the `createsend` gem to authenticate and make further API calls like so:
 
 ```ruby
 require 'createsend'
@@ -39,8 +74,6 @@ auth = {
 cs = CreateSend::CreateSend.new auth
 clients = cs.clients
 ```
-
-If you choose not to use [omniauth-createsend](https://github.com/campaignmonitor/omniauth-createsend), you'll need to get access tokens for your users by following the instructions included in the Campaign Monitor API [documentation](http://www.campaignmonitor.com/api/getting-started/#authenticating_with_oauth).
 
 All OAuth tokens have an expiry time, and can be renewed with a corresponding refresh token. If your access token expires when attempting to make an API call, the `CreateSend::ExpiredOAuthToken` exception will be raised, so your code should handle this. Here's an example of how you could do this:
 
