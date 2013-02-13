@@ -32,8 +32,11 @@ We recommend using [omniauth-createsend](https://github.com/campaignmonitor/omni
 ```ruby
 require 'createsend'
 
-CreateSend.oauth 'your access token', 'your refresh token'
-cs = CreateSend::CreateSend.new
+auth = {
+  :access_token => 'your access token',
+  :refresh_token => 'your refresh token'
+}
+cs = CreateSend::CreateSend.new auth
 clients = cs.clients
 ```
 
@@ -44,14 +47,17 @@ All OAuth tokens have an expiry time, and can be renewed with a corresponding re
 ```ruby
 require 'createsend'
 
-CreateSend.oauth 'your access token', 'your refresh token'
+auth = {
+  :access_token => 'your access token',
+  :refresh_token => 'your refresh token'
+}
+cs = CreateSend::CreateSend.new auth
 
 begin
   tries ||= 2
-  cs = CreateSend::CreateSend.new
   clients = cs.clients
   rescue CreateSend::ExpiredOAuthToken => eot
-    access_token, refresh_token = CreateSend.refresh_token
+    access_token, refresh_token = cs.refresh_token
     # Save your updated access token and refresh token
     retry unless (tries -= 1).zero?
     p "Error: #{eot}"
@@ -65,32 +71,43 @@ end
 ```ruby
 require 'createsend'
 
-CreateSend.api_key 'your api key'
-cs = CreateSend::CreateSend.new
+cs = CreateSend::CreateSend.new {:api_key => 'your api key'}
 clients = cs.clients
 ```
 
 ## Basic usage
-This example of listing all your clients demonstrates basic usage of the library and the data returned from the API:
+This example of listing all your clients and their campaigns demonstrates basic usage of the library and the data returned from the API:
 
 ```ruby
 require 'createsend'
 
-CreateSend.oauth 'your access token', 'your refresh token'
+auth = {
+  :access_token => 'your access token',
+  :refresh_token => 'your refresh token'
+}
+cs = CreateSend::CreateSend.new auth
 
-cs = CreateSend::CreateSend.new
 clients = cs.clients
-
-clients.each do |c|
-  p "#{c.ClientID}: #{c.Name}"
+clients.each do |cl|
+  p "Client: #{cl.Name}"
+  client = CreateSend::Client.new auth, cl.ClientID
+  p "- Campaigns:"
+  client.campaigns.each do |cm|
+    p "  - #{cm.Subject}"
+  end
 end
 ```
 
 Running this example will result in something like:
 
 ```
-4a397ccaaa55eb4e6aa1221e1e2d7122: Client One
-a206def0582eec7dae47d937a4109cb2: Client Two
+Client: First Client
+- Campaigns:
+  - Newsletter Number One
+  - Newsletter Number Two
+Client: Second Client
+- Campaigns:
+  - News for January 2013
 ```
 
 ## Handling errors
@@ -99,11 +116,13 @@ If the Campaign Monitor API returns an error, an exception will be raised. For e
 ```ruby
 require 'createsend'
 
-CreateSend.oauth 'your access token', 'your refresh token'
+auth = {
+  :access_token => 'your access token',
+  :refresh_token => 'your refresh token'
+}
 
 begin
-  cl = CreateSend::Client.new "4a397ccaaa55eb4e6aa1221e1e2d7122"
-  id = CreateSend::Campaign.create cl.client_id, "", "", "", "", "", "", "", [], []
+  id = CreateSend::Campaign.create auth, "4a397ccaaa55eb4e6aa1221e1e2d7122", "", "", "", "", "", "", "", [], []
   p "New campaign ID: #{id}"
   rescue CreateSend::BadRequest => br
     p "Bad request error: #{br}"
@@ -129,7 +148,7 @@ For example, if you wanted to find out how to call the CreateSend::Subscriber.ad
 
 ```ruby
 should "add a subscriber with custom fields" do
-  stub_post(@auth_options, "subscribers/#{@list_id}.json", "add_subscriber.json")
+  stub_post(@auth, "subscribers/#{@list_id}.json", "add_subscriber.json")
   custom_fields = [ { :Key => 'website', :Value => 'http://example.com/' } ]
   email_address = CreateSend::Subscriber.add @list_id, "subscriber@example.com", "Subscriber", custom_fields, true
   email_address.should == "subscriber@example.com"

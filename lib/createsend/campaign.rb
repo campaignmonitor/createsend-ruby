@@ -1,13 +1,11 @@
-require 'createsend'
-require 'json'
-
 module CreateSend
   # Represents a campaign and provides associated funtionality.
-  class Campaign
+  class Campaign < CreateSend
     attr_reader :campaign_id
 
-    def initialize(campaign_id)
+    def initialize(auth, campaign_id)
       @campaign_id = campaign_id
+      super
     end
 
     # Creates a new campaign for a client.
@@ -26,7 +24,7 @@ module CreateSend
     #   which the campaign will be sent.
     # segment_ids - Array of Strings representing the IDs of the segments to
     #   which the campaign will be sent.
-    def self.create(client_id, subject, name, from_name, from_email,
+    def self.create(auth, client_id, subject, name, from_name, from_email,
       reply_to, html_url, text_url, list_ids, segment_ids)
       options = { :body => {
         :Subject => subject,
@@ -38,7 +36,8 @@ module CreateSend
         :TextUrl => text_url,
         :ListIDs => list_ids,
         :SegmentIDs => segment_ids }.to_json }
-      response = CreateSend.post "/campaigns/#{client_id}.json", options
+      cs = CreateSend.new auth
+      response = cs.post "/campaigns/#{client_id}.json", options
       response.parsed_response
     end
 
@@ -60,7 +59,7 @@ module CreateSend
     #   editable areas of the template. See documentation at
     #   campaignmonitor.com/api/campaigns/#creating_a_campaign_from_template
     #   for full details of template content format.
-    def self.create_from_template(client_id, subject, name, from_name,
+    def self.create_from_template(auth, client_id, subject, name, from_name,
       from_email, reply_to, list_ids, segment_ids, template_id,
       template_content)
       options = { :body => {
@@ -73,7 +72,8 @@ module CreateSend
         :SegmentIDs => segment_ids,
         :TemplateID => template_id,
         :TemplateContent => template_content }.to_json }
-      response = CreateSend.post(
+      cs = CreateSend.new auth
+      response = cs.post(
         "/campaigns/#{client_id}/fromtemplate.json", options)
       response.parsed_response
     end
@@ -103,7 +103,7 @@ module CreateSend
 
     # Deletes this campaign.
     def delete
-      response = CreateSend.delete "/campaigns/#{campaign_id}.json", {}
+      response = super "/campaigns/#{campaign_id}.json", {}
     end
 
     # Gets a summary of this campaign
@@ -187,11 +187,11 @@ module CreateSend
     end
 
     def get(action, options = {})
-      CreateSend.get uri_for(action), options
+      super uri_for(action), options
     end
 
     def post(action, options = {})
-      CreateSend.post uri_for(action), options
+      super uri_for(action), options
     end
 
     def uri_for(action)

@@ -1,26 +1,25 @@
-require 'createsend'
-require 'json'
-
 module CreateSend
   # Represents a subscriber and associated functionality.
-  class Subscriber
+  class Subscriber < CreateSend
     attr_reader :list_id
     attr_reader :email_address
 
-    def initialize(list_id, email_address)
+    def initialize(auth, list_id, email_address)
       @list_id = list_id
       @email_address = email_address
+      super
     end
 
     # Gets a subscriber by list ID and email address.
-    def self.get(list_id, email_address)
+    def self.get(auth, list_id, email_address)
       options = { :query => { :email => email_address } }
-      response = CreateSend.get "/subscribers/#{list_id}.json", options
+      cs = CreateSend.new auth
+      response = cs.get "/subscribers/#{list_id}.json", options
       Hashie::Mash.new(response)
     end
 
     # Adds a subscriber to a subscriber list.
-    def self.add(list_id, email_address, name, custom_fields, resubscribe,
+    def self.add(auth, list_id, email_address, name, custom_fields, resubscribe,
       restart_subscription_based_autoresponders=false)
       options = { :body => {
         :EmailAddress => email_address,
@@ -29,12 +28,13 @@ module CreateSend
         :Resubscribe => resubscribe,
         :RestartSubscriptionBasedAutoresponders =>
           restart_subscription_based_autoresponders }.to_json }
-      response = CreateSend.post "/subscribers/#{list_id}.json", options
+      cs = CreateSend.new auth
+      response = cs.post "/subscribers/#{list_id}.json", options
       response.parsed_response
     end
 
     # Imports subscribers into a subscriber list.
-    def self.import(list_id, subscribers, resubscribe,
+    def self.import(auth, list_id, subscribers, resubscribe,
       queue_subscription_based_autoresponders=false,
       restart_subscription_based_autoresponders=false)
       options = { :body => {
@@ -45,7 +45,8 @@ module CreateSend
         :RestartSubscriptionBasedAutoresponders =>
           restart_subscription_based_autoresponders }.to_json }
       begin
-        response = CreateSend.post(
+        cs = CreateSend.new auth
+        response = cs.post(
           "/subscribers/#{list_id}/import.json", options)
       rescue BadRequest => br
         # Subscriber import will throw BadRequest if some subscribers are not
@@ -75,7 +76,7 @@ module CreateSend
           :Resubscribe => resubscribe,
           :RestartSubscriptionBasedAutoresponders =>
             restart_subscription_based_autoresponders }.to_json }
-      CreateSend.put "/subscribers/#{@list_id}.json", options
+      put "/subscribers/#{@list_id}.json", options
       # Update @email_address, so this object can continue to be used reliably
       @email_address = new_email_address
     end
@@ -84,20 +85,20 @@ module CreateSend
     def unsubscribe
       options = { :body => {
         :EmailAddress => @email_address }.to_json }
-      CreateSend.post "/subscribers/#{@list_id}/unsubscribe.json", options
+      post "/subscribers/#{@list_id}/unsubscribe.json", options
     end
 
     # Gets the historical record of this subscriber's trackable actions.
     def history
       options = { :query => { :email => @email_address } }
-      response = CreateSend.get "/subscribers/#{@list_id}/history.json", options
+      response = cs_get "/subscribers/#{@list_id}/history.json", options
       response.map{|item| Hashie::Mash.new(item)}
     end
 
     # Moves this subscriber to the Deleted state in the associated list.
     def delete
       options = { :query => { :email => @email_address } }
-      CreateSend.delete "/subscribers/#{@list_id}.json", options
+      super "/subscribers/#{@list_id}.json", options
     end
   end
 end

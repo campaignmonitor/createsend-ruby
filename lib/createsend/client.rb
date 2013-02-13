@@ -1,27 +1,26 @@
-require 'createsend'
-require 'json'
-
 module CreateSend
   # Represents a client and associated functionality.
-  class Client
+  class Client < CreateSend
     attr_reader :client_id
 
-    def initialize(client_id)
+    def initialize(auth, client_id)
       @client_id = client_id
+      super
     end
 
     # Creates a client.
-    def self.create(company, timezone, country)
+    def self.create(auth, company, timezone, country)
       options = { :body => {
         :CompanyName => company,
         :TimeZone => timezone,
         :Country => country }.to_json }
-      CreateSend.post "/clients.json", options
+      cs = CreateSend.new auth
+      cs.post "/clients.json", options
     end
 
     # Gets the details of this client.
     def details
-      response = CreateSend.get "/clients/#{client_id}.json", {}
+      response = cs_get "/clients/#{client_id}.json", {}
       Hashie::Mash.new(response)
     end
 
@@ -179,21 +178,21 @@ module CreateSend
 
     # Deletes this client.
     def delete
-      CreateSend.delete "/clients/#{client_id}.json", {}
+      super "/clients/#{client_id}.json", {}
     end
 
     private
 
     def get(action, options = {})
-      CreateSend.get uri_for(action), options
+      super uri_for(action), options
     end
 
     def post(action, options = {})
-      CreateSend.post uri_for(action), options
+      super uri_for(action), options
     end
 
     def put(action, options = {})
-      CreateSend.put uri_for(action), options
+      super uri_for(action), options
     end
 
     def uri_for(action)

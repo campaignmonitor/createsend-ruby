@@ -3,13 +3,13 @@ require File.dirname(__FILE__) + '/helper'
 class CampaignTest < Test::Unit::TestCase
   multiple_contexts "authenticated_using_oauth_context", "authenticated_using_api_key_context" do
     setup do
-      @campaign = CreateSend::Campaign.new('787y87y87y87y87y87y87')
+      @campaign = CreateSend::Campaign.new @auth, '787y87y87y87y87y87y87'
     end
 
     should "create a campaign" do
       client_id = '87y8d7qyw8d7yq8w7ydwqwd'
-      stub_post(@auth_options, "campaigns/#{client_id}.json", "create_campaign.json")
-      campaign_id = CreateSend::Campaign.create client_id, "subject", "name", "g'day", "good.day@example.com", "good.day@example.com", 
+      stub_post(@auth, "campaigns/#{client_id}.json", "create_campaign.json")
+      campaign_id = CreateSend::Campaign.create @auth, client_id, "subject", "name", "g'day", "good.day@example.com", "good.day@example.com", 
       "http://example.com/campaign.html", "http://example.com/campaign.txt", [ '7y12989e82ue98u2e', 'dh9w89q8w98wudwd989' ],
       [ 'y78q9w8d9w8ud9q8uw', 'djw98quw9duqw98uwd98' ]
       request = FakeWeb.last_request.body
@@ -19,8 +19,8 @@ class CampaignTest < Test::Unit::TestCase
 
     should "create a campaign with a nil text_url param" do
       client_id = '87y8d7qyw8d7yq8w7ydwqwd'
-      stub_post(@auth_options, "campaigns/#{client_id}.json", "create_campaign.json")
-      campaign_id = CreateSend::Campaign.create client_id, "subject", "name", "g'day", "good.day@example.com", "good.day@example.com", 
+      stub_post(@auth, "campaigns/#{client_id}.json", "create_campaign.json")
+      campaign_id = CreateSend::Campaign.create @auth, client_id, "subject", "name", "g'day", "good.day@example.com", "good.day@example.com", 
       "http://example.com/campaign.html", nil, [ '7y12989e82ue98u2e', 'dh9w89q8w98wudwd989' ],
       [ 'y78q9w8d9w8ud9q8uw', 'djw98quw9duqw98uwd98' ]
       request = FakeWeb.last_request.body
@@ -102,40 +102,40 @@ class CampaignTest < Test::Unit::TestCase
       # </html>     
 
       client_id = '87y8d7qyw8d7yq8w7ydwqwd'
-      stub_post(@auth_options, "campaigns/#{client_id}/fromtemplate.json", "create_campaign.json")
-      campaign_id = CreateSend::Campaign.create_from_template client_id, "subject", "name", "g'day", "good.day@example.com", "good.day@example.com", 
+      stub_post(@auth, "campaigns/#{client_id}/fromtemplate.json", "create_campaign.json")
+      campaign_id = CreateSend::Campaign.create_from_template @auth, client_id, "subject", "name", "g'day", "good.day@example.com", "good.day@example.com", 
       [ '7y12989e82ue98u2e', 'dh9w89q8w98wudwd989' ], [ 'y78q9w8d9w8ud9q8uw', 'djw98quw9duqw98uwd98' ],
       "7j8uw98udowy12989e8298u2e", template_content
       campaign_id.should == "787y87y87y87y87y87y87"
     end
 
     should "send a preview of a draft campaign to a single recipient" do
-      stub_post(@auth_options, "campaigns/#{@campaign.campaign_id}/sendpreview.json", nil)
+      stub_post(@auth, "campaigns/#{@campaign.campaign_id}/sendpreview.json", nil)
       @campaign.send_preview "test+89898u9@example.com", "random"
     end
 
     should "send a preview of a draft campaign to multiple recipients" do
-      stub_post(@auth_options, "campaigns/#{@campaign.campaign_id}/sendpreview.json", nil)
+      stub_post(@auth, "campaigns/#{@campaign.campaign_id}/sendpreview.json", nil)
       @campaign.send_preview [ "test+89898u9@example.com", "test+787y8y7y8@example.com" ], "random"
     end
 
     should "send a campaign" do
-      stub_post(@auth_options, "campaigns/#{@campaign.campaign_id}/send.json", nil)
+      stub_post(@auth, "campaigns/#{@campaign.campaign_id}/send.json", nil)
       @campaign.send "confirmation@example.com"
     end
 
     should "unschedule a campaign" do
-      stub_post(@auth_options, "campaigns/#{@campaign.campaign_id}/unschedule.json", nil)
+      stub_post(@auth, "campaigns/#{@campaign.campaign_id}/unschedule.json", nil)
       @campaign.unschedule
     end
     
     should "delete a campaign" do
-      stub_delete(@auth_options, "campaigns/#{@campaign.campaign_id}.json", nil)
+      stub_delete(@auth, "campaigns/#{@campaign.campaign_id}.json", nil)
       @campaign.delete
     end
 
     should "get the summary for a campaign" do
-      stub_get(@auth_options, "campaigns/#{@campaign.campaign_id}/summary.json", "campaign_summary.json")
+      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/summary.json", "campaign_summary.json")
       summary = @campaign.summary
       summary.Recipients.should == 5
       summary.TotalOpened.should == 10
@@ -153,7 +153,7 @@ class CampaignTest < Test::Unit::TestCase
     end
 
     should "get the email client usage for a campaign" do
-      stub_get(@auth_options, "campaigns/#{@campaign.campaign_id}/emailclientusage.json", "email_client_usage.json")
+      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/emailclientusage.json", "email_client_usage.json")
       ecu = @campaign.email_client_usage
       ecu.size.should == 6
       ecu.first.Client.should == "iOS Devices"
@@ -163,7 +163,7 @@ class CampaignTest < Test::Unit::TestCase
     end
 
     should "get the lists and segments for a campaign" do
-      stub_get(@auth_options, "campaigns/#{@campaign.campaign_id}/listsandsegments.json", "campaign_listsandsegments.json")
+      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/listsandsegments.json", "campaign_listsandsegments.json")
       ls = @campaign.lists_and_segments
       ls.Lists.size.should == 1
       ls.Segments.size.should == 1
@@ -175,7 +175,7 @@ class CampaignTest < Test::Unit::TestCase
     end
 
     should "get the recipients for a campaign" do
-      stub_get(@auth_options, "campaigns/#{@campaign.campaign_id}/recipients.json?pagesize=20&orderfield=email&page=1&orderdirection=asc", "campaign_recipients.json")
+      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/recipients.json?pagesize=20&orderfield=email&page=1&orderdirection=asc", "campaign_recipients.json")
       res = @campaign.recipients page=1, page_size=20
       res.ResultsOrderedBy.should == "email"
       res.OrderDirection.should == "asc"
@@ -191,7 +191,7 @@ class CampaignTest < Test::Unit::TestCase
 
     should "get the opens for a campaign" do
       min_date = "2010-01-01"
-      stub_get(@auth_options, "campaigns/#{@campaign.campaign_id}/opens.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_opens.json")
+      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/opens.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_opens.json")
       opens = @campaign.opens min_date
       opens.Results.size.should == 5
       opens.Results.first.EmailAddress.should == "subs+6576576576@example.com"
@@ -215,7 +215,7 @@ class CampaignTest < Test::Unit::TestCase
 
     should "get the subscriber clicks for a campaign" do
       min_date = "2010-01-01"
-      stub_get(@auth_options, "campaigns/#{@campaign.campaign_id}/clicks.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_clicks.json")
+      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/clicks.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_clicks.json")
       clicks = @campaign.clicks min_date
       clicks.Results.size.should == 3
       clicks.Results.first.EmailAddress.should == "subs+6576576576@example.com"
@@ -240,7 +240,7 @@ class CampaignTest < Test::Unit::TestCase
 
     should "get the unsubscribes for a campaign" do
       min_date = "2010-01-01"
-      stub_get(@auth_options, "campaigns/#{@campaign.campaign_id}/unsubscribes.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_unsubscribes.json")
+      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/unsubscribes.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_unsubscribes.json")
       unsubscribes = @campaign.unsubscribes min_date
       unsubscribes.Results.size.should == 1
       unsubscribes.Results.first.EmailAddress.should == "subs+6576576576@example.com"
@@ -258,7 +258,7 @@ class CampaignTest < Test::Unit::TestCase
 
     should "get the spam complaints for a campaign" do
       min_date = "2010-01-01"
-      stub_get(@auth_options, "campaigns/#{@campaign.campaign_id}/spam.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_spam.json")
+      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/spam.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_spam.json")
       spam = @campaign.spam min_date
       spam.Results.size.should == 1
       spam.Results.first.EmailAddress.should == "subs+6576576576@example.com"
@@ -275,7 +275,7 @@ class CampaignTest < Test::Unit::TestCase
 
     should "get the bounces for a campaign" do
       min_date = "2010-01-01"
-      stub_get(@auth_options, "campaigns/#{@campaign.campaign_id}/bounces.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_bounces.json")
+      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/bounces.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_bounces.json")
       bounces = @campaign.bounces min_date
       bounces.Results.size.should == 2
       bounces.Results.first.EmailAddress.should == "asdf@softbouncemyemail.com"

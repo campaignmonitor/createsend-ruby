@@ -1,13 +1,11 @@
-require 'createsend'
-require 'json'
-
 module CreateSend
   # Represents a subscriber list and associated functionality.
-  class List
+  class List < CreateSend
     attr_reader :list_id
 
-    def initialize(list_id)
+    def initialize(auth, list_id)
       @list_id = list_id
+      super
     end
 
     # Creates a new list for a client.
@@ -23,7 +21,7 @@ module CreateSend
     # unsubscribe_setting - A String which must be either "AllClientLists" or
     #   "OnlyThisList". See the documentation for details:
     #   http://www.campaignmonitor.com/api/lists/#creating_a_list
-    def self.create(client_id, title, unsubscribe_page, confirmed_opt_in,
+    def self.create(auth, client_id, title, unsubscribe_page, confirmed_opt_in,
       confirmation_success_page, unsubscribe_setting="AllClientLists")
       options = { :body => {
         :Title => title,
@@ -31,13 +29,14 @@ module CreateSend
         :ConfirmedOptIn => confirmed_opt_in,
         :ConfirmationSuccessPage => confirmation_success_page,
         :UnsubscribeSetting => unsubscribe_setting }.to_json }
-      response = CreateSend.post "/lists/#{client_id}.json", options
+      cs = CreateSend.new auth
+      response = cs.post "/lists/#{client_id}.json", options
       response.parsed_response
     end
 
     # Deletes this list.
     def delete
-      response = CreateSend.delete "/lists/#{list_id}.json", {}
+      response = super "/lists/#{list_id}.json", {}
     end
 
     # Creates a new custom field for this list.
@@ -78,7 +77,7 @@ module CreateSend
     # Deletes a custom field associated with this list.
     def delete_custom_field(custom_field_key)
       custom_field_key = CGI.escape(custom_field_key)
-      response = CreateSend.delete(
+      response = cs_delete(
         "/lists/#{list_id}/customfields/#{custom_field_key}.json", {})
     end
 
@@ -94,7 +93,7 @@ module CreateSend
 
     # Gets the details of this list.
     def details
-      response = CreateSend.get "/lists/#{list_id}.json", {}
+      response = cs_get "/lists/#{list_id}.json"
       Hashie::Mash.new(response)
     end
 
@@ -179,7 +178,7 @@ module CreateSend
         :UnsubscribeSetting => unsubscribe_setting,
         :AddUnsubscribesToSuppList => add_unsubscribes_to_supp_list,
         :ScrubActiveWithSuppList => scrub_active_with_supp_list }.to_json }
-      response = CreateSend.put "/lists/#{list_id}.json", options
+      response = cs_put "/lists/#{list_id}.json", options
     end
 
     # Gets the webhooks for this list.
@@ -209,7 +208,7 @@ module CreateSend
 
     # Deletes a webhook associated with this list.
     def delete_webhook(webhook_id)
-      response = CreateSend.delete(
+      response = cs_delete(
         "/lists/#{list_id}/webhooks/#{webhook_id}.json", {})
     end
 
@@ -240,15 +239,15 @@ module CreateSend
     end
 
     def get(action, options = {})
-      CreateSend.get uri_for(action), options
+      super uri_for(action), options
     end
 
     def post(action, options = {})
-      CreateSend.post uri_for(action), options
+      super uri_for(action), options
     end
 
     def put(action, options = {})
-      CreateSend.put uri_for(action), options
+      super uri_for(action), options
     end
 
     def uri_for(action)
