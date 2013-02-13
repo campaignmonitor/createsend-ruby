@@ -24,6 +24,19 @@ class CreateSendTest < Test::Unit::TestCase
       cs.auth_details.should == auth
     end
 
+    should "get api key" do
+      base_uri = "https://api.createsend.com/api/v3"
+      uri = URI.parse(base_uri)
+      site_url = "http://iamadesigner.createsend.com/"
+      username = "myusername"
+      password = "mypassword"
+      cs = CreateSend::CreateSend.new
+      stub_get(nil, "https://#{username}:#{password}@#{uri.host}#{uri.path}/apikey.json?SiteUrl=#{CGI.escape(site_url)}", "apikey.json")
+      apikey = cs.apikey(site_url, username, password).ApiKey
+      apikey.should == "981298u298ue98u219e8u2e98u2"
+      cs.auth_details.should == {:api_key => apikey}
+    end
+
   end
 
   context "when an api caller is authenticated using oauth" do
@@ -55,7 +68,6 @@ class CreateSendTest < Test::Unit::TestCase
 
   multiple_contexts "authenticated_using_oauth_context", "authenticated_using_api_key_context" do
     setup do
-      @base_uri = "https://api.createsend.com/api/v3"
       @cs = CreateSend::CreateSend.new @auth
     end
 
@@ -65,19 +77,6 @@ class CreateSendTest < Test::Unit::TestCase
       stub_get(@auth, "clients.json", "clients.json")
       clients = @cs.clients
       clients.size.should == 2
-    end
-
-    should "get api key" do
-      uri = URI.parse(@base_uri)
-      site_url = "http://iamadesigner.createsend.com/"
-      username = "myusername"
-      password = "mypassword"
-      stub_get(nil, "https://#{username}:#{password}@#{uri.host}#{uri.path}/apikey.json?SiteUrl=#{CGI.escape(site_url)}", "apikey.json")
-      apikey = @cs.apikey(site_url, username, password).ApiKey
-      apikey.should == "981298u298ue98u219e8u2e98u2"
-      
-      # TODO: Set auth if successful, and test for different auth contexts
-      
     end
 
     should "get all clients" do

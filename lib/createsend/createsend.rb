@@ -91,7 +91,9 @@ module CreateSend
       site_url = CGI.escape(site_url)
       options = {:basic_auth => {:username => username, :password => password}}
       response = get("/apikey.json?SiteUrl=#{site_url}", options)
-      Hashie::Mash.new(response)
+      result = Hashie::Mash.new(response)
+      @auth_details = {:api_key => result.ApiKey } if not @auth_details
+      result
     end
 
     # Gets your clients.
