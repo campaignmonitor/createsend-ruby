@@ -92,7 +92,7 @@ module CreateSend
       options = {:basic_auth => {:username => username, :password => password}}
       response = get("/apikey.json?SiteUrl=#{site_url}", options)
       result = Hashie::Mash.new(response)
-      @auth_details = {:api_key => result.ApiKey } if not @auth_details
+      auth({:api_key => result.ApiKey}) if not @auth_details
       result
     end
 

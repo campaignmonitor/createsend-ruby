@@ -1,13 +1,66 @@
 # createsend-ruby history
 
+## v3.0.0 - Whenever this is released
+
+* Added support for authenticating using OAuth. See the [README](README.md#authenticating) for full usage instructions.
+* Refactored authentication so that it is _always_ done at the instance level. This introduces some breaking changes, which are clearly explained below.
+  * Authentication is now _always_ done at the instance level.
+
+      So when you _previously_ would have authenticated using an API key as follows:
+
+      ```ruby
+      CreateSend.api_key "your api key"
+      cs = CreateSend::CreateSend.new
+      cs.clients
+      ```
+
+      If you want to authenticate using an API key, you should _now_ do this:
+
+      ```ruby
+      auth {:api_key => "your api key"}
+      cs = CreateSend::CreateSend.new auth
+      cs.clients
+      ```
+
+  * Instances of `CreateSend::CreateSend` (and all subclasses) are now _always_ created by passing an `auth` hash as the first argument.
+
+      So for example, when you _previously_ would have called `CreateSend::Client.new` like so:
+
+      ```ruby
+      CreateSend.api_key "your api key"
+      cl = CreateSend::Client.new "your client id"
+      ```
+
+      You _now_ call `CreateSend::Client.new` like so:
+
+      ```ruby
+      auth {:api_key => "your api key"}
+      cl = CreateSend::Client.new auth, "your client id"
+      ```
+
+  * Any of the class methods on `CreateSend::CreateSend` (and all subclasses) are now _always_ called by passing an `auth` hash as the first argument.
+
+      So for example, when you _previously_ would have called `CreateSend::Subscriber.add` like so:
+
+      ```ruby
+      CreateSend.api_key "your api key"
+      sub = CreateSend::Subscriber.add "list id", "dave@example.com", "Dave", [], true
+      ```
+
+      You _now_ call `CreateSend::Subscriber.add` like so:
+
+      ```ruby
+      auth {:api_key => "your api key"}
+      sub = CreateSend::Subscriber.add auth, "list id", "dave@example.com", "Dave", [], true
+      ```
+
 ## v2.5.1 - 4 Feb, 2013   (f0a35ae)
 
 * Updated dependencies in gemspec. Removed cane as a development dependency.
 
 ## v2.5.0 - 11 Dec, 2012   (3054885)
 
-* Added support for including from name, from email, and reply to email in
-drafts, scheduled, and sent campaigns.
+* Added support for including from name, from email, and reply to email in drafts, scheduled, and sent campaigns.
 * Added support for campaign text version urls.
 * Added support for transferring credits to/from a client.
 * Added support for getting account billing details as well as client credits.
