@@ -50,6 +50,20 @@ module CreateSend
       "#{@@oauth_base_uri}?#{qs}"
     end
 
+    # Exchange a provided OAuth code for an OAuth access token, 'expires in'
+    # value and refresh token.
+    def self.exchange_token(client_id, client_secret, redirect_uri, code)
+      body = "grant_type=authorization_code"
+      body << "&client_id=#{CGI.escape(client_id.to_s)}"
+      body << "&client_secret=#{CGI.escape(client_secret.to_s)}"
+      body << "&redirect_uri=#{CGI.escape(redirect_uri.to_s)}"
+      body << "&code=#{CGI.escape(code.to_s)}"
+      options = {:body => body}
+      response = HTTParty.post(@@oauth_token_uri, options)
+      r = Hashie::Mash.new(response)
+      [r.access_token, r.expires_in, r.refresh_token]
+    end
+
     def initialize(*args)
       if args.size > 0
         auth args.first # Expect auth details as first argument

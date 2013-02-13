@@ -42,6 +42,24 @@ class CreateSendTest < Test::Unit::TestCase
       url = CreateSend::CreateSend.authorize_url(client_id, client_secret, redirect_uri, scope, state)
       url.should == "https://api.createsend.com/oauth?client_id=8998879&client_secret=iou0q9wud0q9wd0q9wid0q9iwd0q9wid0q9wdqwd&redirect_uri=http%3A%2F%2Fexample.com%2Fauth&scope=ViewReports%2CCreateCampaigns%2CSendCampaigns&state=89879287"
     end
+    
+    should "exchange an OAuth token for an access token, 'expires in' value, and refresh token" do
+      client_id = 8998879
+      client_secret = 'iou0q9wud0q9wd0q9wid0q9iwd0q9wid0q9wdqwd'
+      redirect_uri = 'http://example.com/auth'
+      code = 'jdiwouo8uowi9o9o'
+      options = {
+        :body => fixture_file("oauth_exchange_token.json"),
+        :content_type => "application/json; charset=utf-8" }
+      FakeWeb.register_uri(:post, "https://api.createsend.com/oauth/token", options)
+      access_token, expires_in, refresh_token = CreateSend::CreateSend.exchange_token(
+        client_id, client_secret, redirect_uri, code)
+
+      FakeWeb.last_request.body.should == "grant_type=authorization_code&client_id=8998879&client_secret=iou0q9wud0q9wd0q9wid0q9iwd0q9wid0q9wdqwd&redirect_uri=http%3A%2F%2Fexample.com%2Fauth&code=jdiwouo8uowi9o9o"
+      access_token.should == "SlAV32hkKG"
+      expires_in.should == 1209600
+      refresh_token.should == "tGzv3JOkF0XG5Qx2TlKWIA"
+    end
 
     should "get a person's api key" do
       base_uri = "https://api.createsend.com/api/v3"
@@ -76,6 +94,7 @@ class CreateSendTest < Test::Unit::TestCase
       cs = CreateSend::CreateSend.new @auth
       new_access_token, new_refresh_token = cs.refresh_token
 
+      FakeWeb.last_request.body.should == "grant_type=refresh_token&refresh_token=tGzv3JOkF0XG5Qx2TlKWIA"
       new_access_token.should == "SlAV32hkKG2e12e"
       new_refresh_token.should == "tGzv3JOkF0XG5Qx2TlKWIA"
       cs.auth_details.should == {
