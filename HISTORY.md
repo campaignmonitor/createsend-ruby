@@ -17,7 +17,7 @@
       If you want to authenticate using an API key, you should _now_ do this:
 
       ```ruby
-      auth {:api_key => "your api key"}
+      auth = {:api_key => "your api key"}
       cs = CreateSend::CreateSend.new auth
       cs.clients
       ```
@@ -34,7 +34,7 @@
       You _now_ call `CreateSend::Client.new` like so:
 
       ```ruby
-      auth {:api_key => "your api key"}
+      auth = {:api_key => "your api key"}
       cl = CreateSend::Client.new auth, "your client id"
       ```
 
@@ -50,7 +50,7 @@
       You _now_ call `CreateSend::Subscriber.add` like so:
 
       ```ruby
-      auth {:api_key => "your api key"}
+      auth = {:api_key => "your api key"}
       sub = CreateSend::Subscriber.add auth, "list id", "dave@example.com", "Dave", [], true
       ```
 
