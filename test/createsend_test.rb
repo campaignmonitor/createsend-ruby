@@ -102,6 +102,24 @@ class CreateSendTest < Test::Unit::TestCase
         :refresh_token => new_refresh_token
       }
     end
+
+    should "raise an error when an attempt to refresh the access token is made but refresh token is nil" do
+      cs = CreateSend::CreateSend.new :access_token => 'any token', :refresh_token => nil
+      lambda { new_access_token, new_refresh_token = cs.refresh_token }.should raise_error(
+        Exception, '@auth_details[:refresh_token] does not contain a refresh token.')
+    end
+
+    should "raise an error when an attempt to refresh the access token is made but no there was no refresh token passed in" do
+      cs = CreateSend::CreateSend.new :access_token => 'any token'
+      lambda { new_access_token, new_refresh_token = cs.refresh_token }.should raise_error(
+        Exception, '@auth_details[:refresh_token] does not contain a refresh token.')
+    end
+
+    should "raise an error when an attempt to refresh the access token is made but no there was no auth hash passed in" do
+      cs = CreateSend::CreateSend.new
+      lambda { new_access_token, new_refresh_token = cs.refresh_token }.should raise_error(
+        Exception, '@auth_details[:refresh_token] does not contain a refresh token.')
+    end
   end
 
   multiple_contexts "authenticated_using_oauth_context", "authenticated_using_api_key_context" do

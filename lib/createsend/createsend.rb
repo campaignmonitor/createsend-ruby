@@ -99,9 +99,12 @@ module CreateSend
 
     # Refresh the current OAuth token using the current refresh token.
     def refresh_token
-      
-      # TODO: Raise something if not being called with @auth_details[:refresh_token] set...
-      
+      if not @auth_details or
+        not @auth_details.has_key? :refresh_token or
+        not @auth_details[:refresh_token]
+        raise '@auth_details[:refresh_token] does not contain a refresh token.'
+      end
+
       options = {
         :body => "grant_type=refresh_token&refresh_token=#{@auth_details[:refresh_token]}" }
       response = HTTParty.post(@@oauth_token_uri, options)
