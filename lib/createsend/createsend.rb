@@ -60,6 +60,11 @@ module CreateSend
       body << "&code=#{CGI.escape(code.to_s)}"
       options = {:body => body}
       response = HTTParty.post(@@oauth_token_uri, options)
+      if response.has_key? 'error' and response.has_key? 'error_description'
+        err = "Error exchanging code for access token: "
+        err << "#{response['error']} - #{response['error_description']}"
+        raise err
+      end
       r = Hashie::Mash.new(response)
       [r.access_token, r.expires_in, r.refresh_token]
     end
