@@ -90,8 +90,8 @@ begin
   tries ||= 2
   clients = cs.clients
   rescue CreateSend::ExpiredOAuthToken => eot
-    access_token, refresh_token = cs.refresh_token
-    # Save your updated access token and refresh token
+    access_token, expires_in, refresh_token = cs.refresh_token
+    # Save your updated access token, expire in value, and refresh token
     retry unless (tries -= 1).zero?
     p "Error: #{eot}"
   rescue Exception => e

@@ -117,7 +117,7 @@ module CreateSend
       auth({
         :access_token => r.access_token,
         :refresh_token => r.refresh_token})
-      [r.access_token, r.refresh_token]
+      [r.access_token, r.expires_in, r.refresh_token]
     end
 
     # Gets your CreateSend API key, given your site url, username and password.
