@@ -27,9 +27,9 @@ The Campaign Monitor API supports authentication using either OAuth or an API ke
 
 ### Using OAuth
 
-If you're developing a Rails or Rack based application, we recommend using [omniauth-createsend](https://github.com/campaignmonitor/omniauth-createsend) to authenticate with the Campaign Monitor API. You might find this [example application](https://gist.github.com/jdennes/4730102) helpful.
+If you're developing a Rails or Rack based application, we recommend using [omniauth-createsend](https://github.com/jdennes/omniauth-createsend) to authenticate with the Campaign Monitor API. You might find this [example application](https://gist.github.com/jdennes/4730102) helpful.
 
-If you don't use [omniauth-createsend](https://github.com/campaignmonitor/omniauth-createsend), you'll need to get access tokens for your users by following the instructions included in the Campaign Monitor API [documentation](http://www.campaignmonitor.com/api/getting-started/#authenticating_with_oauth). This gem provides functionality to help you do this, as described below. There's also another [example application](https://gist.github.com/jdennes/4945412) you may wish to reference, which doesn't depend on any OAuth libraries.
+If you don't use [omniauth-createsend](https://github.com/jdennes/omniauth-createsend), you'll need to get access tokens for your users by following the instructions included in the Campaign Monitor API [documentation](http://www.campaignmonitor.com/api/getting-started/#authenticating_with_oauth). This gem provides functionality to help you do this, as described below. There's also another [example application](https://gist.github.com/jdennes/4945412) you may wish to reference, which doesn't depend on any OAuth libraries.
 
 The first thing your application should do is redirect your user to the Campaign Monitor authorization URL where they will have the opportunity to approve your application to access their Campaign Monitor account. You can get this authorization URL by using `CreateSend::CreateSend.authorize_url`, like so:
 
