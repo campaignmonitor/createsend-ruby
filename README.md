@@ -195,6 +195,6 @@ Full documentation is hosted by [RubyDoc.info](http://rubydoc.info/gems/createse
 ## Contributing
 1. Fork the repository
 2. Make your changes, including tests for your changes.
-3. Ensure that the build passes, by running `bundle exec rake` (CI runs on: `1.9.3`, `1.9.2`, `1.8.7` and `ree`)
+3. Ensure that the build passes, by running `bundle exec rake` (CI runs on: `2.0.0`, `1.9.3`, `1.9.2`, `1.8.7`, and `ree`)
 4. It should go without saying, but do not increment the version number in your commits.
 5. Submit a pull request.
