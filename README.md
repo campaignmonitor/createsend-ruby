@@ -38,7 +38,6 @@ require 'createsend'
 
 authorize_url = CreateSend::CreateSend.authorize_url(
   'Client ID for your application',
-  'Client Secret for your application',
   'Redirect URI for your application',
   'The permission level your application requires',
   'Optional state data to be included'

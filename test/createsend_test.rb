@@ -26,21 +26,19 @@ class CreateSendTest < Test::Unit::TestCase
 
     should "get the authorization url without state included" do
       client_id = 8998879
-      client_secret = 'iou0q9wud0q9wd0q9wid0q9iwd0q9wid0q9wdqwd'
       redirect_uri = 'http://example.com/auth'
       scope = 'ViewReports,CreateCampaigns,SendCampaigns'
-      url = CreateSend::CreateSend.authorize_url(client_id, client_secret, redirect_uri, scope)
-      url.should == "https://api.createsend.com/oauth?client_id=8998879&client_secret=iou0q9wud0q9wd0q9wid0q9iwd0q9wid0q9wdqwd&redirect_uri=http%3A%2F%2Fexample.com%2Fauth&scope=ViewReports%2CCreateCampaigns%2CSendCampaigns"
+      url = CreateSend::CreateSend.authorize_url(client_id, redirect_uri, scope)
+      url.should == "https://api.createsend.com/oauth?client_id=8998879&redirect_uri=http%3A%2F%2Fexample.com%2Fauth&scope=ViewReports%2CCreateCampaigns%2CSendCampaigns"
     end
 
     should "get the authorization url with state included" do
       client_id = 8998879
-      client_secret = 'iou0q9wud0q9wd0q9wid0q9iwd0q9wid0q9wdqwd'
       redirect_uri = 'http://example.com/auth'
       scope = 'ViewReports,CreateCampaigns,SendCampaigns'
       state = 89879287
-      url = CreateSend::CreateSend.authorize_url(client_id, client_secret, redirect_uri, scope, state)
-      url.should == "https://api.createsend.com/oauth?client_id=8998879&client_secret=iou0q9wud0q9wd0q9wid0q9iwd0q9wid0q9wdqwd&redirect_uri=http%3A%2F%2Fexample.com%2Fauth&scope=ViewReports%2CCreateCampaigns%2CSendCampaigns&state=89879287"
+      url = CreateSend::CreateSend.authorize_url(client_id, redirect_uri, scope, state)
+      url.should == "https://api.createsend.com/oauth?client_id=8998879&redirect_uri=http%3A%2F%2Fexample.com%2Fauth&scope=ViewReports%2CCreateCampaigns%2CSendCampaigns&state=89879287"
     end
 
     should "exchange an OAuth token for an access token, 'expires in' value, and refresh token" do
