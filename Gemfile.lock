@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     createsend (2.5.1)
-      hashie (~> 2.0)
+      hashie (>= 1.2, < 3)
       httparty (~> 0.10)
       json
 
