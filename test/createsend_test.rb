@@ -257,6 +257,7 @@ class CreateSendTest < Test::Unit::TestCase
       { ["400", "Bad Request"]  => CreateSend::BadRequest,
         ["401", "Unauthorized"] => CreateSend::Unauthorized,
         ["404", "Not Found"]    => CreateSend::NotFound,
+        ["418", "I'm a teapot"] => CreateSend::ClientError,
         ["500", "Server Error"] => CreateSend::ServerError
       }.each do |status, exception|
         context "#{status.first}, a get" do

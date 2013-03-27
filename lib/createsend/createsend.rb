@@ -88,19 +88,6 @@ module CreateSend
       end
     end
 
-    # Deals with an unfortunate situation where responses aren't valid json.
-    class Parser::DealWithCreateSendInvalidJson < HTTParty::Parser
-      # The createsend API returns an ID as a string when a 201 Created
-      # response is returned. Unfortunately this is invalid json.
-      def parse
-        begin
-          super
-        rescue MultiJson::DecodeError => e
-          body[1..-2] # Strip surrounding quotes and return as is.
-        end
-      end
-    end
-    parser Parser::DealWithCreateSendInvalidJson
     @@base_uri = "https://api.createsend.com/api/v3"
     @@oauth_base_uri = "https://api.createsend.com/oauth"
     @@oauth_token_uri = "#{@@oauth_base_uri}/token"

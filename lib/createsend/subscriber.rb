@@ -57,7 +57,7 @@ module CreateSend
         if br.data.ResultData
           return br.data.ResultData
         else
-          raise br
+          raise br # Just raise other Bad Request errors
         end
       end
       Hashie::Mash.new(response)
