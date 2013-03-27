@@ -49,7 +49,7 @@ module CreateSend
     end
 
     # Exchange a provided OAuth code for an OAuth access token, 'expires in'
-    # value and refresh token.
+    # value, and refresh token.
     def self.exchange_token(client_id, client_secret, redirect_uri, code)
       body = "grant_type=authorization_code"
       body << "&client_id=#{CGI.escape(client_id.to_s)}"
@@ -60,6 +60,21 @@ module CreateSend
       response = HTTParty.post(@@oauth_token_uri, options)
       if response.has_key? 'error' and response.has_key? 'error_description'
         err = "Error exchanging code for access token: "
+        err << "#{response['error']} - #{response['error_description']}"
+        raise err
+      end
+      r = Hashie::Mash.new(response)
+      [r.access_token, r.expires_in, r.refresh_token]
+    end
+
+    # Refresh an OAuth access token, given an OAuth refresh token.
+    # Returns a new access token, 'expires in' value, and refresh token.
+    def self.refresh_access_token(refresh_token)
+      options = {
+        :body => "grant_type=refresh_token&refresh_token=#{refresh_token}" }
+      response = HTTParty.post(@@oauth_token_uri, options)
+      if response.has_key? 'error' and response.has_key? 'error_description'
+        err = "Error refreshing access token: "
         err << "#{response['error']} - #{response['error_description']}"
         raise err
       end
@@ -108,14 +123,12 @@ module CreateSend
         raise '@auth_details[:refresh_token] does not contain a refresh token.'
       end
 
-      options = {
-        :body => "grant_type=refresh_token&refresh_token=#{@auth_details[:refresh_token]}" }
-      response = HTTParty.post(@@oauth_token_uri, options)
-      r = Hashie::Mash.new(response)
+      access_token, expires_in, refresh_token =
+        self.class.refresh_access_token @auth_details[:refresh_token]
       auth({
-        :access_token => r.access_token,
-        :refresh_token => r.refresh_token})
-      [r.access_token, r.expires_in, r.refresh_token]
+        :access_token => access_token,
+        :refresh_token => refresh_token})
+      [access_token, expires_in, refresh_token]
     end
 
     # Gets your CreateSend API key, given your site url, username and password.

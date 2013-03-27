@@ -73,6 +73,32 @@ class CreateSendTest < Test::Unit::TestCase
           Exception, 'Error exchanging code for access token: invalid_grant - Specified code was invalid or expired')
       FakeWeb.last_request.body.should == "grant_type=authorization_code&client_id=8998879&client_secret=iou0q9wud0q9wd0q9wid0q9iwd0q9wid0q9wdqwd&redirect_uri=http%3A%2F%2Fexample.com%2Fauth&code=invalidcode"
     end
+    
+    should "refresh an access token given a refresh token" do
+      refresh_token = 'tGzv3JOkF0XG5Qx2TlKWIA'
+      options = {
+        :body => fixture_file("refresh_oauth_token.json"),
+        :content_type => "application/json; charset=utf-8" }
+      FakeWeb.register_uri(:post, "https://api.createsend.com/oauth/token", options)
+      new_access_token, new_expires_in, new_refresh_token = CreateSend::CreateSend.refresh_access_token refresh_token
+
+      FakeWeb.last_request.body.should == "grant_type=refresh_token&refresh_token=#{refresh_token}"
+      new_access_token.should == "SlAV32hkKG2e12e"
+      new_expires_in.should == 1209600
+      new_refresh_token.should == "tGzv3JOkF0XG5Qx2TlKWIA"
+    end
+
+    should "raise an error when an attempt to refresh an access token fails" do
+      refresh_token = 'invalidrefreshtoken'
+      options = {
+        :body => fixture_file("oauth_refresh_token_error.json"),
+        :content_type => "application/json; charset=utf-8" }
+      FakeWeb.register_uri(:post, "https://api.createsend.com/oauth/token", options)
+      lambda { access_token, expires_in, refresh_token = CreateSend::CreateSend.refresh_access_token(
+        refresh_token) }.should raise_error(
+          Exception, 'Error refreshing access token: invalid_grant - Specified refresh_token was invalid or expired')
+      FakeWeb.last_request.body.should == "grant_type=refresh_token&refresh_token=#{refresh_token}"
+    end
 
     should "get a person's api key" do
       base_uri = "https://api.createsend.com/api/v3"
@@ -134,6 +160,19 @@ class CreateSendTest < Test::Unit::TestCase
       lambda { new_access_token, new_refresh_token = cs.refresh_token }.should raise_error(
         Exception, '@auth_details[:refresh_token] does not contain a refresh token.')
     end
+
+    should "raise an error when an attempt to refresh the access token is made but the refresh token is invalid" do
+      refresh_token = 'invalidrefreshtoken'
+      cs = CreateSend::CreateSend.new :access_token => 'any token', :refresh_token => refresh_token
+      options = {
+        :body => fixture_file("oauth_refresh_token_error.json"),
+        :content_type => "application/json; charset=utf-8" }
+      FakeWeb.register_uri(:post, "https://api.createsend.com/oauth/token", options)
+      lambda { access_token, expires_in, refresh_token = cs.refresh_token(
+        refresh_token) }.should raise_error(
+          Exception, 'Error refreshing access token: invalid_grant - Specified refresh_token was invalid or expired')
+    end
+
   end
 
   multiple_contexts "authenticated_using_oauth_context", "authenticated_using_api_key_context" do
