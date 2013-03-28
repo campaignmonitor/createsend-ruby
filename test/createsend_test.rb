@@ -168,8 +168,7 @@ class CreateSendTest < Test::Unit::TestCase
         :body => fixture_file("oauth_refresh_token_error.json"),
         :content_type => "application/json; charset=utf-8" }
       FakeWeb.register_uri(:post, "https://api.createsend.com/oauth/token", options)
-      lambda { access_token, expires_in, refresh_token = cs.refresh_token(
-        refresh_token) }.should raise_error(
+      lambda { access_token, expires_in, refresh_token = cs.refresh_token }.should raise_error(
           Exception, 'Error refreshing access token: invalid_grant - Specified refresh_token was invalid or expired')
     end
 

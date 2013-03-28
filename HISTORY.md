@@ -1,5 +1,26 @@
 # createsend-ruby history
 
+## v3.1.0 - 28 Mar, 2013 (8a91dda)
+
+* Added `CreateSend::CreateSend.refresh_access_token` to allow easier refreshing of access tokens when using class methods.
+
+    So you can now refresh an access token using _any_ refresh token like so:
+
+    ```ruby
+    access_token, expires_in, refresh_token =
+      CreateSend::CreateSend.refresh_access_token 'refresh token'
+    ```
+
+    Or, you can refresh the _current_ access token (with your current refresh token) like so:
+
+    ```ruby
+    cs = CreateSend::CreateSend.new :access_token => 'access token',
+      :refresh_token => 'refresh token'
+    access_token, expires_in, refresh_token = cs.refresh_token
+    ```
+
+* Added `CreateSend::InvalidOAuthToken` and `CreateSend::RevokedOAuthToken` exceptions to make handling of OAuth exceptions in user code easier.
+
 ## v3.0.0 - 25 Mar, 2013 (129ad0e)
 
 * Added support for authenticating using OAuth. See the [README](README.md#authenticating) for full usage instructions.
