@@ -32,6 +32,8 @@ If you're developing a Rails or Rack based application, we recommend using [omni
 
 If you don't use [omniauth-createsend](https://github.com/jdennes/omniauth-createsend), you'll need to get access tokens for your users by following the instructions included in the Campaign Monitor API [documentation](http://www.campaignmonitor.com/api/getting-started/#authenticating_with_oauth). This gem provides functionality to help you do this, as described below. There's also another [example application](https://gist.github.com/jdennes/4945412) you may wish to reference, which doesn't depend on any OAuth libraries.
 
+#### Redirecting to the authorization URL
+
 The first thing your application should do is redirect your user to the Campaign Monitor authorization URL where they will have the opportunity to approve your application to access their Campaign Monitor account. You can get this authorization URL by using `CreateSend::CreateSend.authorize_url`, like so:
 
 ```ruby
@@ -45,6 +47,8 @@ authorize_url = CreateSend::CreateSend.authorize_url(
 )
 # Redirect your users to authorize_url.
 ```
+
+#### Exchanging an OAuth code for an access token
 
 If your user approves your application, they will then be redirected to the `redirect_uri` you specified, which will include a `code` parameter, and optionally a `state` parameter in the query string. Your application should implement a handler which can exchange the code passed to it for an access token, using `CreateSend::CreateSend.exchange_token` like so:
 
@@ -62,6 +66,8 @@ access_token, expires_in, refresh_token = CreateSend::CreateSend.exchange_token(
 
 At this point you have an access token and refresh token for your user which you should store somewhere convenient so that your application can look up these values when your user wants to make future Campaign Monitor API calls.
 
+#### Making API calls using an access token
+
 Once you have an access token and refresh token for your user, you can use the `createsend` gem to authenticate and make further API calls like so:
 
 ```ruby
@@ -75,7 +81,11 @@ cs = CreateSend::CreateSend.new auth
 clients = cs.clients
 ```
 
-All OAuth tokens have an expiry time, and can be renewed with a corresponding refresh token. If your access token expires when attempting to make an API call, the `CreateSend::ExpiredOAuthToken` exception will be raised, so your code should handle this. Here's an example of how you could do this:
+#### Refreshing access tokens
+
+All OAuth access tokens have an expiry time, and can be renewed with a refresh token. If your access token expires when attempting to make an API call, the `CreateSend::ExpiredOAuthToken` exception will be raised, so your code should handle this. You can handle this using either `CreateSend::CreateSend.refresh_access_token` (when calling class methods) or `CreateSend::CreateSend#refresh_token` (when calling instance methods).
+
+Here's an example of using `CreateSend::CreateSend#refresh_token` to refresh your current access token when calling `CreateSend::CreateSend#clients`:
 
 ```ruby
 require 'createsend'
@@ -91,13 +101,17 @@ begin
   clients = cs.clients
   rescue CreateSend::ExpiredOAuthToken => eot
     access_token, expires_in, refresh_token = cs.refresh_token
-    # Save your updated access token, expire in value, and refresh token
+    # Here you should save your updated access token, 'expire in' value,
+    # and refresh token. `cs` will automatically have the new access token
+    # set, so there is no need to set it again.
     retry unless (tries -= 1).zero?
     p "Error: #{eot}"
   rescue Exception => e
     p "Error: #{e}"
 end
 ```
+
+In addition to raising `CreateSend::ExpiredOAuthToken` when an access token has expired, this library also raises `CreateSend::InvalidOAuthToken` if an invalid access token is used, and raises `CreateSend::RevokedOAuthToken` if a user has revoked the access token being used. This makes it easier for you to handle these cases in your code.
 
 ### Using an API key
 
@@ -155,7 +169,8 @@ auth = {
 }
 
 begin
-  id = CreateSend::Campaign.create auth, "4a397ccaaa55eb4e6aa1221e1e2d7122", "", "", "", "", "", "", "", [], []
+  id = CreateSend::Campaign.create auth, "4a397ccaaa55eb4e6aa1221e1e2d7122",
+    "", "", "", "", "", "", "", [], []
   p "New campaign ID: #{id}"
   rescue CreateSend::BadRequest => br
     p "Bad request error: #{br}"
@@ -183,7 +198,7 @@ For example, if you wanted to find out how to call the CreateSend::Subscriber.ad
 should "add a subscriber with custom fields" do
   stub_post(@auth, "subscribers/#{@list_id}.json", "add_subscriber.json")
   custom_fields = [ { :Key => 'website', :Value => 'http://example.com/' } ]
-  email_address = CreateSend::Subscriber.add @list_id, "subscriber@example.com", "Subscriber", custom_fields, true
+  email_address = CreateSend::Subscriber.add @auth, @list_id, "subscriber@example.com", "Subscriber", custom_fields, true
   email_address.should == "subscriber@example.com"
 end
 ```
@@ -194,7 +209,7 @@ Full documentation is hosted by [RubyDoc.info](http://rubydoc.info/gems/createse
 
 ## Contributing
 1. Fork the repository
-2. Make your changes, including tests for your changes which maintain or improve [coverage][coveralls].
+2. Make your changes, including tests for your changes which maintain [coverage][coveralls].
 3. Ensure that the build passes, by running `bundle exec rake` (CI runs on: `2.0.0`, `1.9.3`, `1.9.2`, `1.8.7`, and `ree`)
 4. It should go without saying, but do not increment the version number in your commits.
 5. Submit a pull request.
