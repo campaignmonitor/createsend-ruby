@@ -1,3 +1,12 @@
+require 'simplecov'
+require 'coveralls'
+
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+  SimpleCov::Formatter::HTMLFormatter,
+  Coveralls::SimpleCov::Formatter
+]
+SimpleCov.start
+
 require 'test/unit'
 require 'pathname'
 
@@ -9,7 +18,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'createsend'
 
-FakeWeb.allow_net_connect = false
+FakeWeb.allow_net_connect = %r[^https?://coveralls.io]
 
 def fixture_file(filename)
   return '' if filename == ''

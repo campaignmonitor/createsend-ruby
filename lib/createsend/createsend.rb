@@ -49,7 +49,7 @@ module CreateSend
     end
 
     # Exchange a provided OAuth code for an OAuth access token, 'expires in'
-    # value and refresh token.
+    # value, and refresh token.
     def self.exchange_token(client_id, client_secret, redirect_uri, code)
       body = "grant_type=authorization_code"
       body << "&client_id=#{CGI.escape(client_id.to_s)}"
@@ -67,25 +67,27 @@ module CreateSend
       [r.access_token, r.expires_in, r.refresh_token]
     end
 
+    # Refresh an OAuth access token, given an OAuth refresh token.
+    # Returns a new access token, 'expires in' value, and refresh token.
+    def self.refresh_access_token(refresh_token)
+      options = {
+        :body => "grant_type=refresh_token&refresh_token=#{refresh_token}" }
+      response = HTTParty.post(@@oauth_token_uri, options)
+      if response.has_key? 'error' and response.has_key? 'error_description'
+        err = "Error refreshing access token: "
+        err << "#{response['error']} - #{response['error_description']}"
+        raise err
+      end
+      r = Hashie::Mash.new(response)
+      [r.access_token, r.expires_in, r.refresh_token]
+    end
+
     def initialize(*args)
       if args.size > 0
         auth args.first # Expect auth details as first argument
       end
     end
 
-    # Deals with an unfortunate situation where responses aren't valid json.
-    class Parser::DealWithCreateSendInvalidJson < HTTParty::Parser
-      # The createsend API returns an ID as a string when a 201 Created
-      # response is returned. Unfortunately this is invalid json.
-      def parse
-        begin
-          super
-        rescue MultiJson::DecodeError => e
-          body[1..-2] # Strip surrounding quotes and return as is.
-        end
-      end
-    end
-    parser Parser::DealWithCreateSendInvalidJson
     @@base_uri = "https://api.createsend.com/api/v3"
     @@oauth_base_uri = "https://api.createsend.com/oauth"
     @@oauth_token_uri = "#{@@oauth_base_uri}/token"
@@ -108,14 +110,12 @@ module CreateSend
         raise '@auth_details[:refresh_token] does not contain a refresh token.'
       end
 
-      options = {
-        :body => "grant_type=refresh_token&refresh_token=#{@auth_details[:refresh_token]}" }
-      response = HTTParty.post(@@oauth_token_uri, options)
-      r = Hashie::Mash.new(response)
+      access_token, expires_in, refresh_token =
+        self.class.refresh_access_token @auth_details[:refresh_token]
       auth({
-        :access_token => r.access_token,
-        :refresh_token => r.refresh_token})
-      [r.access_token, r.expires_in, r.refresh_token]
+        :access_token => access_token,
+        :refresh_token => refresh_token})
+      [access_token, expires_in, refresh_token]
     end
 
     # Gets your CreateSend API key, given your site url, username and password.

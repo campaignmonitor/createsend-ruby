@@ -1,7 +1,6 @@
 .DS_Store
+coverage
 rdoc
 pkg
 *.gem
 example.rb
-/.buildpath
-/.project

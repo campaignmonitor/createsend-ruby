@@ -125,6 +125,18 @@ class SubscriberTest < Test::Unit::TestCase
       import_result.DuplicateEmailsInSubmission.size.should == 0
     end
 
+    should "raise a BadRequest error if the import _completely_ fails because of a bad request" do
+      # Stub request with 400 Bad Request as the expected response status
+      stub_post(@auth, "subscribers/#{@list_id}/import.json", "custom_api_error.json", 400)
+      subscribers = [
+        { :EmailAddress => "example+1@example", :Name => "Example One" },
+        { :EmailAddress => "example+2@example.com", :Name => "Example Two" },
+        { :EmailAddress => "example+3@example.com", :Name => "Example Three" },
+      ]
+      lambda { import_result = CreateSend::Subscriber.import @auth, @list_id, subscribers, true
+        }.should raise_error(CreateSend::BadRequest)
+    end
+
     should "unsubscribe a subscriber" do
       stub_post(@auth, "subscribers/#{@subscriber.list_id}/unsubscribe.json", nil)
       @subscriber.unsubscribe

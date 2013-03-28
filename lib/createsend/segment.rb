@@ -73,10 +73,6 @@ module CreateSend
       super uri_for(action), options
     end
 
-    def put(action, options = {})
-      super uri_for(action), options
-    end
-
     def uri_for(action)
       "/segments/#{segment_id}/#{action}.json"
     end
