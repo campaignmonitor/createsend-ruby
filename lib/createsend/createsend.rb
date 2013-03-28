@@ -30,8 +30,14 @@ module CreateSend
   class NotFound < ClientError; end
 
   # Raised for HTTP response code of 401, specifically when an OAuth token
+  # in invalid (Code: 120, Message: 'Invalid OAuth Token')
+  class InvalidOAuthToken < Unauthorized; end
+  # Raised for HTTP response code of 401, specifically when an OAuth token
   # has expired (Code: 121, Message: 'Expired OAuth Token')
   class ExpiredOAuthToken < Unauthorized; end
+  # Raised for HTTP response code of 401, specifically when an OAuth token
+  # has been revoked (Code: 122, Message: 'Revoked OAuth Token')
+  class RevokedOAuthToken < Unauthorized; end
 
   # Provides high level CreateSend functionality/data you'll probably need.
   class CreateSend
@@ -227,10 +233,16 @@ module CreateSend
         raise BadRequest.new(Hashie::Mash.new response)
       when 401
         data = Hashie::Mash.new(response)
-        if data.Code == 121
-          raise ExpiredOAuthToken.new(data)
+        case data.Code
+        when 120
+          raise InvalidOAuthToken.new data
+        when 121
+          raise ExpiredOAuthToken.new data
+        when 122
+          raise RevokedOAuthToken.new data
+        else
+          raise Unauthorized.new data
         end
-        raise Unauthorized.new(data)
       when 404
         raise NotFound.new
       when 400...500

@@ -173,6 +173,24 @@ class CreateSendTest < Test::Unit::TestCase
           Exception, 'Error refreshing access token: invalid_grant - Specified refresh_token was invalid or expired')
     end
 
+    should "raise a CreateSend::InvalidOAuthToken error when an access token is invalid" do
+      cs = CreateSend::CreateSend.new @auth
+      stub_get(@auth, "countries.json", "invalid_oauth_token_api_error.json", ["401", "Unauthorized"])
+      lambda { c = cs.countries }.should raise_error(CreateSend::InvalidOAuthToken)
+    end
+
+    should "raise a CreateSend::ExpiredOAuthToken error when an access token is expired" do
+      cs = CreateSend::CreateSend.new @auth
+      stub_get(@auth, "countries.json", "expired_oauth_token_api_error.json", ["401", "Unauthorized"])
+      lambda { c = cs.countries }.should raise_error(CreateSend::ExpiredOAuthToken)
+    end
+
+    should "raise a CreateSend::RevokedOAuthToken error when an access token is revoked" do
+      cs = CreateSend::CreateSend.new @auth
+      stub_get(@auth, "countries.json", "revoked_oauth_token_api_error.json", ["401", "Unauthorized"])
+      lambda { c = cs.countries }.should raise_error(CreateSend::RevokedOAuthToken)
+    end
+
   end
 
   multiple_contexts "authenticated_using_oauth_context", "authenticated_using_api_key_context" do
@@ -269,7 +287,7 @@ class CreateSendTest < Test::Unit::TestCase
 
         context "#{status.first}, a post" do
           should "raise a #{exception.name} error" do
-            stub_post(@auth, "clients.json", (status.first == '400' or status.first == '401') ? 'custom_api_error.json' : nil, status)
+            stub_post(@auth, "clients.json", (status.first == '400' or status.first == '401') ? 'custom_api_error.json' : nil, status) 
             lambda { CreateSend::Client.create @auth, "Client Company Name",
               "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia" }.should raise_error(exception)
           end
@@ -289,23 +307,6 @@ class CreateSendTest < Test::Unit::TestCase
             lambda { @template.delete }.should raise_error(exception)
           end
         end
-      end
-    end
-
-    context "when authenticated using oauth and the access token has expired" do
-      setup do
-        @access_token = '98y98u98u98ue212'
-        @refresh_token = 'kj9wud09wi0qi0w'
-        @auth = {
-          :access_token => @access_token,
-          :refresh_token => @refresh_token
-        }
-        @cs = CreateSend::CreateSend.new @auth
-      end
-
-      should "raise a CreateSend::ExpiredOAuthToken error" do
-        stub_get(@auth, "countries.json", "expired_oauth_token_api_error.json", ["401", "Unauthorized"])
-        lambda { c = @cs.countries }.should raise_error(CreateSend::ExpiredOAuthToken)
       end
     end
 
