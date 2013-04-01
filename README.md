@@ -189,7 +189,7 @@ Error Code:    304
 Error Message: Campaign Subject Required
 ```
 
-### Expected input and output
+## Expected input and output
 The best way of finding out the expected input and output of a particular method in a particular class is to use the unit tests as a reference.
 
 For example, if you wanted to find out how to call the CreateSend::Subscriber.add method, you would look at the file test/subscriber_test.rb
