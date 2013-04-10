@@ -73,23 +73,23 @@ class CreateSendTest < Test::Unit::TestCase
           Exception, 'Error exchanging code for access token: invalid_grant - Specified code was invalid or expired')
       FakeWeb.last_request.body.should == "grant_type=authorization_code&client_id=8998879&client_secret=iou0q9wud0q9wd0q9wid0q9iwd0q9wid0q9wdqwd&redirect_uri=http%3A%2F%2Fexample.com%2Fauth&code=invalidcode"
     end
-    
+
     should "refresh an access token given a refresh token" do
-      refresh_token = 'tGzv3JOkF0XG5Qx2TlKWIA'
+      refresh_token = 'ASP95S4aR+9KsgfHB0dapTYxNA=='
       options = {
         :body => fixture_file("refresh_oauth_token.json"),
         :content_type => "application/json; charset=utf-8" }
       FakeWeb.register_uri(:post, "https://api.createsend.com/oauth/token", options)
       new_access_token, new_expires_in, new_refresh_token = CreateSend::CreateSend.refresh_access_token refresh_token
 
-      FakeWeb.last_request.body.should == "grant_type=refresh_token&refresh_token=#{refresh_token}"
+      FakeWeb.last_request.body.should == "grant_type=refresh_token&refresh_token=#{CGI.escape(refresh_token)}"
       new_access_token.should == "SlAV32hkKG2e12e"
       new_expires_in.should == 1209600
       new_refresh_token.should == "tGzv3JOkF0XG5Qx2TlKWIA"
     end
 
     should "raise an error when an attempt to refresh an access token fails" do
-      refresh_token = 'invalidrefreshtoken'
+      refresh_token = 'ASP95S4aR+9KsgfHB0dapTYxNA=='
       options = {
         :body => fixture_file("oauth_refresh_token_error.json"),
         :content_type => "application/json; charset=utf-8" }
@@ -97,7 +97,7 @@ class CreateSendTest < Test::Unit::TestCase
       lambda { access_token, expires_in, refresh_token = CreateSend::CreateSend.refresh_access_token(
         refresh_token) }.should raise_error(
           Exception, 'Error refreshing access token: invalid_grant - Specified refresh_token was invalid or expired')
-      FakeWeb.last_request.body.should == "grant_type=refresh_token&refresh_token=#{refresh_token}"
+      FakeWeb.last_request.body.should == "grant_type=refresh_token&refresh_token=#{CGI.escape(refresh_token)}"
     end
 
     should "get a person's api key" do
@@ -117,8 +117,8 @@ class CreateSendTest < Test::Unit::TestCase
 
   context "when an api caller is authenticated using oauth" do
     setup do
-      @access_token = "h9898wu98u9dqjoijnwld"
-      @refresh_token = "tGzv3JOkF0XG5Qx2TlKWIA"
+      @access_token = "ASP95S4aR+9KsgfHB0dapTYxNA=="
+      @refresh_token = "5S4aASP9R+9KsgfHB0dapTYxNA=="
       @auth = {
         :access_token => @access_token,
         :refresh_token => @refresh_token
@@ -133,7 +133,7 @@ class CreateSendTest < Test::Unit::TestCase
       cs = CreateSend::CreateSend.new @auth
       new_access_token, new_expires_in, new_refresh_token = cs.refresh_token
 
-      FakeWeb.last_request.body.should == "grant_type=refresh_token&refresh_token=tGzv3JOkF0XG5Qx2TlKWIA"
+      FakeWeb.last_request.body.should == "grant_type=refresh_token&refresh_token=#{CGI.escape(@auth[:refresh_token])}"
       new_access_token.should == "SlAV32hkKG2e12e"
       new_expires_in.should == 1209600
       new_refresh_token.should == "tGzv3JOkF0XG5Qx2TlKWIA"
@@ -162,7 +162,7 @@ class CreateSendTest < Test::Unit::TestCase
     end
 
     should "raise an error when an attempt to refresh the access token is made but the refresh token is invalid" do
-      refresh_token = 'invalidrefreshtoken'
+      refresh_token = 'ASP95S4aR+9KsgfHB0dapTYxNA=='
       cs = CreateSend::CreateSend.new :access_token => 'any token', :refresh_token => refresh_token
       options = {
         :body => fixture_file("oauth_refresh_token_error.json"),
