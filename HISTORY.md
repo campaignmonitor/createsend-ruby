@@ -1,5 +1,9 @@
 # createsend-ruby history
 
+## v3.1.1 - 10 Apr, 2013
+
+* Fixed a bug occurring sometimes when refreshing OAuth access tokens, because of a URL encoding issue.
+
 ## v3.1.0 - 28 Mar, 2013
 
 * Added `CreateSend::CreateSend.refresh_access_token` to allow easier refreshing of access tokens when using class methods.
