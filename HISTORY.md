@@ -1,5 +1,9 @@
 # createsend-ruby history
 
+## v3.2.0 - 15 Apr, 2013
+
+* Added support for [single sign on](http://www.campaignmonitor.com/api/account/#single_sign_on) which allows initiation of external login sessions to Campaign Monitor.
+
 ## v3.1.1 - 10 Apr, 2013
 
 * Fixed a bug occurring sometimes when refreshing OAuth access tokens, because of a URL encoding issue.
