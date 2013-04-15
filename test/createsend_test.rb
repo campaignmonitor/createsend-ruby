@@ -261,6 +261,17 @@ class CreateSendTest < Test::Unit::TestCase
       result.EmailAddress.should == 'admin@blackhole.com'
     end
 
+    should "get an external session url" do
+      email = "exammple@example.com"
+      chrome = "None"
+      url = "/subscribers"
+      integrator_id = "qw989q8wud98qwyd"
+      client_id = "9q8uw9d8u9wud"
+      stub_put(@auth, "externalsession.json", "external_session.json")
+      result = @cs.external_session_url email, chrome, url, integrator_id, client_id
+      result.SessionUrl.should == "https://external1.createsend.com/cd/create/ABCDEF12/DEADBEEF?url=FEEDDAD1"
+    end
+
   end
 
   context "when the CreateSend API responds with an error" do
