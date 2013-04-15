@@ -183,6 +183,33 @@ module CreateSend
       Hashie::Mash.new(response)
     end
 
+    # Get a URL which initiates a new external session for the user with the
+    # given email.
+    # Full details: http://www.campaignmonitor.com/api/account/#single_sign_on
+    #
+    # email         - The email address of the Campaign Monitor user for whom
+    #                 the login session should be created.
+    # chrome        - Which 'chrome' to display - Must be either "all",
+    #                 "tabs", or "none".
+    # url           - The URL to display once logged in. e.g. "/subscribers/"
+    # integrator_id - The integrator ID. You need to contact Campaign Monitor
+    #                 support to get an integrator ID.
+    # client_id     - The Client ID of the client which should be active once
+    #                 logged in to the Campaign Monitor account.
+    #
+    # Returns An object containing a single field SessionUrl which represents
+    # the URL to initiate the external Campaign Monitor session.
+    def external_session_url(email, chrome, url, integrator_id, client_id)
+      options = { :body => {
+        :Email => email,
+        :Chrome => chrome,
+        :Url => url,
+        :IntegratorID => integrator_id,
+        :ClientID => client_id }.to_json }
+      response = put("/externalsession.json", options)
+      Hashie::Mash.new(response)
+    end
+
     def get(*args)
       args = add_auth_details_to_options(args)
       handle_response CreateSend.get(*args)
