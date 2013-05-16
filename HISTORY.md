@@ -1,5 +1,16 @@
 # createsend-ruby history
 
+## v3.3.0 - 16 May, 2013
+
+* Added Ruby version and platform details to default user agent string.
+* Added support for setting a custom user agent string.
+
+  You can set a custom user agent string to be used for API calls by doing the following:
+
+  ```ruby
+  CreateSend::CreateSend.user_agent "custom user agent"
+  ```
+
 ## v3.2.0 - 15 Apr, 2013
 
 * Added support for [single sign on](http://www.campaignmonitor.com/api/account/#single_sign_on) which allows initiation of external login sessions to Campaign Monitor.
