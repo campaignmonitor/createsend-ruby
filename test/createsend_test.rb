@@ -197,12 +197,21 @@ class CreateSendTest < Test::Unit::TestCase
       @cs = CreateSend::CreateSend.new @auth
     end
 
-    should "include the CreateSend module VERSION constant as part of the user agent when making a call" do
-      # This test is done to ensure that the version from HTTParty isn't included instead
-      assert CreateSend::CreateSend.headers["User-Agent"] == "createsend-ruby-#{CreateSend::VERSION}"
+    should "include the correct user agent string when making a call" do
+      CreateSend::CreateSend.headers["User-Agent"].should ==
+        "createsend-ruby-#{CreateSend::VERSION}-#{RUBY_VERSION}-p#{RUBY_PATCHLEVEL}-#{RUBY_PLATFORM}"
       stub_get(@auth, "clients.json", "clients.json")
       clients = @cs.clients
       clients.size.should == 2
+    end
+
+    should "allow a custom user agent string to be set when making a call" do
+      CreateSend::CreateSend.user_agent "custom user agent"
+      CreateSend::CreateSend.headers["User-Agent"].should == "custom user agent"
+      stub_get(@auth, "clients.json", "clients.json")
+      clients = @cs.clients
+      clients.size.should == 2
+      CreateSend::CreateSend.user_agent nil
     end
 
     should "get all clients" do
