@@ -205,6 +205,15 @@ class CreateSendTest < Test::Unit::TestCase
       clients.size.should == 2
     end
 
+    should "allow a custom user agent string to be set when making a call" do
+      CreateSend::CreateSend.user_agent "custom user agent"
+      assert CreateSend::CreateSend.headers["User-Agent"] == "custom user agent"
+      stub_get(@auth, "clients.json", "clients.json")
+      clients = @cs.clients
+      clients.size.should == 2
+      CreateSend::CreateSend.user_agent nil
+    end
+
     should "get all clients" do
       stub_get(@auth, "clients.json", "clients.json")
       clients = @cs.clients

@@ -44,6 +44,16 @@ module CreateSend
     include HTTParty
     attr_reader :auth_details
 
+    # Set a custom user agent string to be used when instances of
+    # CreateSend::CreateSend make API calls.
+    #
+    # user_agent - The user agent string to use in the User-Agent header when
+    #              instances of this class make API calls. If set to nil, a
+    #              default user agent string will be used.
+    def self.user_agent(user_agent)
+      headers({'User-Agent' => user_agent || "createsend-ruby-#{VERSION}"})
+    end
+
     # Get the authorization URL for your application, given the application's
     # client_id, redirect_uri, scope, and optional state data.
     def self.authorize_url(client_id, redirect_uri, scope, state=nil)
