@@ -6,6 +6,8 @@ require 'json'
 
 module CreateSend
 
+  USER_AGENT_STRING = "createsend-ruby-#{VERSION}-#{RUBY_VERSION}-p#{RUBY_PATCHLEVEL}-#{RUBY_PLATFORM}"
+
   # Represents a CreateSend API error. Contains specific data about the error.
   class CreateSendError < StandardError
     attr_reader :data
@@ -48,10 +50,10 @@ module CreateSend
     # CreateSend::CreateSend make API calls.
     #
     # user_agent - The user agent string to use in the User-Agent header when
-    #              instances of this class make API calls. If set to nil, a
-    #              default user agent string will be used.
+    #              instances of this class make API calls. If set to nil, the
+    #              default value of CreateSend::USER_AGENT_STRING will be used.
     def self.user_agent(user_agent)
-      headers({'User-Agent' => user_agent || "createsend-ruby-#{VERSION}"})
+      headers({'User-Agent' => user_agent || USER_AGENT_STRING})
     end
 
     # Get the authorization URL for your application, given the application's
@@ -108,7 +110,7 @@ module CreateSend
     @@oauth_base_uri = "https://api.createsend.com/oauth"
     @@oauth_token_uri = "#{@@oauth_base_uri}/token"
     headers({
-      'User-Agent' => "createsend-ruby-#{VERSION}",
+      'User-Agent' => USER_AGENT_STRING,
       'Content-Type' => 'application/json; charset=utf-8',
       'Accept-Encoding' => 'gzip, deflate' })
     base_uri @@base_uri
