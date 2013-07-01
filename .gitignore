@@ -4,3 +4,4 @@ rdoc
 pkg
 *.gem
 example.rb
+.idea/
