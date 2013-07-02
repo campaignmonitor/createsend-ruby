@@ -118,7 +118,7 @@ In addition to raising `CreateSend::ExpiredOAuthToken` when an access token has 
 ```ruby
 require 'createsend'
 
-cs = CreateSend::CreateSend.new {:api_key => 'your api key'}
+cs = CreateSend::CreateSend.new :api_key => 'your api key'
 clients = cs.clients
 ```
 
