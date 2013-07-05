@@ -1,5 +1,9 @@
 # createsend-ruby history
 
+## v3.4.0 - 5 Jul, 2013
+
+* Added support for validating SSL certificates to avoid man-in-the-middle attacks.
+
 ## v3.3.0 - 16 May, 2013
 
 * Added Ruby version and platform details to default user agent string.
