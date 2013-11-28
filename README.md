@@ -203,6 +203,23 @@ should "add a subscriber with custom fields" do
 end
 ```
 
+## SSL Certificate validation
+
+A pem file is used to validate the wrapper's SSL connection. You can override the default pem file if you wish.
+
+```ruby
+require 'createsend'
+
+auth = {
+  :access_token => 'your access token',
+  :refresh_token => 'your refresh token'
+}
+
+pem_file = File.expand_path(File.join(File.dirname(__FILE__), 'new_cacert.pem'))
+CreateSend::CreateSend.pem pem_file
+cs = CreateSend::CreateSend.new auth
+```
+
 ## Documentation
 
 Full documentation is hosted by [RubyDoc.info](http://rubydoc.info/gems/createsend/frames).
