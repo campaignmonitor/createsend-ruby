@@ -5,3 +5,4 @@ pkg
 *.gem
 example.rb
 .idea/
+Gemfile.lock
