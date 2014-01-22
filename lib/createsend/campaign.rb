@@ -84,7 +84,7 @@ module CreateSend
         :PreviewRecipients => recipients.kind_of?(String) ?
           [ recipients ] : recipients,
         :Personalize => personalize }.to_json }
-      response = post "sendpreview", options
+      post "sendpreview", options
     end
 
     # Sends this campaign.
@@ -92,18 +92,18 @@ module CreateSend
       options = { :body => {
         :ConfirmationEmail => confirmation_email,
         :SendDate => send_date }.to_json }
-      response = post "send", options
+      post "send", options
     end
 
     # Unschedules this campaign if it is currently scheduled.
     def unschedule
       options = { :body => "" }
-      response = post "unschedule", options
+      post "unschedule", options
     end
 
     # Deletes this campaign.
     def delete
-      response = super "/campaigns/#{campaign_id}.json", {}
+      super "/campaigns/#{campaign_id}.json", {}
     end
 
     # Gets a summary of this campaign

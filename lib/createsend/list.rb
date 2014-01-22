@@ -36,7 +36,7 @@ module CreateSend
 
     # Deletes this list.
     def delete
-      response = super "/lists/#{list_id}.json", {}
+      super "/lists/#{list_id}.json", {}
     end
 
     # Creates a new custom field for this list.
@@ -77,8 +77,7 @@ module CreateSend
     # Deletes a custom field associated with this list.
     def delete_custom_field(custom_field_key)
       custom_field_key = CGI.escape(custom_field_key)
-      response = cs_delete(
-        "/lists/#{list_id}/customfields/#{custom_field_key}.json", {})
+      cs_delete("/lists/#{list_id}/customfields/#{custom_field_key}.json", {})
     end
 
     # Updates the options of a multi-optioned custom field on this list.
@@ -88,7 +87,7 @@ module CreateSend
       options = { :body => {
         :Options => new_options,
         :KeepExistingOptions => keep_existing_options }.to_json }
-      response = put "customfields/#{custom_field_key}/options", options
+      put "customfields/#{custom_field_key}/options", options
     end
 
     # Gets the details of this list.
@@ -178,7 +177,7 @@ module CreateSend
         :UnsubscribeSetting => unsubscribe_setting,
         :AddUnsubscribesToSuppList => add_unsubscribes_to_supp_list,
         :ScrubActiveWithSuppList => scrub_active_with_supp_list }.to_json }
-      response = cs_put "/lists/#{list_id}.json", options
+      cs_put "/lists/#{list_id}.json", options
     end
 
     # Gets the webhooks for this list.
@@ -202,26 +201,25 @@ module CreateSend
     # Tests that a post can be made to the endpoint specified for the webhook
     # identified by webhook_id.
     def test_webhook(webhook_id)
-      response = get "webhooks/#{webhook_id}/test"
+      get "webhooks/#{webhook_id}/test"
       true # An exception will be raised if any error occurs
     end
 
     # Deletes a webhook associated with this list.
     def delete_webhook(webhook_id)
-      response = cs_delete(
-        "/lists/#{list_id}/webhooks/#{webhook_id}.json", {})
+      cs_delete("/lists/#{list_id}/webhooks/#{webhook_id}.json", {})
     end
 
     # Activates a webhook associated with this list.
     def activate_webhook(webhook_id)
       options = { :body => '' }
-      response = put "webhooks/#{webhook_id}/activate", options
+      put "webhooks/#{webhook_id}/activate", options
     end
 
     # De-activates a webhook associated with this list.
     def deactivate_webhook(webhook_id)
       options = { :body => '' }
-      response = put "webhooks/#{webhook_id}/deactivate", options
+      put "webhooks/#{webhook_id}/deactivate", options
     end
 
     private
