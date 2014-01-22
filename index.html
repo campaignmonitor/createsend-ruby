@@ -45,7 +45,7 @@
 
 <p>Or, add a dependency to your <code>Gemfile</code> then <code>bundle install</code>.</p>
 
-<div class="highlight"><pre><span class="n">gem</span> <span class="s1">'createsend'</span>
+<div class="highlight highlight-ruby"><pre><span class="n">gem</span> <span class="s1">'createsend'</span>
 </pre></div>
 
 <h2>
@@ -65,9 +65,9 @@
 
 <p>The first thing your application should do is redirect your user to the Campaign Monitor authorization URL where they will have the opportunity to approve your application to access their Campaign Monitor account. You can get this authorization URL by using <code>CreateSend::CreateSend.authorize_url</code>, like so:</p>
 
-<div class="highlight"><pre><span class="nb">require</span> <span class="s1">'createsend'</span>
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'createsend'</span>
 
-<span class="n">authorize_url</span> <span class="o">=</span> <span class="ss">CreateSend</span><span class="p">:</span><span class="ss">:CreateSend</span><span class="o">.</span><span class="n">authorize_url</span><span class="p">(</span>
+<span class="n">authorize_url</span> <span class="o">=</span> <span class="no">CreateSend</span><span class="o">::</span><span class="no">CreateSend</span><span class="o">.</span><span class="n">authorize_url</span><span class="p">(</span>
   <span class="s1">'Client ID for your application'</span><span class="p">,</span>
   <span class="s1">'Redirect URI for your application'</span><span class="p">,</span>
   <span class="s1">'The permission level your application requires'</span><span class="p">,</span>
@@ -81,9 +81,9 @@
 
 <p>If your user approves your application, they will then be redirected to the <code>redirect_uri</code> you specified, which will include a <code>code</code> parameter, and optionally a <code>state</code> parameter in the query string. Your application should implement a handler which can exchange the code passed to it for an access token, using <code>CreateSend::CreateSend.exchange_token</code> like so:</p>
 
-<div class="highlight"><pre><span class="nb">require</span> <span class="s1">'createsend'</span>
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'createsend'</span>
 
-<span class="n">access_token</span><span class="p">,</span> <span class="n">expires_in</span><span class="p">,</span> <span class="n">refresh_token</span> <span class="o">=</span> <span class="ss">CreateSend</span><span class="p">:</span><span class="ss">:CreateSend</span><span class="o">.</span><span class="n">exchange_token</span><span class="p">(</span>
+<span class="n">access_token</span><span class="p">,</span> <span class="n">expires_in</span><span class="p">,</span> <span class="n">refresh_token</span> <span class="o">=</span> <span class="no">CreateSend</span><span class="o">::</span><span class="no">CreateSend</span><span class="o">.</span><span class="n">exchange_token</span><span class="p">(</span>
   <span class="s1">'Client ID for your application'</span><span class="p">,</span>
   <span class="s1">'Client Secret for your application'</span><span class="p">,</span>
   <span class="s1">'Redirect URI for your application'</span><span class="p">,</span>
@@ -99,13 +99,13 @@
 
 <p>Once you have an access token and refresh token for your user, you can use the <code>createsend</code> gem to authenticate and make further API calls like so:</p>
 
-<div class="highlight"><pre><span class="nb">require</span> <span class="s1">'createsend'</span>
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'createsend'</span>
 
 <span class="n">auth</span> <span class="o">=</span> <span class="p">{</span>
   <span class="ss">:access_token</span> <span class="o">=&gt;</span> <span class="s1">'your access token'</span><span class="p">,</span>
   <span class="ss">:refresh_token</span> <span class="o">=&gt;</span> <span class="s1">'your refresh token'</span>
 <span class="p">}</span>
-<span class="n">cs</span> <span class="o">=</span> <span class="ss">CreateSend</span><span class="p">:</span><span class="ss">:CreateSend</span><span class="o">.</span><span class="n">new</span> <span class="n">auth</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="no">CreateSend</span><span class="o">::</span><span class="no">CreateSend</span><span class="o">.</span><span class="n">new</span> <span class="n">auth</span>
 <span class="n">clients</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">clients</span>
 </pre></div>
 
@@ -116,18 +116,18 @@
 
 <p>Here's an example of using <code>CreateSend::CreateSend#refresh_token</code> to refresh your current access token when calling <code>CreateSend::CreateSend#clients</code>:</p>
 
-<div class="highlight"><pre><span class="nb">require</span> <span class="s1">'createsend'</span>
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'createsend'</span>
 
 <span class="n">auth</span> <span class="o">=</span> <span class="p">{</span>
   <span class="ss">:access_token</span> <span class="o">=&gt;</span> <span class="s1">'your access token'</span><span class="p">,</span>
   <span class="ss">:refresh_token</span> <span class="o">=&gt;</span> <span class="s1">'your refresh token'</span>
 <span class="p">}</span>
-<span class="n">cs</span> <span class="o">=</span> <span class="ss">CreateSend</span><span class="p">:</span><span class="ss">:CreateSend</span><span class="o">.</span><span class="n">new</span> <span class="n">auth</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="no">CreateSend</span><span class="o">::</span><span class="no">CreateSend</span><span class="o">.</span><span class="n">new</span> <span class="n">auth</span>
 
 <span class="k">begin</span>
   <span class="n">tries</span> <span class="o">||=</span> <span class="mi">2</span>
   <span class="n">clients</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">clients</span>
-  <span class="k">rescue</span> <span class="ss">CreateSend</span><span class="p">:</span><span class="ss">:ExpiredOAuthToken</span> <span class="o">=&gt;</span> <span class="n">eot</span>
+  <span class="k">rescue</span> <span class="no">CreateSend</span><span class="o">::</span><span class="no">ExpiredOAuthToken</span> <span class="o">=&gt;</span> <span class="n">eot</span>
     <span class="n">access_token</span><span class="p">,</span> <span class="n">expires_in</span><span class="p">,</span> <span class="n">refresh_token</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">refresh_token</span>
     <span class="c1"># Here you should save your updated access token, 'expire in' value,</span>
     <span class="c1"># and refresh token. `cs` will automatically have the new access token</span>
@@ -144,9 +144,9 @@
 <h3>
 <a name="using-an-api-key" class="anchor" href="#using-an-api-key"><span class="octicon octicon-link"></span></a>Using an API key</h3>
 
-<div class="highlight"><pre><span class="nb">require</span> <span class="s1">'createsend'</span>
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'createsend'</span>
 
-<span class="n">cs</span> <span class="o">=</span> <span class="ss">CreateSend</span><span class="p">:</span><span class="ss">:CreateSend</span><span class="o">.</span><span class="n">new</span> <span class="ss">:api_key</span> <span class="o">=&gt;</span> <span class="s1">'your api key'</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="no">CreateSend</span><span class="o">::</span><span class="no">CreateSend</span><span class="o">.</span><span class="n">new</span> <span class="ss">:api_key</span> <span class="o">=&gt;</span> <span class="s1">'your api key'</span>
 <span class="n">clients</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">clients</span>
 </pre></div>
 
@@ -155,18 +155,18 @@
 
 <p>This example of listing all your clients and their campaigns demonstrates basic usage of the library and the data returned from the API:</p>
 
-<div class="highlight"><pre><span class="nb">require</span> <span class="s1">'createsend'</span>
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'createsend'</span>
 
 <span class="n">auth</span> <span class="o">=</span> <span class="p">{</span>
   <span class="ss">:access_token</span> <span class="o">=&gt;</span> <span class="s1">'your access token'</span><span class="p">,</span>
   <span class="ss">:refresh_token</span> <span class="o">=&gt;</span> <span class="s1">'your refresh token'</span>
 <span class="p">}</span>
-<span class="n">cs</span> <span class="o">=</span> <span class="ss">CreateSend</span><span class="p">:</span><span class="ss">:CreateSend</span><span class="o">.</span><span class="n">new</span> <span class="n">auth</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="no">CreateSend</span><span class="o">::</span><span class="no">CreateSend</span><span class="o">.</span><span class="n">new</span> <span class="n">auth</span>
 
 <span class="n">clients</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">clients</span>
 <span class="n">clients</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">cl</span><span class="o">|</span>
   <span class="nb">p</span> <span class="s2">"Client: </span><span class="si">#{</span><span class="n">cl</span><span class="o">.</span><span class="n">Name</span><span class="si">}</span><span class="s2">"</span>
-  <span class="n">client</span> <span class="o">=</span> <span class="ss">CreateSend</span><span class="p">:</span><span class="ss">:Client</span><span class="o">.</span><span class="n">new</span> <span class="n">auth</span><span class="p">,</span> <span class="n">cl</span><span class="o">.</span><span class="n">ClientID</span>
+  <span class="n">client</span> <span class="o">=</span> <span class="no">CreateSend</span><span class="o">::</span><span class="no">Client</span><span class="o">.</span><span class="n">new</span> <span class="n">auth</span><span class="p">,</span> <span class="n">cl</span><span class="o">.</span><span class="n">ClientID</span>
   <span class="nb">p</span> <span class="s2">"- Campaigns:"</span>
   <span class="n">client</span><span class="o">.</span><span class="n">campaigns</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">cm</span><span class="o">|</span>
     <span class="nb">p</span> <span class="s2">"  - </span><span class="si">#{</span><span class="n">cm</span><span class="o">.</span><span class="n">Subject</span><span class="si">}</span><span class="s2">"</span>
@@ -190,7 +190,7 @@ Client: Second Client
 
 <p>If the Campaign Monitor API returns an error, an exception will be raised. For example, if you attempt to create a campaign and enter empty values for subject and other required fields:</p>
 
-<div class="highlight"><pre><span class="nb">require</span> <span class="s1">'createsend'</span>
+<div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'createsend'</span>
 
 <span class="n">auth</span> <span class="o">=</span> <span class="p">{</span>
   <span class="ss">:access_token</span> <span class="o">=&gt;</span> <span class="s1">'your access token'</span><span class="p">,</span>
@@ -198,10 +198,10 @@ Client: Second Client
 <span class="p">}</span>
 
 <span class="k">begin</span>
-  <span class="nb">id</span> <span class="o">=</span> <span class="ss">CreateSend</span><span class="p">:</span><span class="ss">:Campaign</span><span class="o">.</span><span class="n">create</span> <span class="n">auth</span><span class="p">,</span> <span class="s2">"4a397ccaaa55eb4e6aa1221e1e2d7122"</span><span class="p">,</span>
+  <span class="nb">id</span> <span class="o">=</span> <span class="no">CreateSend</span><span class="o">::</span><span class="no">Campaign</span><span class="o">.</span><span class="n">create</span> <span class="n">auth</span><span class="p">,</span> <span class="s2">"4a397ccaaa55eb4e6aa1221e1e2d7122"</span><span class="p">,</span>
     <span class="s2">""</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="o">[]</span><span class="p">,</span> <span class="o">[]</span>
   <span class="nb">p</span> <span class="s2">"New campaign ID: </span><span class="si">#{</span><span class="nb">id</span><span class="si">}</span><span class="s2">"</span>
-  <span class="k">rescue</span> <span class="ss">CreateSend</span><span class="p">:</span><span class="ss">:BadRequest</span> <span class="o">=&gt;</span> <span class="n">br</span>
+  <span class="k">rescue</span> <span class="no">CreateSend</span><span class="o">::</span><span class="no">BadRequest</span> <span class="o">=&gt;</span> <span class="n">br</span>
     <span class="nb">p</span> <span class="s2">"Bad request error: </span><span class="si">#{</span><span class="n">br</span><span class="si">}</span><span class="s2">"</span>
     <span class="nb">p</span> <span class="s2">"Error Code:    </span><span class="si">#{</span><span class="n">br</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Code</span><span class="si">}</span><span class="s2">"</span>
     <span class="nb">p</span> <span class="s2">"Error Message: </span><span class="si">#{</span><span class="n">br</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Message</span><span class="si">}</span><span class="s2">"</span>
@@ -224,10 +224,10 @@ Error Message: Campaign Subject Required
 
 <p>For example, if you wanted to find out how to call the CreateSend::Subscriber.add method, you would look at the file test/subscriber_test.rb</p>
 
-<div class="highlight"><pre><span class="n">should</span> <span class="s2">"add a subscriber with custom fields"</span> <span class="k">do</span>
+<div class="highlight highlight-ruby"><pre><span class="n">should</span> <span class="s2">"add a subscriber with custom fields"</span> <span class="k">do</span>
   <span class="n">stub_post</span><span class="p">(</span><span class="vi">@auth</span><span class="p">,</span> <span class="s2">"subscribers/</span><span class="si">#{</span><span class="vi">@list_id</span><span class="si">}</span><span class="s2">.json"</span><span class="p">,</span> <span class="s2">"add_subscriber.json"</span><span class="p">)</span>
   <span class="n">custom_fields</span> <span class="o">=</span> <span class="o">[</span> <span class="p">{</span> <span class="ss">:Key</span> <span class="o">=&gt;</span> <span class="s1">'website'</span><span class="p">,</span> <span class="ss">:Value</span> <span class="o">=&gt;</span> <span class="s1">'http://example.com/'</span> <span class="p">}</span> <span class="o">]</span>
-  <span class="n">email_address</span> <span class="o">=</span> <span class="ss">CreateSend</span><span class="p">:</span><span class="ss">:Subscriber</span><span class="o">.</span><span class="n">add</span> <span class="vi">@auth</span><span class="p">,</span> <span class="vi">@list_id</span><span class="p">,</span> <span class="s2">"subscriber@example.com"</span><span class="p">,</span> <span class="s2">"Subscriber"</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">,</span> <span class="kp">true</span>
+  <span class="n">email_address</span> <span class="o">=</span> <span class="no">CreateSend</span><span class="o">::</span><span class="no">Subscriber</span><span class="o">.</span><span class="n">add</span> <span class="vi">@auth</span><span class="p">,</span> <span class="vi">@list_id</span><span class="p">,</span> <span class="s2">"subscriber@example.com"</span><span class="p">,</span> <span class="s2">"Subscriber"</span><span class="p">,</span> <span class="n">custom_fields</span><span class="p">,</span> <span class="kp">true</span>
   <span class="n">email_address</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="s2">"subscriber@example.com"</span>
 <span class="k">end</span>
 </pre></div>
