@@ -97,14 +97,14 @@ module CreateSend
       options = { :body => {
         :EmailAddresses => emails.kind_of?(String) ?
           [ emails ] : emails }.to_json }
-      response = post "suppress", options
+      post "suppress", options
     end
 
     # Unsuppresses an email address by removing it from the the client's
     # suppression list
     def unsuppress(email)
       options = { :query => { :email => email }, :body => '' }
-      response = put "unsuppress", options
+      put "unsuppress", options
     end
 
     # Gets the templates belonging to this client.

@@ -31,12 +31,12 @@ module CreateSend
         :Name => name,
         :HtmlPageURL => html_url,
         :ZipFileURL => zip_url }.to_json }
-      response = put "/templates/#{template_id}.json", options
+      put "/templates/#{template_id}.json", options
     end
 
     # Deletes this email template.
     def delete
-      response = super "/templates/#{template_id}.json", {}
+      super "/templates/#{template_id}.json", {}
     end
   end
 end

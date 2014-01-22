@@ -23,7 +23,7 @@ module CreateSend
       options = { :body => {
         :Title => title,
         :Rules => rules }.to_json }
-      response = cs_put "/segments/#{segment_id}.json", options
+      cs_put "/segments/#{segment_id}.json", options
     end
 
     # Adds a rule to this segment.
@@ -31,7 +31,7 @@ module CreateSend
       options = { :body => {
         :Subject => subject,
         :Clauses => clauses }.to_json }
-      response = post "rules", options
+      post "rules", options
     end
 
     # Gets the active subscribers in this segment.
@@ -55,12 +55,12 @@ module CreateSend
 
     # Clears all rules of this segment.
     def clear_rules
-      response = cs_delete "/segments/#{segment_id}/rules.json", {}
+      cs_delete "/segments/#{segment_id}/rules.json", {}
     end
 
     # Deletes this segment.
     def delete
-      response = super "/segments/#{segment_id}.json", {}
+      super "/segments/#{segment_id}.json", {}
     end
 
     private
