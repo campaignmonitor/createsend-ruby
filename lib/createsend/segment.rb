@@ -9,28 +9,27 @@ module CreateSend
     end
 
     # Creates a new segment.
-    def self.create(auth, list_id, title, rules)
+    def self.create(auth, list_id, title, rule_groups)
       options = { :body => {
         :Title => title,
-        :Rules => rules }.to_json }
+        :RuleGroups => rule_groups }.to_json }
       cs = CreateSend.new auth
       response = cs.post "/segments/#{list_id}.json", options
       response.parsed_response
     end
 
     # Updates this segment.
-    def update(title, rules)
+    def update(title, rule_groups)
       options = { :body => {
         :Title => title,
-        :Rules => rules }.to_json }
+        :RuleGroups => rule_groups }.to_json }
       cs_put "/segments/#{segment_id}.json", options
     end
 
     # Adds a rule to this segment.
-    def add_rule(subject, clauses)
+    def add_rule_group(rule_group)
       options = { :body => {
-        :Subject => subject,
-        :Clauses => clauses }.to_json }
+        :Rules => rule_group }.to_json }
       post "rules", options
     end
 

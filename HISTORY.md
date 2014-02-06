@@ -1,5 +1,9 @@
 # createsend-ruby history
 
+## v4.0.0 - 6 Feb, 2014
+
+* Updated to v3.1 API
+
 ## v3.4.0 - 5 Jul, 2013
 
 * Added support for validating SSL certificates to avoid man-in-the-middle attacks.

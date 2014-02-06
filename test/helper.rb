@@ -30,7 +30,7 @@ def createsend_url(auth, url)
   if not url =~ /^http/
     auth_section = ''
     auth_section = "#{auth[:api_key]}:x@" if auth and auth.has_key? :api_key
-    result = "https://#{auth_section}api.createsend.com/api/v3/#{url}"
+    result = "https://#{auth_section}api.createsend.com/api/v3.1/#{url}"
   else
     result = url
   end

@@ -100,19 +100,6 @@ class CreateSendTest < Test::Unit::TestCase
       FakeWeb.last_request.body.should == "grant_type=refresh_token&refresh_token=#{CGI.escape(refresh_token)}"
     end
 
-    should "get a person's api key" do
-      base_uri = "https://api.createsend.com/api/v3"
-      uri = URI.parse(base_uri)
-      site_url = "http://iamadesigner.createsend.com/"
-      username = "myusername"
-      password = "mypassword"
-      cs = CreateSend::CreateSend.new
-      stub_get(nil, "https://#{username}:#{password}@#{uri.host}#{uri.path}/apikey.json?SiteUrl=#{CGI.escape(site_url)}", "apikey.json")
-      apikey = cs.apikey(site_url, username, password).ApiKey
-      apikey.should == "981298u298ue98u219e8u2e98u2"
-      cs.auth_details.should == {:api_key => apikey}
-    end
-
   end
 
   context "when an api caller is authenticated using oauth" do

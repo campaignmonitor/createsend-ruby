@@ -109,7 +109,7 @@ module CreateSend
       end
     end
 
-    @@base_uri = "https://api.createsend.com/api/v3"
+    @@base_uri = "https://api.createsend.com/api/v3.1"
     @@oauth_base_uri = "https://api.createsend.com/oauth"
     @@oauth_token_uri = "#{@@oauth_base_uri}/token"
     headers({
@@ -137,16 +137,6 @@ module CreateSend
         :access_token => access_token,
         :refresh_token => refresh_token})
       [access_token, expires_in, refresh_token]
-    end
-
-    # Gets your CreateSend API key, given your site url, username and password.
-    def apikey(site_url, username, password)
-      site_url = CGI.escape(site_url)
-      options = {:basic_auth => {:username => username, :password => password}}
-      response = get("/apikey.json?SiteUrl=#{site_url}", options)
-      result = Hashie::Mash.new(response)
-      auth({:api_key => result.ApiKey}) if not @auth_details
-      result
     end
 
     # Gets your clients.

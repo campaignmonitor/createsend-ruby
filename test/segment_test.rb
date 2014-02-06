@@ -8,22 +8,22 @@ class SegmentTest < Test::Unit::TestCase
 
     should "create a new segment" do
       list_id = "2983492834987394879837498"
-      rules = [ { :Subject => "EmailAddress", :Clauses => [ "CONTAINS example.com" ] } ]
+      rule_groups = [ { :Rules => [ { :RuleType => "EmailAddress", :Clause => "CONTAINS example.com" } ] } ]
       stub_post(@auth, "segments/#{list_id}.json", "create_segment.json")
-      res = CreateSend::Segment.create @auth, list_id, "new segment title", rules
+      res = CreateSend::Segment.create @auth, list_id, "new segment title", rule_groups
       res.should == "0246c2aea610a3545d9780bf6ab89006"
     end
 
     should "update a segment" do
-      rules = [ { :Subject => "Name", :Clauses => [ "EQUALS subscriber" ] } ]
+      rules = [ { :Rules => [ { :RuleType => "Name", :Clause => "PROVIDED" } ] } ]
       stub_put(@auth, "segments/#{@segment.segment_id}.json", nil)
       @segment.update "new title for segment", rules
     end
 
-    should "add a rule to a segment" do
-      clauses = [ "CONTAINS example.com" ]
+    should "add a rule group to a segment" do
+      rule_group = [ { :RuleType => "EmailAddress", :Clause => "CONTAINS @hello.com" } ]
       stub_post(@auth, "segments/#{@segment.segment_id}/rules.json", nil)
-      @segment.add_rule "EmailAddress", clauses
+      @segment.add_rule_group rule_group
     end
 
     should "get the active subscribers for a particular segment in the list" do
@@ -55,10 +55,10 @@ class SegmentTest < Test::Unit::TestCase
       stub_get(@auth, "segments/#{@segment.segment_id}.json", "segment_details.json")
       res = @segment.details
       res.ActiveSubscribers.should == 0
-      res.Rules.size.should == 2
-      res.Rules.first.Subject.should == "EmailAddress"
-      res.Rules.first.Clauses.size.should == 1
-      res.Rules.first.Clauses.first.should == "CONTAINS @hello.com"
+      res.RuleGroups.size.should == 2
+      res.RuleGroups.first.Rules.size.should == 1
+      res.RuleGroups.first.Rules.first.RuleType.should == "EmailAddress"
+      res.RuleGroups.first.Rules.first.Clause.should == "CONTAINS @hello.com"
       res.ListID.should == "2bea949d0bf96148c3e6a209d2e82060"
       res.SegmentID.should == "dba84a225d5ce3d19105d7257baac46f"
       res.Title.should == "My Segment"
