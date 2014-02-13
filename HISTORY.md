@@ -3,6 +3,43 @@
 ## v4.0.0 - 6 Feb, 2014
 
 * Updated to v3.1 API
+* Added support for new segments structure
+  * Create and Update calls now require the new `rule_groups` structure, instead of a `rules` structure.
+
+    ```ruby
+    CreateSend::Segment.create(auth, list_id, title, rule_groups)
+    CreateSend::Segment.update(title, rule_groups)
+    ```
+
+    So for example, when you _previously_ would have created an argument like so:
+
+    ```ruby
+    rules = [ { :Subject => "EmailAddress", :Clauses => [ "CONTAINS example.com" ] } ]
+    ```
+
+    You would _now_ do this:
+
+    ```ruby
+    rule_groups = [ { :Rules => [ { :RuleType => "EmailAddress", :Clause => "CONTAINS example.com" } ] } ]
+    ```
+    
+  * The Add Rule call is now Add Rule Group, taking a collection of rules in a single `rule_group` argument instead of separate `subject` & `clauses` arguments.
+
+    ```ruby
+    CreateSend::Segment.add_rule_group(rule_group)
+    ```
+
+    So for example, when you _previously_ would have added a rule like so:
+
+    ```ruby
+    @segment.add_rule "EmailAddress", [ "CONTAINS example.com" ]
+    ```
+
+    You would _now_ do this:
+
+    ```ruby
+    @segment.add_rule_group [ { :RuleType => "EmailAddress", :Clause => "CONTAINS @hello.com" } ]
+    ```
 
 ## v3.4.0 - 5 Jul, 2013
 
