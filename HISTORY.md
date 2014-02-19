@@ -40,6 +40,7 @@
     ```ruby
     @segment.add_rule_group [ { :RuleType => "EmailAddress", :Clause => "CONTAINS @hello.com" } ]
     ```
+* Removed the apikey method to promote usage of oAuth authentication
 
 ## v3.4.0 - 5 Jul, 2013
 
