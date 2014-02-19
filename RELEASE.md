@@ -14,12 +14,6 @@
 
 - Increment the `VERSION` constant in the `lib/createsend/version.rb` file, ensuring that you use [Semantic Versioning](http://semver.org/).
 - Add an entry to `HISTORY.md` which clearly explains the new release.
-- Ensure that the `Gemfile.lock` file is updated correctly by running:
-
-  ```
-  bundle install
-  ```
-
 - Commit your changes:
 
   ```
