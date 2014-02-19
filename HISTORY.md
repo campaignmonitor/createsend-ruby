@@ -1,9 +1,10 @@
 # createsend-ruby history
 
-## v4.0.0 - 6 Feb, 2014
+## v4.0.0 - 19 Feb, 2014
 
-* Updated to v3.1 API
-* Added support for new segments structure
+* Removed `CreateSend::CreateSend#apikey` to promote using OAuth rather than basic auth with an API key.
+* Started using the `https://api.createsend.com/api/v3.1/` API endpoint.
+* Added support for new segments structure.
   * Create and Update calls now require the new `rule_groups` structure, instead of a `rules` structure.
 
     ```ruby
@@ -40,7 +41,6 @@
     ```ruby
     @segment.add_rule_group [ { :RuleType => "EmailAddress", :Clause => "CONTAINS @hello.com" } ]
     ```
-* Removed the apikey method to promote usage of oAuth authentication
 
 ## v3.4.0 - 5 Jul, 2013
 
