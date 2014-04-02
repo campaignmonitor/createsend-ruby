@@ -3,23 +3,25 @@
 
 A Ruby library which implements the complete functionality of the [Campaign Monitor API](http://www.campaignmonitor.com/api/).
 
+Requires Ruby >= 1.9.3.
+
 [travis]: http://travis-ci.org/campaignmonitor/createsend-ruby
 [coveralls]: https://coveralls.io/r/campaignmonitor/createsend-ruby
 [gemnasium]: https://gemnasium.com/campaignmonitor/createsend-ruby
 [gembadge]: http://badge.fury.io/rb/createsend
 
-## Installation
+## Quick start
 
-To install:
-
-```
-gem install createsend
-```
-
-Or, add a dependency to your `Gemfile` then `bundle install`.
+Add the gem to your `Gemfile`:
 
 ```ruby
 gem 'createsend'
+```
+
+Or, install the gem:
+
+```
+gem install createsend
 ```
 
 ## Authenticating
