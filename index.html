@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>createsend-ruby by campaignmonitor</title>
+    <title>createsend by campaignmonitor</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
@@ -15,7 +15,7 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1>createsend-ruby</h1>
+        <h1>createsend</h1>
         <p>A Ruby library for the Campaign Monitor API</p>
 
         <p class="view"><a href="https://github.com/campaignmonitor/createsend-ruby">View the Project on GitHub <small>campaignmonitor/createsend-ruby</small></a></p>
@@ -31,22 +31,20 @@
         <h1>
 <a name="createsend" class="anchor" href="#createsend"><span class="octicon octicon-link"></span></a>createsend</h1>
 
-<p><a href="http://travis-ci.org/campaignmonitor/createsend-ruby"><img src="https://secure.travis-ci.org/campaignmonitor/createsend-ruby.png" alt="Build Status"></a> <a href="https://coveralls.io/r/campaignmonitor/createsend-ruby"><img src="https://coveralls.io/repos/campaignmonitor/createsend-ruby/badge.png?branch=master" alt="Coverage Status"></a> <a href="https://gemnasium.com/campaignmonitor/createsend-ruby"><img src="https://gemnasium.com/campaignmonitor/createsend-ruby.png" alt="Dependency Status"></a> <a href="http://badge.fury.io/rb/createsend"><img src="https://badge.fury.io/rb/createsend.png" alt="Gem Version"></a></p>
-
-<p>A Ruby library which implements the complete functionality of the <a href="http://www.campaignmonitor.com/api/">Campaign Monitor API</a>.</p>
+<p>A Ruby library which implements the complete functionality of the <a href="http://www.campaignmonitor.com/api/">Campaign Monitor API</a>. Requires Ruby &gt;= 1.9.3.</p>
 
 <h2>
-<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+<a name="quick-start" class="anchor" href="#quick-start"><span class="octicon octicon-link"></span></a>Quick start</h2>
 
-<p>To install:</p>
-
-<pre><code>gem install createsend
-</code></pre>
-
-<p>Or, add a dependency to your <code>Gemfile</code> then <code>bundle install</code>.</p>
+<p>Add the gem to your <code>Gemfile</code>:</p>
 
 <div class="highlight highlight-ruby"><pre><span class="n">gem</span> <span class="s1">'createsend'</span>
 </pre></div>
+
+<p>Or, install the gem:</p>
+
+<pre><code>gem install createsend
+</code></pre>
 
 <h2>
 <a name="authenticating" class="anchor" href="#authenticating"><span class="octicon octicon-link"></span></a>Authenticating</h2>
@@ -222,7 +220,7 @@ Error Message: Campaign Subject Required
 
 <p>The best way of finding out the expected input and output of a particular method in a particular class is to use the unit tests as a reference.</p>
 
-<p>For example, if you wanted to find out how to call the CreateSend::Subscriber.add method, you would look at the file test/subscriber_test.rb</p>
+<p>For example, if you wanted to find out how to call the <code>CreateSend::Subscriber.add</code> method, you would look at the file <a href="https://github.com/campaignmonitor/createsend-ruby/blob/master/test/subscriber_test.rb">test/subscriber_test.rb</a></p>
 
 <div class="highlight highlight-ruby"><pre><span class="n">should</span> <span class="s2">"add a subscriber with custom fields"</span> <span class="k">do</span>
   <span class="n">stub_post</span><span class="p">(</span><span class="vi">@auth</span><span class="p">,</span> <span class="s2">"subscribers/</span><span class="si">#{</span><span class="vi">@list_id</span><span class="si">}</span><span class="s2">.json"</span><span class="p">,</span> <span class="s2">"add_subscriber.json"</span><span class="p">)</span>
@@ -235,7 +233,7 @@ Error Message: Campaign Subject Required
 <h2>
 <a name="documentation" class="anchor" href="#documentation"><span class="octicon octicon-link"></span></a>Documentation</h2>
 
-<p>Full documentation is hosted by <a href="http://rubydoc.info/gems/createsend/frames">RubyDoc.info</a>.</p>
+<p>Ruby documentation is available at <a href="http://rubydoc.info/gems/createsend/frames">RubyDoc.info</a>.</p>
 
 <h2>
 <a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
