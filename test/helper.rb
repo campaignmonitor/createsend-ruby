@@ -10,7 +10,7 @@ SimpleCov.start
 require 'test/unit'
 require 'pathname'
 
-require 'shoulda'
+require 'shoulda/context'
 require 'matchy'
 require 'fakeweb'
 
