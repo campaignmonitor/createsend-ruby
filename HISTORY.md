@@ -1,5 +1,10 @@
 # createsend-ruby history
 
+## v4.0.1 - 3 May, 2014
+
+* This is a patch release which only changes development dependencies.
+* Removed development dependency on `shoulda` and added more suitable dependency on `shoulda-context` instead.
+
 ## v4.0.0 - 19 Feb, 2014
 
 * Removed `CreateSend::CreateSend#apikey` to promote using OAuth rather than basic auth with an API key.
@@ -23,7 +28,7 @@
     ```ruby
     rule_groups = [ { :Rules => [ { :RuleType => "EmailAddress", :Clause => "CONTAINS example.com" } ] } ]
     ```
-    
+
   * The Add Rule call is now Add Rule Group, taking a collection of rules in a single `rule_group` argument instead of separate `subject` & `clauses` arguments.
 
     ```ruby
