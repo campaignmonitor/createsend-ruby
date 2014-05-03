@@ -1,14 +1,6 @@
 # createsend
-[![Build Status](https://secure.travis-ci.org/campaignmonitor/createsend-ruby.png)][travis] [![Coverage Status](https://coveralls.io/repos/campaignmonitor/createsend-ruby/badge.png?branch=master)][coveralls] [![Dependency Status](https://gemnasium.com/campaignmonitor/createsend-ruby.png)][gemnasium] [![Gem Version](https://badge.fury.io/rb/createsend.png)][gembadge]
 
-A Ruby library which implements the complete functionality of the [Campaign Monitor API](http://www.campaignmonitor.com/api/).
-
-Requires Ruby >= 1.9.3.
-
-[travis]: http://travis-ci.org/campaignmonitor/createsend-ruby
-[coveralls]: https://coveralls.io/r/campaignmonitor/createsend-ruby
-[gemnasium]: https://gemnasium.com/campaignmonitor/createsend-ruby
-[gembadge]: http://badge.fury.io/rb/createsend
+A Ruby library which implements the complete functionality of the [Campaign Monitor API](http://www.campaignmonitor.com/api/). Requires Ruby >= 1.9.3.
 
 ## Quick start
 
@@ -192,9 +184,10 @@ Error Message: Campaign Subject Required
 ```
 
 ## Expected input and output
+
 The best way of finding out the expected input and output of a particular method in a particular class is to use the unit tests as a reference.
 
-For example, if you wanted to find out how to call the CreateSend::Subscriber.add method, you would look at the file test/subscriber_test.rb
+For example, if you wanted to find out how to call the `CreateSend::Subscriber.add` method, you would look at the file [test/subscriber_test.rb](https://github.com/campaignmonitor/createsend-ruby/blob/master/test/subscriber_test.rb)
 
 ```ruby
 should "add a subscriber with custom fields" do
@@ -207,7 +200,7 @@ end
 
 ## Documentation
 
-Full documentation is hosted by [RubyDoc.info](http://rubydoc.info/gems/createsend/frames).
+Ruby documentation is available at [RubyDoc.info](http://rubydoc.info/gems/createsend/frames).
 
 ## Contributing
 
@@ -216,3 +209,12 @@ Please check the [guidelines for contributing](https://github.com/campaignmonito
 ## Releasing
 
 Please check the [instructions for releasing](https://github.com/campaignmonitor/createsend-ruby/blob/master/RELEASE.md) the `createsend` gem.
+
+## This stuff should be green
+
+[![Build Status](https://secure.travis-ci.org/campaignmonitor/createsend-ruby.png)][travis] [![Coverage Status](https://coveralls.io/repos/campaignmonitor/createsend-ruby/badge.png?branch=master)][coveralls] [![Dependency Status](https://gemnasium.com/campaignmonitor/createsend-ruby.png)][gemnasium] [![Gem Version](https://badge.fury.io/rb/createsend.png)][gembadge]
+
+[travis]: http://travis-ci.org/campaignmonitor/createsend-ruby
+[coveralls]: https://coveralls.io/r/campaignmonitor/createsend-ruby
+[gemnasium]: https://gemnasium.com/campaignmonitor/createsend-ruby
+[gembadge]: http://badge.fury.io/rb/createsend
