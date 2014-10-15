@@ -1,5 +1,9 @@
 # createsend-ruby history
 
+## v4.0.2 - 15 Oct, 2014
+
+* Bumped and simplified `hashie` dependency to `~> 3.0`
+
 ## v4.0.1 - 3 May, 2014
 
 * This is a patch release which only changes development dependencies.
