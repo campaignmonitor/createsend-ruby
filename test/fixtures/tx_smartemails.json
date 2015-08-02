@@ -1,0 +1,15 @@
+[
+    {
+        "ID": "1e654df2-f484-11e4-970c-6c4008bc7468",
+        "Name": "Welcome email",
+        "CreatedAt": "2015-05-15T16:09:19-05:00",
+        "Status": "Active"
+    },
+    {
+        "ID": "21dab350-f484-11e4-ad38-6c4008bc7468",
+        "Name": "Order shipped",
+        "CreatedAt": "2015-05-15T13:29:49-05:00",
+        "Status": "Active"
+    }
+]
+

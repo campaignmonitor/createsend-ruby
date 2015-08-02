@@ -1,0 +1,23 @@
+{
+    "SmartEmailID": "bb4a6ebb-663d-42a0-bdbe-60512cf30a01",
+    "Name": "Reset Password",
+    "CreatedAt": "2015-03-31T16:06:35+11:00",
+    "Status": "active",
+    "Properties": {
+        "From": "\"Team\" <team@example.com>",
+        "ReplyTo": "joe@example.com",
+        "Subject": "[username], your password has been reset!",
+        "Content": {
+            "HTML": "Content managed in Email Builder",
+            "Text": "Content managed in Email Builder",
+            "EmailVariables": [
+                "username",
+                "reset_token"
+            ],
+            "InlineCss": true
+        },
+        "TextPreviewUrl": "https://philoye.devcreatesend.com/t/r-9A7A28EE76054977/T",
+        "HtmlPreviewUrl": "https://philoye.devcreatesend.com/t/r-9A7A28EE76054977/"
+    },
+    "AddRecipientsToList": true
+}
