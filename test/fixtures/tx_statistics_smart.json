@@ -1,0 +1,14 @@
+{
+    "Query": {
+      "SmartEmailID": "bb4a6ebb-663d-42a0-bdbe-60512cf30a01",
+      "From": "2014-02-03",
+      "To": "2015-02-02",
+      "TimeZone": "UTC"
+    },
+    "Sent": 1000,
+    "Bounces": 8,
+    "Delivered": 992,
+    "Opened": 300,
+    "Clicked": 50
+}
+

@@ -1,0 +1,36 @@
+{
+    "MessageID": "ddc697c7-0788-4df3-a71a-a7cb935f00bd",
+    "Status": "Delivered",
+    "SentAt": "2014-01-15T16:09:19-05:00",
+    "SmartEmailID": "c0da9c4c-e7e4-11e4-a74d-6c4008bc7468",
+    "CanBeResent": true,
+    "Recipient": "Joe Smith <joesmith@example.com>",
+    "Message": {
+        "From": "Team Webapp <team@webapp123.com",
+        "Subject": "Thanks for signing up to web app 123",
+        "To": [
+          "Joe Smith <joesmith@example.com>",
+          "jamesmith@example.com"
+        ],
+        "CC": [
+          "Joe Smith <joesmith@example.com>"
+        ],
+        "BCC": "joesmith@example.com",
+        "Attachments": [
+            {
+                "Name": "Invoice.pdf",
+                "Type": "application/pdf"
+            }
+        ],
+        "Body": {
+            "Html": "...",
+            "Text": "..."
+        },
+        "Data": {
+            "new_password_url": "https://www.mywebapp.com/newpassword?uid=jguf45hf74hbf74gf"
+        }
+    },
+    "TotalOpens": 1,
+    "TotalClicks": 1
+}
+
