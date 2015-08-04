@@ -1,0 +1,15 @@
+[
+  {
+    "MessageID": "ddc697c7-0788-4df3-a71a-a7cb935f00bd",
+    "Status": "Delivered",
+    "SentAt": "2014-01-15T16:09:19-05:00",
+    "Recipient": "Joe Smith <joesmith@example.com>",
+    "From": "Team <team@company.com>",
+    "Subject": "Your credit card has expired",
+    "TotalOpens": 2,
+    "TotalClicks": 4,
+    "CanBeResent": true,
+    "SmartEmailID": "21dab350-f484-11e4-ad38-6c4008bc7468"
+  }
+]
+

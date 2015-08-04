@@ -1,0 +1,14 @@
+{
+    "Query": {
+      "Group": "Password Reset",
+      "From": "2014-02-03",
+      "To": "2015-02-02",
+      "TimeZone": "(GMT+10:00) Canberra, Melbourne, Sydney"
+    },
+    "Sent": 1000,
+    "Bounces": 8,
+    "Delivered": 992,
+    "Opened": 300,
+    "Clicked": 50
+}
+

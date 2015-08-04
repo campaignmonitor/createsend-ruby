@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'shoulda-context', '~> 1.2'
   s.add_development_dependency 'simplecov', '~> 0'
   s.add_development_dependency 'coveralls', '~> 0'
+  s.add_development_dependency 'test-unit', '~>3.0'
   s.name = "createsend"
   s.author = "James Dennes"
   s.description = %q{Implements the complete functionality of the Campaign Monitor API.}

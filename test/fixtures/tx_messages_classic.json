@@ -1,0 +1,15 @@
+[
+  {
+    "MessageID": "ddc697c7-0788-4df3-a71a-a7cb935f00bd",
+    "Status": "Delivered",
+    "SentAt": "2014-01-15T16:09:19-05:00",
+    "Recipient": "Joe Smith <joesmith@example.com>",
+    "From": "Team <team@company.com>",
+    "Subject": "Your password has been reset",
+    "TotalOpens": 2,
+    "TotalClicks": 4,
+    "CanBeResent": true,
+    "Group": "Password Reset"
+  }
+]
+
