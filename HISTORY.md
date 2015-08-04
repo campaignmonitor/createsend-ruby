@@ -1,5 +1,9 @@
 # createsend-ruby history
 
+## v4.1.0 - 4 Aug, 2015
+
+* Added support for Transactional Email
+
 ## v4.0.2 - 15 Oct, 2014
 
 * Bumped and simplified `hashie` dependency to `~> 3.0`
