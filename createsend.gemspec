@@ -4,7 +4,7 @@ require 'bundler/version'
 require File.expand_path('lib/createsend/version')
 
 Gem::Specification.new do |s|
-  s.add_runtime_dependency 'json', '~> 1.0'
+  s.add_runtime_dependency 'json', '>= 1.0', '< 2.1'
   s.add_runtime_dependency 'hashie', '~> 3.0'
   s.add_runtime_dependency 'httparty', '~> 0.10'
   s.add_development_dependency 'rake', '~> 10.0'
