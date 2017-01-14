@@ -1,5 +1,11 @@
 # createsend-ruby history
 
+## v4.1.1 - 14 Jan, 2016
+
+* Drop support for Ruby 1.9.3 ([#49](https://github.com/campaignmonitor/createsend-ruby/pull/49))
+* Allow JSON 2 to be used ([#48](https://github.com/campaignmonitor/createsend-ruby/pull/48) and  [#50](https://github.com/campaignmonitor/createsend-ruby/pull/50))
+* Bump `httparty` to `~> 0.14` ([#50](https://github.com/campaignmonitor/createsend-ruby/pull/50))
+
 ## v4.1.0 - 4 Aug, 2015
 
 * Added support for Transactional Email
