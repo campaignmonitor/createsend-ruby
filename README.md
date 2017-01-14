@@ -1,6 +1,6 @@
 # createsend
 
-A Ruby library which implements the complete functionality of the [Campaign Monitor API](http://www.campaignmonitor.com/api/). Requires Ruby >= 1.9.3.
+A Ruby library which implements the complete functionality of the [Campaign Monitor API](http://www.campaignmonitor.com/api/). Requires Ruby >= 2.0.0.
 
 ## Quick start
 
