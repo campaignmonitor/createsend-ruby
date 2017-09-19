@@ -10,7 +10,7 @@ class ClientTest < Test::Unit::TestCase
     should "create a client" do
       stub_post(@auth, "clients.json", "create_client.json")
       client_id = CreateSend::Client.create @auth, "Client Company Name", "(GMT+10:00) Canberra, Melbourne, Sydney", "Australia"
-      client_id.should == "32a381c49a2df99f1d0c6f3c112352b9"
+      client_id.parsed_response.should == "32a381c49a2df99f1d0c6f3c112352b9"
     end
 
     should "get details of a client" do
