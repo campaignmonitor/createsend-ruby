@@ -114,8 +114,8 @@ module CreateSend
     @@oauth_token_uri = "#{@@oauth_base_uri}/token"
     headers({
       'User-Agent' => USER_AGENT_STRING,
-      'Content-Type' => 'application/json; charset=utf-8',
-      'Accept-Encoding' => 'gzip, deflate' })
+      'Content-Type' => 'application/json; charset=utf-8'
+    })
     base_uri @@base_uri
 
     # Authenticate using either OAuth or an API key.
