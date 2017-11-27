@@ -1,5 +1,8 @@
 # createsend-ruby history
 
+## v4.1.2 - 27 Nov, 2017
+* Fix for the GZip compression issue: https://github.com/jnunemaker/httparty/issues/562
+
 ## v4.1.1 - 14 Jan, 2016
 
 * Drop support for Ruby 1.9.3 ([#49](https://github.com/campaignmonitor/createsend-ruby/pull/49))
