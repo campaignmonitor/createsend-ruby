@@ -109,7 +109,7 @@ module CreateSend
       end
     end
 
-    @@base_uri = "https://api.createsend.com/api/v3.1"
+    @@base_uri = "https://api.createsend.com/api/v3.2"
     @@oauth_base_uri = "https://api.createsend.com/oauth"
     @@oauth_token_uri = "#{@@oauth_base_uri}/token"
     headers({

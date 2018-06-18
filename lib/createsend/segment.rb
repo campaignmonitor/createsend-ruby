@@ -35,13 +35,14 @@ module CreateSend
 
     # Gets the active subscribers in this segment.
     def subscribers(date="", page=1, page_size=1000, order_field="email",
-      order_direction="asc")
+      order_direction="asc", include_tracking_preference=false)
       options = { :query => {
         :date => date,
         :page => page,
         :pagesize => page_size,
         :orderfield => order_field,
-        :orderdirection => order_direction } }
+        :orderdirection => order_direction,
+        :includetrackingpreference => include_tracking_preference } }
       response = get "active", options
       Hashie::Mash.new(response)
     end

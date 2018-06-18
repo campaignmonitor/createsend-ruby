@@ -11,7 +11,8 @@
                     "Value": "http://example.com"
                 }
             ],
-            "ReadsEmailWith": ""
+            "ReadsEmailWith": "",
+            "ConsentToTrack": "Yes"
         },
         {
             "EmailAddress": "subs+7878787y8ggg@example.com",
@@ -24,7 +25,8 @@
                     "Value": "http://subdomain.example.com"
                 }
             ],
-            "ReadsEmailWith": ""
+            "ReadsEmailWith": "",
+            "ConsentToTrack": "No"
         }
     ],
     "ResultsOrderedBy": "email",

@@ -9,7 +9,7 @@ class SubscriberTest < Test::Unit::TestCase
     
     should "get a subscriber by list id and email address" do
       email = "subscriber@example.com"
-      stub_get(@auth, "subscribers/#{@list_id}.json?email=#{CGI.escape(email)}", "subscriber_details.json")
+      stub_get(@auth, "subscribers/#{@list_id}.json?email=#{CGI.escape(email)}&includetrackingpreference=false", "subscriber_details.json")
       subscriber = CreateSend::Subscriber.get @auth, @list_id, email
       subscriber.EmailAddress.should == email
       subscriber.Name.should == "Subscriber One"
@@ -21,16 +21,25 @@ class SubscriberTest < Test::Unit::TestCase
       subscriber.ReadsEmailWith.should == "Gmail"
     end
 
+    should "get a subscriber with track preference information" do
+      email = "subscriber@example.com"
+      stub_get(@auth, "subscribers/#{@list_id}.json?email=#{CGI.escape(email)}&includetrackingpreference=true", "subscriber_details_with_track_pref.json")
+      subscriber = CreateSend::Subscriber.get @auth, @list_id, email, true
+      subscriber.EmailAddress.should == email
+      subscriber.Name.should == "Subscriber One"
+      subscriber.ConsentToTrack == "Yes"
+    end
+
     should "add a subscriber without custom fields" do
       stub_post(@auth, "subscribers/#{@list_id}.json", "add_subscriber.json")
-      email_address = CreateSend::Subscriber.add @auth, @list_id, "subscriber@example.com", "Subscriber", [], true
+      email_address = CreateSend::Subscriber.add @auth, @list_id, "subscriber@example.com", "Subscriber", [], true, "Yes"
       email_address.should == "subscriber@example.com"
     end
 
     should "add a subscriber with custom fields" do
       stub_post(@auth, "subscribers/#{@list_id}.json", "add_subscriber.json")
       custom_fields = [ { :Key => 'website', :Value => 'http://example.com/' } ]
-      email_address = CreateSend::Subscriber.add @auth, @list_id, "subscriber@example.com", "Subscriber", custom_fields, true
+      email_address = CreateSend::Subscriber.add @auth, @list_id, "subscriber@example.com", "Subscriber", custom_fields, true, "Yes"
       email_address.should == "subscriber@example.com"
     end
 
@@ -39,7 +48,7 @@ class SubscriberTest < Test::Unit::TestCase
       custom_fields = [ { :Key => 'multioptionselectone', :Value => 'myoption' }, 
         { :Key => 'multioptionselectmany', :Value => 'firstoption' },
         { :Key => 'multioptionselectmany', :Value => 'secondoption' } ]
-      email_address = CreateSend::Subscriber.add @auth, @list_id, "subscriber@example.com", "Subscriber", custom_fields, true
+      email_address = CreateSend::Subscriber.add @auth, @list_id, "subscriber@example.com", "Subscriber", custom_fields, true, "Yes"
       email_address.should == "subscriber@example.com"
     end
 
@@ -48,7 +57,7 @@ class SubscriberTest < Test::Unit::TestCase
       new_email = "new_email_address@example.com"
       stub_put(@auth, "subscribers/#{@list_id}.json?email=#{CGI.escape(email)}", nil)
       custom_fields = [ { :Key => 'website', :Value => 'http://example.com/' } ]
-      @subscriber.update new_email, "Subscriber", custom_fields, true
+      @subscriber.update new_email, "Subscriber", custom_fields, true, "Yes"
       @subscriber.email_address.should == new_email
     end
 
@@ -57,7 +66,7 @@ class SubscriberTest < Test::Unit::TestCase
       new_email = "new_email_address@example.com"
       stub_put(@auth, "subscribers/#{@list_id}.json?email=#{CGI.escape(email)}", nil)
       custom_fields = [ { :Key => 'website', :Value => '', :Clear => true } ]
-      @subscriber.update new_email, "Subscriber", custom_fields, true
+      @subscriber.update new_email, "Subscriber", custom_fields, true, "No"
       @subscriber.email_address.should == new_email
     end
     
@@ -68,7 +77,7 @@ class SubscriberTest < Test::Unit::TestCase
         { :EmailAddress => "example+2@example.com", :Name => "Example Two" },
         { :EmailAddress => "example+3@example.com", :Name => "Example Three" },
       ]
-      import_result = CreateSend::Subscriber.import @auth, @list_id, subscribers, true
+      import_result = CreateSend::Subscriber.import @auth, @list_id, subscribers, true, "No"
       import_result.FailureDetails.size.should == 0
       import_result.TotalUniqueEmailsSubmitted.should == 3
       import_result.TotalExistingSubscribers.should == 0
@@ -83,7 +92,7 @@ class SubscriberTest < Test::Unit::TestCase
         { :EmailAddress => "example+2@example.com", :Name => "Example Two" },
         { :EmailAddress => "example+3@example.com", :Name => "Example Three" },
       ]
-      import_result = CreateSend::Subscriber.import @auth, @list_id, subscribers, true, true
+      import_result = CreateSend::Subscriber.import @auth, @list_id, subscribers, true, "No", true
       import_result.FailureDetails.size.should == 0
       import_result.TotalUniqueEmailsSubmitted.should == 3
       import_result.TotalExistingSubscribers.should == 0
@@ -98,7 +107,7 @@ class SubscriberTest < Test::Unit::TestCase
         { :EmailAddress => "example+2@example.com", :Name => "Example Two", :CustomFields => [ { :Key => 'website', :Value => '', :Clear => false } ]  },
         { :EmailAddress => "example+3@example.com", :Name => "Example Three", :CustomFields => [ { :Key => 'website', :Value => '', :Clear => false } ]  },
       ]
-      import_result = CreateSend::Subscriber.import @auth, @list_id, subscribers, true
+      import_result = CreateSend::Subscriber.import @auth, @list_id, subscribers, true, "No"
       import_result.FailureDetails.size.should == 0
       import_result.TotalUniqueEmailsSubmitted.should == 3
       import_result.TotalExistingSubscribers.should == 0
@@ -114,7 +123,7 @@ class SubscriberTest < Test::Unit::TestCase
         { :EmailAddress => "example+2@example.com", :Name => "Example Two" },
         { :EmailAddress => "example+3@example.com", :Name => "Example Three" },
       ]
-      import_result = CreateSend::Subscriber.import @auth, @list_id, subscribers, true
+      import_result = CreateSend::Subscriber.import @auth, @list_id, subscribers, true, "No"
       import_result.FailureDetails.size.should == 1
       import_result.FailureDetails.first.EmailAddress.should == "example+1@example"
       import_result.FailureDetails.first.Code.should == 1
@@ -133,7 +142,7 @@ class SubscriberTest < Test::Unit::TestCase
         { :EmailAddress => "example+2@example.com", :Name => "Example Two" },
         { :EmailAddress => "example+3@example.com", :Name => "Example Three" },
       ]
-      lambda { import_result = CreateSend::Subscriber.import @auth, @list_id, subscribers, true
+      lambda { import_result = CreateSend::Subscriber.import @auth, @list_id, subscribers, true, "Yes"
         }.should raise_error(CreateSend::BadRequest)
     end
 
