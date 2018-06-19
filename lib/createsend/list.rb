@@ -116,37 +116,37 @@ module CreateSend
 
     # Gets the active subscribers for this list.
     def active(date="", page=1, page_size=1000, order_field="email",
-      order_direction="asc")
+      order_direction="asc", include_tracking_preference=false)
       paged_result_by_date("active", date, page, page_size, order_field,
-        order_direction)
+        order_direction, include_tracking_preference)
     end
 
     # Gets the unconfirmed subscribers for this list.
     def unconfirmed(date="", page=1, page_size=1000, order_field="email",
-      order_direction="asc")
+      order_direction="asc", include_tracking_preference=false)
       paged_result_by_date("unconfirmed", date, page, page_size, order_field,
-        order_direction)
+        order_direction, include_tracking_preference)
     end
 
     # Gets the bounced subscribers for this list.
     def bounced(date="", page=1, page_size=1000, order_field="email",
-      order_direction="asc")
+      order_direction="asc", include_tracking_preference=false)
       paged_result_by_date("bounced", date, page, page_size, order_field,
-        order_direction)
+        order_direction, include_tracking_preference)
     end
 
     # Gets the unsubscribed subscribers for this list.
     def unsubscribed(date="", page=1, page_size=1000, order_field="email",
-      order_direction="asc")
+      order_direction="asc", include_tracking_preference=false)
       paged_result_by_date("unsubscribed", date, page, page_size, order_field,
-        order_direction)
+        order_direction, include_tracking_preference)
     end
 
     # Gets the deleted subscribers for this list.
     def deleted(date="", page=1, page_size=1000, order_field="email",
-      order_direction="asc")
+      order_direction="asc", include_tracking_preference=false)
       paged_result_by_date("deleted", date, page, page_size, order_field,
-        order_direction)
+        order_direction, include_tracking_preference)
     end
 
     # Updates this list.
@@ -225,13 +225,14 @@ module CreateSend
     private
     
     def paged_result_by_date(resource, date, page, page_size, order_field,
-      order_direction)
+      order_direction, include_tracking_preference)
       options = { :query => {
         :date => date,
         :page => page,
         :pagesize => page_size,
         :orderfield => order_field,
-        :orderdirection => order_direction } }
+        :orderdirection => order_direction,
+        :includetrackingpreference => include_tracking_preference } }
       response = get resource, options
       Hashie::Mash.new(response)
     end
