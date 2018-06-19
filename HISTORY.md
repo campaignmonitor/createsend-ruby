@@ -1,5 +1,11 @@
 # createsend-ruby history
 
+## v5.0.0 - 19 Jun, 2018
+* Upgrades to Createsend API v3.2 which includes new breaking changes
+* Breaking: 'Consent to track' field is now mandatory for sending smart and classic transactionl emails
+* Breaking: 'Consent to track' field is now mandatory when adding or updating subscribers
+* Optional 'Include tracking preference' field when retrieving lists of subscribers
+
 ## v4.1.2 - 27 Nov, 2017
 * Fix for the GZip compression issue: https://github.com/jnunemaker/httparty/issues/562
 
