@@ -193,7 +193,7 @@ For example, if you wanted to find out how to call the `CreateSend::Subscriber.a
 should "add a subscriber with custom fields" do
   stub_post(@auth, "subscribers/#{@list_id}.json", "add_subscriber.json")
   custom_fields = [ { :Key => 'website', :Value => 'http://example.com/' } ]
-  email_address = CreateSend::Subscriber.add @auth, @list_id, "subscriber@example.com", "Subscriber", custom_fields, true
+  email_address = CreateSend::Subscriber.add @auth, @list_id, "subscriber@example.com", "Subscriber", custom_fields, true, "Yes"
   email_address.should == "subscriber@example.com"
 end
 ```
