@@ -42,7 +42,8 @@ def stub_request(method, auth, url, filename, status=nil)
   options.merge!({:body => fixture_file(filename)}) if filename
   options.merge!({:status => status}) if status
   options.merge!(:content_type => "application/json; charset=utf-8")
-  FakeWeb.register_uri(method, createsend_url(auth, url), options)
+  createsend_url = createsend_url(auth, url)
+  FakeWeb.register_uri(method, createsend_url, options)
 end
 
 def stub_get(*args); stub_request(:get, *args) end

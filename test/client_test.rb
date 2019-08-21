@@ -217,6 +217,14 @@ class ClientTest < Test::Unit::TestCase
       stub_delete(@auth, "clients/#{@client.client_id}.json", nil)
       @client.delete
     end
-    
+
+    should "get all journeys" do
+      stub_get(@auth, "clients/#{@client.client_id}/journeys.json", "journeys.json")
+      lists = @client.journeys
+      lists.size.should == 3
+      lists.first.ListID.should == 'a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a'
+      lists.first.Name.should == 'Journey One'
+      lists.first.Status.should == 'Not started'
+    end
   end
 end

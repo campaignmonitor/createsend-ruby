@@ -1,0 +1,18 @@
+{
+  "JourneyID": "a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+  "Name": "New journey",
+  "TriggerType": "On Subscription",
+  "Status": "Active",
+  "Emails": [
+    {
+      "EmailID": "b1b1b1b1b1b1b1b1b1b1",
+      "Name": "New Email",
+      "Bounced": 0,
+      "Clicks": 0,
+      "Opened": 3,
+      "Sent": 1,
+      "UniqueOpened": 1,
+      "Unsubscribed": 0
+    }
+  ]
+}

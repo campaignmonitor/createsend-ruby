@@ -1,0 +1,20 @@
+[
+  {
+    "ListID": "a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a",
+    "JourneyID": "b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b",
+    "Name": "Journey One",
+    "Status": "Not started"
+  },
+  {
+    "ListID": "c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c",
+    "JourneyID": "d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d",
+    "Name": "Journey Two",
+    "Status": "Active"
+  },
+  {
+    "ListID": "c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c",
+    "JourneyID": "e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e2e",
+    "Name": "Journey Three",
+    "Status": "Paused"
+  }
+]
