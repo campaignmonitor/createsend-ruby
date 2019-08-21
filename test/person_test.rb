@@ -9,7 +9,7 @@ class PersonTest < Test::Unit::TestCase
 
     should "get a person by client id and email address" do
       email = "person@example.com"
-      stub_get(@auth, "clients/#{@client_id}/people.json?email=#{CGI.escape(email)}", "person_details.json")
+      stub_get(@auth, "clients/#{@client_id}/people.json?email=#{ERB::Util.url_encode(email)}", "person_details.json")
       person = CreateSend::Person.get @auth, @client_id, email
       person.EmailAddress.should == email
       person.Name.should == "Person One"
@@ -26,13 +26,13 @@ class PersonTest < Test::Unit::TestCase
     should "update a person" do
       email = "person@example.com"
       new_email = "new_email_address@example.com"
-      stub_put(@auth, "clients/#{@client_id}/people.json?email=#{CGI.escape(email)}", nil)
+      stub_put(@auth, "clients/#{@client_id}/people.json?email=#{ERB::Util.url_encode(email)}", nil)
       @person.update new_email, "Person", 1023, "NewPassword"
       @person.email_address.should == new_email
     end
       
     should "delete a person" do
-      stub_delete(@auth, "clients/#{@person.client_id}/people.json?email=#{CGI.escape(@person.email_address)}", nil)
+      stub_delete(@auth, "clients/#{@person.client_id}/people.json?email=#{ERB::Util.url_encode(@person.email_address)}", nil)
       @person.delete
     end
   end

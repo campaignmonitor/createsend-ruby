@@ -28,7 +28,7 @@ class SegmentTest < Test::Unit::TestCase
 
     should "get the active subscribers for a particular segment in the list" do
       min_date = "2010-01-01"
-      stub_get(@auth, "segments/#{@segment.segment_id}/active.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}&includetrackingpreference=false",
+      stub_get(@auth, "segments/#{@segment.segment_id}/active.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}&includetrackingpreference=false",
         "segment_subscribers.json")
       res = @segment.subscribers min_date
       res.ResultsOrderedBy.should == "email"

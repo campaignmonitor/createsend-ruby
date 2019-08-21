@@ -83,7 +83,7 @@ class ClientTest < Test::Unit::TestCase
 
     should "get all lists to which a subscriber with a particular email address belongs" do
       email = "valid@example.com"
-      stub_get(@auth, "clients/#{@client.client_id}/listsforemail.json?email=#{CGI.escape(email)}", "listsforemail.json")
+      stub_get(@auth, "clients/#{@client.client_id}/listsforemail.json?email=#{ERB::Util.url_encode(email)}", "listsforemail.json")
       lists = @client.lists_for_email(email)
       lists.size.should == 2
       lists.first.ListID.should == 'ab4a2b57c7c8f1ba62f898a1af1a575b'
@@ -131,7 +131,7 @@ class ClientTest < Test::Unit::TestCase
 
     should "unsuppress an email address" do
       email = "example@example.com"
-      stub_put(@auth, "clients/#{@client.client_id}/unsuppress.json?email=#{CGI.escape(email)}", nil)
+      stub_put(@auth, "clients/#{@client.client_id}/unsuppress.json?email=#{ERB::Util.url_encode(email)}", nil)
       result = @client.unsuppress email
     end
 
@@ -155,7 +155,7 @@ class ClientTest < Test::Unit::TestCase
 
     should "set primary contact" do
       email = 'person@blackhole.com'
-      stub_put(@auth, "clients/#{@client.client_id}/primarycontact.json?email=#{CGI.escape(email)}", 'client_set_primary_contact.json')
+      stub_put(@auth, "clients/#{@client.client_id}/primarycontact.json?email=#{ERB::Util.url_encode(email)}", 'client_set_primary_contact.json')
       result = @client.set_primary_contact email
       result.EmailAddress.should == email
     end

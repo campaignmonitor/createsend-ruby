@@ -66,7 +66,7 @@ class ListTest < Test::Unit::TestCase
 
     should "update a custom field" do
       key = "[mycustomfield]"
-      stub_put(@auth, "lists/#{@list.list_id}/customfields/#{CGI.escape(key)}.json", "update_custom_field.json")
+      stub_put(@auth, "lists/#{@list.list_id}/customfields/#{ERB::Util.url_encode(key)}.json", "update_custom_field.json")
       personalisation_tag = @list.update_custom_field key, "my renamed custom field", true
       request = FakeWeb.last_request.body
       request.include?("\"FieldName\":\"my renamed custom field\"").should == true
@@ -76,14 +76,14 @@ class ListTest < Test::Unit::TestCase
 
     should "delete a custom field" do
       custom_field_key = "[newdatefield]"
-      stub_delete(@auth, "lists/#{@list.list_id}/customfields/#{CGI.escape(custom_field_key)}.json", nil)
+      stub_delete(@auth, "lists/#{@list.list_id}/customfields/#{ERB::Util.url_encode(custom_field_key)}.json", nil)
       @list.delete_custom_field custom_field_key
     end
     
     should "update the options of a multi-optioned custom field" do
       custom_field_key = "[newdatefield]"
       new_options = [ "one", "two", "three" ]
-      stub_put(@auth, "lists/#{@list.list_id}/customfields/#{CGI.escape(custom_field_key)}/options.json", nil)
+      stub_put(@auth, "lists/#{@list.list_id}/customfields/#{ERB::Util.url_encode(custom_field_key)}/options.json", nil)
       @list.update_custom_field_options custom_field_key, new_options, true
     end
 
@@ -129,7 +129,7 @@ class ListTest < Test::Unit::TestCase
     
     should "get the active subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@auth, "lists/#{@list.list_id}/active.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}&includetrackingpreference=false",
+      stub_get(@auth, "lists/#{@list.list_id}/active.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}&includetrackingpreference=false",
         "active_subscribers.json")
       res = @list.active min_date
       res.ResultsOrderedBy.should == "email"
@@ -156,7 +156,7 @@ class ListTest < Test::Unit::TestCase
 
     should "get the unconfirmed subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@auth, "lists/#{@list.list_id}/unconfirmed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}&includetrackingpreference=true",
+      stub_get(@auth, "lists/#{@list.list_id}/unconfirmed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}&includetrackingpreference=true",
         "unconfirmed_subscribers.json")
       res = @list.unconfirmed(min_date, 1, 1000, "email", "asc", true)
       res.ResultsOrderedBy.should == "email"
@@ -175,7 +175,7 @@ class ListTest < Test::Unit::TestCase
 
     should "get the unsubscribed subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@auth, "lists/#{@list.list_id}/unsubscribed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}&includetrackingpreference=false", 
+      stub_get(@auth, "lists/#{@list.list_id}/unsubscribed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}&includetrackingpreference=false",
         "unsubscribed_subscribers.json")
       res = @list.unsubscribed min_date
       res.ResultsOrderedBy.should == "email"
@@ -196,7 +196,7 @@ class ListTest < Test::Unit::TestCase
 
     should "get the deleted subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@auth, "lists/#{@list.list_id}/deleted.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}&includetrackingpreference=false", 
+      stub_get(@auth, "lists/#{@list.list_id}/deleted.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}&includetrackingpreference=false",
         "deleted_subscribers.json")
       res = @list.deleted min_date
       res.ResultsOrderedBy.should == "email"
@@ -217,7 +217,7 @@ class ListTest < Test::Unit::TestCase
 
     should "get the bounced subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@auth, "lists/#{@list.list_id}/bounced.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{CGI.escape(min_date)}&includetrackingpreference=false",
+      stub_get(@auth, "lists/#{@list.list_id}/bounced.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}&includetrackingpreference=false",
         "bounced_subscribers.json")
       res = @list.bounced min_date
       res.ResultsOrderedBy.should == "email"

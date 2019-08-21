@@ -9,7 +9,7 @@ class SubscriberTest < Test::Unit::TestCase
     
     should "get a subscriber by list id and email address" do
       email = "subscriber@example.com"
-      stub_get(@auth, "subscribers/#{@list_id}.json?email=#{CGI.escape(email)}&includetrackingpreference=false", "subscriber_details.json")
+      stub_get(@auth, "subscribers/#{@list_id}.json?email=#{ERB::Util.url_encode(email)}&includetrackingpreference=false", "subscriber_details.json")
       subscriber = CreateSend::Subscriber.get @auth, @list_id, email
       subscriber.EmailAddress.should == email
       subscriber.Name.should == "Subscriber One"
@@ -23,7 +23,7 @@ class SubscriberTest < Test::Unit::TestCase
 
     should "get a subscriber with track preference information" do
       email = "subscriber@example.com"
-      stub_get(@auth, "subscribers/#{@list_id}.json?email=#{CGI.escape(email)}&includetrackingpreference=true", "subscriber_details_with_track_pref.json")
+      stub_get(@auth, "subscribers/#{@list_id}.json?email=#{ERB::Util.url_encode(email)}&includetrackingpreference=true", "subscriber_details_with_track_pref.json")
       subscriber = CreateSend::Subscriber.get @auth, @list_id, email, true
       subscriber.EmailAddress.should == email
       subscriber.Name.should == "Subscriber One"
@@ -55,7 +55,7 @@ class SubscriberTest < Test::Unit::TestCase
     should "update a subscriber with custom fields" do
       email = "subscriber@example.com"
       new_email = "new_email_address@example.com"
-      stub_put(@auth, "subscribers/#{@list_id}.json?email=#{CGI.escape(email)}", nil)
+      stub_put(@auth, "subscribers/#{@list_id}.json?email=#{ERB::Util.url_encode(email)}", nil)
       custom_fields = [ { :Key => 'website', :Value => 'http://example.com/' } ]
       @subscriber.update new_email, "Subscriber", custom_fields, true, "Yes"
       @subscriber.email_address.should == new_email
@@ -64,7 +64,7 @@ class SubscriberTest < Test::Unit::TestCase
     should "update a subscriber with custom fields including the clear option" do
       email = "subscriber@example.com"
       new_email = "new_email_address@example.com"
-      stub_put(@auth, "subscribers/#{@list_id}.json?email=#{CGI.escape(email)}", nil)
+      stub_put(@auth, "subscribers/#{@list_id}.json?email=#{ERB::Util.url_encode(email)}", nil)
       custom_fields = [ { :Key => 'website', :Value => '', :Clear => true } ]
       @subscriber.update new_email, "Subscriber", custom_fields, true, "No"
       @subscriber.email_address.should == new_email
@@ -152,7 +152,7 @@ class SubscriberTest < Test::Unit::TestCase
     end
 
     should "get a subscriber's history" do
-      stub_get(@auth, "subscribers/#{@subscriber.list_id}/history.json?email=#{CGI.escape(@subscriber.email_address)}", "subscriber_history.json")
+      stub_get(@auth, "subscribers/#{@subscriber.list_id}/history.json?email=#{ERB::Util.url_encode(@subscriber.email_address)}", "subscriber_history.json")
       history = @subscriber.history
       history.size.should == 1
       history.first.Name.should == "Campaign One"
@@ -166,7 +166,7 @@ class SubscriberTest < Test::Unit::TestCase
     end
 
     should "delete a subscriber" do
-      stub_delete(@auth, "subscribers/#{@subscriber.list_id}.json?email=#{CGI.escape(@subscriber.email_address)}", nil)
+      stub_delete(@auth, "subscribers/#{@subscriber.list_id}.json?email=#{ERB::Util.url_encode(@subscriber.email_address)}", nil)
       @subscriber.delete
     end
   end

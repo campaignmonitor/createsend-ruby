@@ -191,7 +191,7 @@ class CampaignTest < Test::Unit::TestCase
 
     should "get the opens for a campaign" do
       min_date = "2010-01-01"
-      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/opens.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_opens.json")
+      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/opens.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}", "campaign_opens.json")
       opens = @campaign.opens min_date
       opens.Results.size.should == 5
       opens.Results.first.EmailAddress.should == "subs+6576576576@example.com"
@@ -215,7 +215,7 @@ class CampaignTest < Test::Unit::TestCase
 
     should "get the subscriber clicks for a campaign" do
       min_date = "2010-01-01"
-      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/clicks.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_clicks.json")
+      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/clicks.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}", "campaign_clicks.json")
       clicks = @campaign.clicks min_date
       clicks.Results.size.should == 3
       clicks.Results.first.EmailAddress.should == "subs+6576576576@example.com"
@@ -240,7 +240,7 @@ class CampaignTest < Test::Unit::TestCase
 
     should "get the unsubscribes for a campaign" do
       min_date = "2010-01-01"
-      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/unsubscribes.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_unsubscribes.json")
+      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/unsubscribes.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}", "campaign_unsubscribes.json")
       unsubscribes = @campaign.unsubscribes min_date
       unsubscribes.Results.size.should == 1
       unsubscribes.Results.first.EmailAddress.should == "subs+6576576576@example.com"
@@ -258,7 +258,7 @@ class CampaignTest < Test::Unit::TestCase
 
     should "get the spam complaints for a campaign" do
       min_date = "2010-01-01"
-      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/spam.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_spam.json")
+      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/spam.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}", "campaign_spam.json")
       spam = @campaign.spam min_date
       spam.Results.size.should == 1
       spam.Results.first.EmailAddress.should == "subs+6576576576@example.com"
@@ -275,7 +275,7 @@ class CampaignTest < Test::Unit::TestCase
 
     should "get the bounces for a campaign" do
       min_date = "2010-01-01"
-      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/bounces.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{CGI.escape(min_date)}", "campaign_bounces.json")
+      stub_get(@auth, "campaigns/#{@campaign.campaign_id}/bounces.json?page=1&pagesize=1000&orderfield=date&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}", "campaign_bounces.json")
       bounces = @campaign.bounces min_date
       bounces.Results.size.should == 2
       bounces.Results.first.EmailAddress.should == "asdf@softbouncemyemail.com"
