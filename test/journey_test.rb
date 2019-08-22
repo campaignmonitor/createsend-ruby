@@ -31,7 +31,6 @@ class JourneyTest < Test::Unit::TestCase
         "?date=#{ERB::Util.url_encode(journey_date)}" \
         "&page=2" \
         "&pagesize=5" \
-        "&orderfield=date" \
         "&orderdirection=asc", "journey_recipients.json")
 
       recipients = @journey.email_recipients email_id = 'b1b1b1b1b1b1b1b1b1b1', date = journey_date, page = 2, page_size = 5, order_direction = 'asc'
@@ -54,7 +53,6 @@ class JourneyTest < Test::Unit::TestCase
         "?date=#{ERB::Util.url_encode(journey_date)}" \
         "&page=2" \
         "&pagesize=5" \
-        "&orderfield=date" \
         "&orderdirection=asc", "journey_opens.json")
 
       opens = @journey.email_opens email = 'b1b1b1b1b1b1b1b1b1b1', date = journey_date, page = 2, page_size = 5, order_direction = 'asc'
@@ -84,7 +82,6 @@ class JourneyTest < Test::Unit::TestCase
         "?date=#{ERB::Util.url_encode(journey_date)}" \
         "&page=1" \
         "&pagesize=2" \
-        "&orderfield=date" \
         "&orderdirection=asc", "journey_clicks.json")
 
       clicks = @journey.email_clicks email = 'b1b1b1b1b1b1b1b1b1b1', date = journey_date, page = 1, page_size = 2, order_direction = 'asc'
@@ -115,7 +112,6 @@ class JourneyTest < Test::Unit::TestCase
         "?date=#{ERB::Util.url_encode(journey_date)}" \
         "&page=1" \
         "&pagesize=10" \
-        "&orderfield=date" \
         "&orderdirection=desc", "journey_unsubscribes.json")
 
       unsubscribes = @journey.email_unsubscribes email = 'b1b1b1b1b1b1b1b1b1b1', date = journey_date, page = 1, page_size = 10, order_direction = 'desc'
@@ -139,7 +135,6 @@ class JourneyTest < Test::Unit::TestCase
         "?date=#{ERB::Util.url_encode(journey_date)}" \
         "&page=20" \
         "&pagesize=5" \
-        "&orderfield=date" \
         "&orderdirection=desc", "journey_bounces.json")
 
       bounces = @journey.email_bounces email = 'b1b1b1b1b1b1b1b1b1b1', date = journey_date, page = 20, page_size = 5, order_direction = 'desc'

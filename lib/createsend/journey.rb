@@ -46,7 +46,6 @@ module CreateSend
           :date => date,
           :page => page,
           :pagesize => page_size,
-          :orderfield => "date",
           :orderdirection => order_direction } }
       response = get_journey_email_action email_id, resource, options
       Hashie::Mash.new(response)
