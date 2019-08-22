@@ -25,29 +25,27 @@ class JourneyTest < Test::Unit::TestCase
       summary.Emails.first.Unsubscribed.should == 0
     end
 
-    context "email recipients" do
-      should "return a paged list of recipients of a particular email" do
-        stub_get(@auth, "journeys/email/b1b1b1b1b1b1b1b1b1b1/recipients.json", "journey_recipients.json")
+    should "return a paged list of recipients of a particular email" do
+      journey_date = "2019-07-12 09:22"
+      stub_get(@auth, "journeys/email/b1b1b1b1b1b1b1b1b1b1/recipients.json" \
+        "?date=#{ERB::Util.url_encode(journey_date)}" \
+        "&page=2" \
+        "&pagesize=5" \
+        "&orderfield=date" \
+        "&orderdirection=asc", "journey_recipients.json")
 
-        recipients = @journey.email_recipients 'b1b1b1b1b1b1b1b1b1b1'
-        recipients.Results.size.should == 4
-        recipients.Results.first.EmailAddress.should == 'example+1@example.com'
-        recipients.Results.first.SentDate.should == '2019-07-12 09:45:00'
+      recipients = @journey.email_recipients email_id = 'b1b1b1b1b1b1b1b1b1b1', date = journey_date, page = 2, page_size = 5, order_direction = 'asc'
+      recipients.Results.size.should == 4
+      recipients.Results.first.EmailAddress.should == 'example+1@example.com'
+      recipients.Results.first.SentDate.should == '2019-07-12 09:45:00'
 
-        recipients.ResultsOrderedBy.should == 'SentDate'
-        recipients.OrderDirection.should == 'ASC'
-        recipients.PageNumber.should == 2
-        recipients.PageSize.should == 10
-        recipients.RecordsOnThisPage.should == 4
-        recipients.TotalNumberOfRecords.should == 14
-        recipients.NumberOfPages.should == 2
-      end
-
-      should "validate argument when getting email recipients" do
-        [nil, 5].each { |id|
-          lambda { @journey.email_recipients id }.should raise_error
-        }
-      end
+      recipients.ResultsOrderedBy.should == 'SentDate'
+      recipients.OrderDirection.should == 'ASC'
+      recipients.PageNumber.should == 2
+      recipients.PageSize.should == 10
+      recipients.RecordsOnThisPage.should == 4
+      recipients.TotalNumberOfRecords.should == 14
+      recipients.NumberOfPages.should == 2
     end
 
     should "return a paged list of subscribers who opened given journey email" do

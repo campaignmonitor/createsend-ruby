@@ -15,11 +15,8 @@ module CreateSend
     end
 
     # Gets a list of all recipients of a particular email within a journey
-    def email_recipients(email_id="")
-      raise ArgumentError, 'Email must be a string' unless not email_id.nil? and email_id.kind_of? String
-
-      response = get_action email_id, "recipients"
-      Hashie::Mash.new(response)
+    def email_recipients(email_id="", date="", page=1, page_size=1000, order_direction='asc')
+      paged_result_by_date("recipients", email_id, date, page, page_size, order_direction)
     end
 
     # Gets a paged list of subscribers who opened a given journey email
@@ -51,11 +48,11 @@ module CreateSend
           :pagesize => page_size,
           :orderfield => "date",
           :orderdirection => order_direction } }
-      response = get_action email_id, resource, options
+      response = get_journey_email_action email_id, resource, options
       Hashie::Mash.new(response)
     end
 
-    def get_action(email_id, action, options = {})
+    def get_journey_email_action(email_id, action, options = {})
       get "/journeys/email/#{email_id}/#{action}.json", options
     end
   end
