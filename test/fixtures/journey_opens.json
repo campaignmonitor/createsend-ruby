@@ -1,0 +1,55 @@
+{
+  "Results": [
+    {
+      "EmailAddress": "example+1@example.com",
+      "Date": "2019-07-29 10:33:00",
+      "IPAddress": "192.168.0.3",
+      "Latitude": -33.8683,
+      "Longitude": 151.2086,
+      "City": "Sydney",
+      "Region": "New South Wales",
+      "CountryCode": "AU",
+      "CountryName": "Australia"
+    },
+    {
+      "EmailAddress": "example+2@example.com",
+      "Date": "2019-07-29 10:35:00",
+      "IPAddress": "192.168.0.3",
+      "Latitude": -33.8683,
+      "Longitude": 151.2086,
+      "City": "Sydney",
+      "Region": "New South Wales",
+      "CountryCode": "AU",
+      "CountryName": "Australia"
+    },
+    {
+      "EmailAddress": "example+3@example.com",
+      "Date": "2019-07-29 10:35:00",
+      "IPAddress": "192.168.0.3",
+      "Latitude": -33.8683,
+      "Longitude": 151.2086,
+      "City": "Sydney",
+      "Region": "New South Wales",
+      "CountryCode": "AU",
+      "CountryName": "Australia"
+    },
+    {
+      "EmailAddress": "example+4@example.com",
+      "Date": "2019-07-29 10:35:00",
+      "IPAddress": "192.168.0.3",
+      "Latitude": -33.8683,
+      "Longitude": 151.2086,
+      "City": "Sydney",
+      "Region": "New South Wales",
+      "CountryCode": "AU",
+      "CountryName": "Australia"
+    }
+  ],
+  "ResultsOrderedBy": "Date",
+  "OrderDirection": "ASC",
+  "PageNumber": 1,
+  "PageSize": 1000,
+  "RecordsOnThisPage": 4,
+  "TotalNumberOfRecords": 4,
+  "NumberOfPages": 1
+}

@@ -82,7 +82,7 @@ class CreateSendTest < Test::Unit::TestCase
       FakeWeb.register_uri(:post, "https://api.createsend.com/oauth/token", options)
       new_access_token, new_expires_in, new_refresh_token = CreateSend::CreateSend.refresh_access_token refresh_token
 
-      FakeWeb.last_request.body.should == "grant_type=refresh_token&refresh_token=#{CGI.escape(refresh_token)}"
+      FakeWeb.last_request.body.should == "grant_type=refresh_token&refresh_token=#{ERB::Util.url_encode(refresh_token)}"
       new_access_token.should == "SlAV32hkKG2e12e"
       new_expires_in.should == 1209600
       new_refresh_token.should == "tGzv3JOkF0XG5Qx2TlKWIA"
@@ -97,7 +97,7 @@ class CreateSendTest < Test::Unit::TestCase
       lambda { access_token, expires_in, refresh_token = CreateSend::CreateSend.refresh_access_token(
         refresh_token) }.should raise_error(
           Exception, 'Error refreshing access token: invalid_grant - Specified refresh_token was invalid or expired')
-      FakeWeb.last_request.body.should == "grant_type=refresh_token&refresh_token=#{CGI.escape(refresh_token)}"
+      FakeWeb.last_request.body.should == "grant_type=refresh_token&refresh_token=#{ERB::Util.url_encode(refresh_token)}"
     end
 
   end
@@ -120,7 +120,7 @@ class CreateSendTest < Test::Unit::TestCase
       cs = CreateSend::CreateSend.new @auth
       new_access_token, new_expires_in, new_refresh_token = cs.refresh_token
 
-      FakeWeb.last_request.body.should == "grant_type=refresh_token&refresh_token=#{CGI.escape(@auth[:refresh_token])}"
+      FakeWeb.last_request.body.should == "grant_type=refresh_token&refresh_token=#{ERB::Util.url_encode(@auth[:refresh_token])}"
       new_access_token.should == "SlAV32hkKG2e12e"
       new_expires_in.should == 1209600
       new_refresh_token.should == "tGzv3JOkF0XG5Qx2TlKWIA"
@@ -246,7 +246,7 @@ class CreateSendTest < Test::Unit::TestCase
 
     should "set primary contact" do
       email = 'admin@blackhole.com'
-      stub_put(@auth, "primarycontact.json?email=#{CGI.escape(email)}", 'admin_set_primary_contact.json')
+      stub_put(@auth, "primarycontact.json?email=#{ERB::Util.url_encode(email)}", 'admin_set_primary_contact.json')
       result = @cs.set_primary_contact email
       result.EmailAddress.should == email
     end

@@ -181,6 +181,12 @@ module CreateSend
       super "/clients/#{client_id}.json", {}
     end
 
+    # Gets the journeys belonging to this client.
+    def journeys
+      response = get 'journeys'
+      response.map{|item| Hashie::Mash.new(item)}
+    end
+
     private
 
     def get(action, options = {})

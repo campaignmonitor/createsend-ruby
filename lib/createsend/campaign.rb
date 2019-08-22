@@ -1,5 +1,5 @@
 module CreateSend
-  # Represents a campaign and provides associated funtionality.
+  # Represents a campaign and provides associated functionality.
   class Campaign < CreateSend
     attr_reader :campaign_id
 

@@ -1,0 +1,27 @@
+{
+  "Results": [
+    {
+      "EmailAddress": "example+1@example.com",
+      "SentDate": "2019-07-12 09:45:00"
+    },
+    {
+      "EmailAddress": "example+2@example.com",
+      "SentDate": "2019-07-12 10:45:00"
+    },
+    {
+      "EmailAddress": "example+3@example.com",
+      "SentDate": "2019-07-13 09:00:00"
+    },
+    {
+      "EmailAddress": "example+4@example.com",
+      "SentDate": "2019-07-16 11:45:00"
+    }
+  ],
+  "ResultsOrderedBy": "SentDate",
+  "OrderDirection": "ASC",
+  "PageNumber": 2,
+  "PageSize": 10,
+  "RecordsOnThisPage": 4,
+  "TotalNumberOfRecords": 14,
+  "NumberOfPages": 2
+}
