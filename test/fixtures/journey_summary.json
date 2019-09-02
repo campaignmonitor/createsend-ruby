@@ -8,7 +8,7 @@
       "EmailID": "b1b1b1b1b1b1b1b1b1b1",
       "Name": "New Email",
       "Bounced": 0,
-      "Clicks": 0,
+      "Clicked": 0,
       "Opened": 3,
       "Sent": 1,
       "UniqueOpened": 1,

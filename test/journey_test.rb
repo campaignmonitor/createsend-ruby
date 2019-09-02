@@ -18,7 +18,7 @@ class JourneyTest < Test::Unit::TestCase
       summary.Emails.first.EmailID.should == 'b1b1b1b1b1b1b1b1b1b1'
       summary.Emails.first.Name.should == 'New Email'
       summary.Emails.first.Bounced.should == 0
-      summary.Emails.first.Clicks.should == 0
+      summary.Emails.first.Clicked.should == 0
       summary.Emails.first.Opened.should == 3
       summary.Emails.first.Sent.should == 1
       summary.Emails.first.UniqueOpened.should == 1
