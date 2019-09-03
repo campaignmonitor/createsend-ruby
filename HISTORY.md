@@ -1,5 +1,8 @@
 # createsend-ruby history
 
+## v5.1.0 - 3 Sep, 2019
+* Added support for [Journey API](https://www.campaignmonitor.com/api/journeys/)
+
 ## v5.0.0 - 19 Jun, 2018
 * Upgrades to Createsend API v3.2 which includes new breaking changes
 * Breaking: 'Consent to track' field is now mandatory for sending smart and classic transactionl emails
