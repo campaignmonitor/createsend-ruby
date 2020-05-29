@@ -5,7 +5,7 @@ require "./lib/createsend"
 
 desc "Run tests"
 Rake::TestTask.new(:test) do |test|
-  test.ruby_opts = ["-rubygems"] if defined? Gem
+  test.ruby_opts = ["-rrubygems"] if defined? Gem
   test.libs << "lib" << "test"
   test.pattern = "test/**/*_test.rb"
   puts "running tests."
