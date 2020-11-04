@@ -30,6 +30,8 @@ module CreateSend
   class Unauthorized < CreateSendError; end
   # Raised for HTTP response code of 404
   class NotFound < ClientError; end
+  # Raised for HTTP response code of 429
+  class TooManyRequests < ClientError; end
 
   # Raised for HTTP response code of 401, specifically when an OAuth token
   # in invalid (Code: 120, Message: 'Invalid OAuth Token')
@@ -277,6 +279,8 @@ module CreateSend
         end
       when 404
         raise NotFound.new
+      when 429
+        raise TooManyRequests.new
       when 400...500
         raise ClientError.new
       when 500...600

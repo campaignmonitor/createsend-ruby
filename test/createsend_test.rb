@@ -278,11 +278,12 @@ class CreateSendTest < Test::Unit::TestCase
         @template = CreateSend::Template.new @auth, '98y2e98y289dh89h938389'
       end
 
-      { ["400", "Bad Request"]  => CreateSend::BadRequest,
-        ["401", "Unauthorized"] => CreateSend::Unauthorized,
-        ["404", "Not Found"]    => CreateSend::NotFound,
-        ["418", "I'm a teapot"] => CreateSend::ClientError,
-        ["500", "Server Error"] => CreateSend::ServerError
+      { ["400", "Bad Request"]       => CreateSend::BadRequest,
+        ["401", "Unauthorized"]      => CreateSend::Unauthorized,
+        ["404", "Not Found"]         => CreateSend::NotFound,
+        ["418", "I'm a teapot"]      => CreateSend::ClientError,
+        ["429", "Too many requests"] => CreateSend::TooManyRequests,
+        ["500", "Server Error"]      => CreateSend::ServerError
       }.each do |status, exception|
         context "#{status.first}, a get" do
           should "raise a #{exception.name} error" do
