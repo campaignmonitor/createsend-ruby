@@ -264,7 +264,7 @@ module CreateSend
       when 400
         raise BadRequest.new(Hashie::Mash.new response)
       when 401
-        data = Hashie::Mash.new(response)
+        data = Hashie::Mash.new(JSON.parse(response))
         case data.Code
         when 120
           raise InvalidOAuthToken.new data
