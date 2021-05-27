@@ -262,7 +262,7 @@ module CreateSend
     def handle_response(response) # :nodoc:
       case response.code
       when 400
-        raise BadRequest.new(Hashie::Mash.new response)
+        raise BadRequest.new(Hashie::Mash.new(JSON.parse(response)))
       when 401
         data = Hashie::Mash.new(JSON.parse(response))
         case data.Code
