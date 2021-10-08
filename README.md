@@ -212,7 +212,7 @@ Please check the [instructions for releasing](https://github.com/campaignmonitor
 
 ## This stuff should be green
 
-[![Build Status](https://secure.travis-ci.org/campaignmonitor/createsend-ruby.png)][travis] [![Coverage Status](https://coveralls.io/repos/campaignmonitor/createsend-ruby/badge.png?branch=master)][coveralls] [![Dependency Status](https://gemnasium.com/campaignmonitor/createsend-ruby.png)][gemnasium] [![Gem Version](https://badge.fury.io/rb/createsend.png)][gembadge]
+[![Build Status](https://app.travis-ci.com/campaignmonitor/createsend-ruby.svg?branch=master)](https://app.travis-ci.com/campaignmonitor/createsend-ruby) [![Coverage Status](https://coveralls.io/repos/campaignmonitor/createsend-ruby/badge.png?branch=master)][coveralls] [![Dependency Status](https://gemnasium.com/campaignmonitor/createsend-ruby.png)][gemnasium] [![Gem Version](https://badge.fury.io/rb/createsend.png)][gembadge]
 
 [travis]: http://travis-ci.org/campaignmonitor/createsend-ruby
 [coveralls]: https://coveralls.io/r/campaignmonitor/createsend-ruby
