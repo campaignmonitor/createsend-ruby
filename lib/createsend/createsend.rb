@@ -44,6 +44,8 @@ module CreateSend
   # Provides high level CreateSend functionality/data you'll probably need.
   class CreateSend
     include HTTParty
+    default_timeout 120
+
     attr_reader :auth_details
 
     # Specify cert authority file for cert validation

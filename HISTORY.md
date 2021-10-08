@@ -1,5 +1,8 @@
 # createsend-ruby history
 
+## v5.1.1 - 8 Oct, 2021
+* increased default timeout for HTTP requests to 120secs
+
 ## v5.1.0 - 3 Sep, 2019
 * Added support for [Journeys API](https://www.campaignmonitor.com/api/journeys/)
 
