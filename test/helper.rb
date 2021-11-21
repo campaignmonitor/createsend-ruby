@@ -11,7 +11,6 @@ require 'test/unit'
 require 'pathname'
 
 require 'shoulda/context'
-#require 'matchy'
 require 'fakeweb'
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
