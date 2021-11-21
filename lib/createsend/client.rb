@@ -25,9 +25,19 @@ module CreateSend
     end
 
     # Gets the sent campaigns belonging to this client.
-    def campaigns
-      response = get 'campaigns'
-      response.map{|item| Hashie::Mash.new(item)}
+    def campaigns(page=1, page_size=1000, order_direction="desc",
+      sent_from_date='', sent_to_date='', tags='')
+      options = { :query => {
+        :page => page,
+        :pagesize => page_size,
+        :orderdirection => order_direction,
+        :sentfromdate => sent_from_date,
+        :senttodate => sent_to_date,
+        :tags => tags
+      }}
+
+      response = get 'campaigns', options
+      Hashie::Mash.new(response)
     end
 
     # Gets the currently scheduled campaigns belonging to this client.
@@ -39,6 +49,12 @@ module CreateSend
     # Gets the draft campaigns belonging to this client.
     def drafts
       response = get 'drafts'
+      response.map{|item| Hashie::Mash.new(item)}
+    end
+
+    # Gets all the tags belonging to this client.
+    def tags
+      response = get 'tags'
       response.map{|item| Hashie::Mash.new(item)}
     end
 

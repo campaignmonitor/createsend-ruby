@@ -11,7 +11,7 @@ require 'test/unit'
 require 'pathname'
 
 require 'shoulda/context'
-require 'matchy'
+#require 'matchy'
 require 'fakeweb'
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
@@ -30,7 +30,7 @@ def createsend_url(auth, url)
   if not url =~ /^http/
     auth_section = ''
     auth_section = "#{auth[:api_key]}:x@" if auth and auth.has_key? :api_key
-    result = "https://#{auth_section}api.createsend.com/api/v3.2/#{url}"
+    result = "https://#{auth_section}api.createsend.com/api/v3.3/#{url}"
   else
     result = url
   end

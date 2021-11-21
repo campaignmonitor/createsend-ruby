@@ -8,7 +8,8 @@
     "ReplyTo": "myemail@example.com",
     "DateCreated": "2010-08-19 16:08:00",
     "PreviewURL": "http://createsend.com/t/r-E97A7BB2E6983DA1",
-    "PreviewTextURL": "http://createsend.com/t/r-E97A7BB2E6983DA1/t"
+    "PreviewTextURL": "http://createsend.com/t/r-E97A7BB2E6983DA1/t",
+    "Tags": ["tagexample"]
   },
   {
     "CampaignID": "2e928e982065d92627139208c8c01db1",
@@ -19,6 +20,7 @@
     "ReplyTo": "myemail@example.com",
     "DateCreated": "2010-08-19 16:08:00",
     "PreviewURL": "http://createsend.com/t/r-E97A7BB2E6983DA1",
-    "PreviewTextURL": "http://createsend.com/t/r-E97A7BB2E6983DA1/t"
+    "PreviewTextURL": "http://createsend.com/t/r-E97A7BB2E6983DA1/t",
+    "Tags": []
   }
 ]
