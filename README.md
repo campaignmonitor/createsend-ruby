@@ -133,7 +133,7 @@ clients.each do |cl|
   p "Client: #{cl.Name}"
   client = CreateSend::Client.new auth, cl.ClientID
   p "- Campaigns:"
-  client.campaigns.each do |cm|
+  client.campaigns.Results.each do |cm|
     p "  - #{cm.Subject}"
   end
 end
