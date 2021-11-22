@@ -85,7 +85,7 @@ class ClientTest < Test::Unit::TestCase
       tags.size.should == 2
       tag = tags.first
       tag.Name.should == 'Tag One'
-      tag.NumberOfCampaigns.should == '62'
+      tag.NumberOfCampaigns.should == '120'
     end
 
     should "get all lists" do
