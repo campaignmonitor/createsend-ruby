@@ -26,9 +26,17 @@ class ClientTest < Test::Unit::TestCase
     end
 
     should "get all campaigns" do
-      stub_get(@auth, "clients/#{@client.client_id}/campaigns.json", "campaigns.json")
+      stub_get(@auth, "clients/#{@client.client_id}/campaigns.json?page=1&pagesize=1000&orderdirection=desc&sentfromdate=&senttodate=&tags=", "campaigns.json")
       campaigns = @client.campaigns
       campaigns.Results.size.should == 2
+      campaigns.ResultsOrderedBy == 'sentdate'
+      campaigns.OrderDirection = 'desc'
+      campaigns.PageNumber == 1
+      campaigns.PageSize == 1000
+      campaigns.RecordsOnThisPage == 2
+      campaigns.TotalNumberOfRecords == 2
+      campaigns.NumberOfPages == 1
+
       campaign = campaigns.Results.first
       campaign.CampaignID.should == 'fc0ce7105baeaf97f47c99be31d02a91'
       campaign.WebVersionURL.should == 'http://createsend.com/t/r-765E86829575EE2C'
