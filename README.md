@@ -132,20 +132,9 @@ clients = cs.clients
 clients.each do |cl|
   p "Client: #{cl.Name}"
   client = CreateSend::Client.new auth, cl.ClientID
-  campaigns = []
-  page_number = 1
-  loop do
-      page = @client.campaigns(page_number)
-      page_number += 1
-      campaigns.concat(page.Results)
-      if page.PageNumber == page.NumberOfPages
-          break
-      end
-  end
   p "- Campaigns:"
-    campaigns.each do |cm|
-      p "  - #{cm.Subject}"
-    end
+  client.drafts.each do |cm|
+    p "  - #{cm.Subject}"
   end
 end
 ```
