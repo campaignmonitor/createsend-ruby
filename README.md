@@ -135,7 +135,7 @@ clients.each do |cl|
   campaigns = []
   page_number = 1
   loop do
-      page = @client.campaigns(page_number, 1000, 'desc', '', '', '')
+      page = @client.campaigns(page_number)
       page_number += 1
       campaigns.concat(page.Results)
       if page.PageNumber == page.NumberOfPages
