@@ -13,7 +13,8 @@ class SubscriberTest < Test::Unit::TestCase
       subscriber = CreateSend::Subscriber.get @auth, @list_id, email
       subscriber.EmailAddress.should == email
       subscriber.Name.should == "Subscriber One"
-      subscriber.Date.should == "2010-10-25 10:28:00"
+      subscriber.StateChangedDate.should == "2010-10-25 10:28:00"
+      subscriber.ListJoinedDate.should == "2010-10-25 10:28:00"
       subscriber.State.should == "Active"
       subscriber.CustomFields.size.should == 3
       subscriber.CustomFields.first.Key.should == 'website'

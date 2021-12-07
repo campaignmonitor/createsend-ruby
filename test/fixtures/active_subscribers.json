@@ -3,7 +3,8 @@
     {
       "EmailAddress": "subs+7t8787Y@example.com",
       "Name": "Person One",
-      "Date": "2010-10-25 10:28:00",
+      "StateChangedDate": "2010-10-25 10:28:00",
+      "ListJoinedDate": "2010-10-25 10:28:00",
       "State": "Active",
       "CustomFields": [
         {
@@ -32,7 +33,8 @@
     {
       "EmailAddress": "subs+7878787y8ggg@example.com",
       "Name": "Person Two",
-      "Date": "2010-10-25 12:17:00",
+      "StateChangedDate": "2010-10-25 12:17:00",
+      "ListJoinedDate": "2010-10-25 12:17:00",
       "State": "Active",
       "CustomFields": [
         {
@@ -45,7 +47,8 @@
     {
       "EmailAddress": "subs+7890909i0ggg@example.com",
       "Name": "Person Three",
-      "Date": "2010-10-25 12:52:00",
+      "StateChangedDate": "2010-10-25 12:52:00",
+      "ListJoinedDate": "2010-10-25 12:52:00",
       "State": "Active",
       "CustomFields": [
         {
@@ -58,7 +61,8 @@
     {
       "EmailAddress": "subs@example.com",
       "Name": "Person Four",
-      "Date": "2010-10-27 13:13:00",
+      "StateChangedDate": "2010-10-27 13:13:00",
+      "ListJoinedDate": "2010-10-27 13:13:00",
       "State": "Active",
       "CustomFields": [],
       "ReadsEmailWith": ""
@@ -66,7 +70,8 @@
     {
       "EmailAddress": "joey@example.com",
       "Name": "Person Five",
-      "Date": "2010-10-27 13:13:00",
+      "StateChangedDate": "2010-10-27 13:13:00",
+      "ListJoinedDate": "2010-10-27 13:13:00",
       "State": "Active",
       "CustomFields": [],
       "ReadsEmailWith": "Gmail"
