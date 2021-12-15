@@ -3,10 +3,11 @@ require 'createsend'
 
 class SegmentsSample
     def initialize
-        raise 'CREATESEND_API_KEY env var missing' if ENV['CREATESEND_API_KEY'].nil?
+        raise 'CREATESEND_ACCESS_TOKEN env var missing' if ENV['CREATESEND_ACCESS_TOKEN'].nil?
+        raise 'CREATESEND_REFRESH_TOKEN env var missing' if ENV['CREATESEND_REFRESH_TOKEN'].nil?
         raise 'CREATESEND_SEGMENT_ID env var missing' if ENV['CREATESEND_SEGMENT_ID'].nil?
 
-        auth = {:api_key => ENV['CREATESEND_API_KEY']}
+        auth = {:access_token => ENV['CREATESEND_ACCESS_TOKEN'], :refresh_token => ENV['CREATESEND_REFRESH_TOKEN']}
         @segment = CreateSend::Segment.new auth, ENV['CREATESEND_SEGMENT_ID']
     end
 

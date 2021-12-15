@@ -3,10 +3,11 @@ require 'createsend'
 
 class ListsSample
     def initialize
-        raise 'CREATESEND_API_KEY env var missing' if ENV['CREATESEND_API_KEY'].nil?
+        raise 'CREATESEND_ACCESS_TOKEN env var missing' if ENV['CREATESEND_ACCESS_TOKEN'].nil?
+        raise 'CREATESEND_REFRESH_TOKEN env var missing' if ENV['CREATESEND_REFRESH_TOKEN'].nil?
         raise 'CREATESEND_LIST_ID env var missing' if ENV['CREATESEND_LIST_ID'].nil?
 
-        auth = {:api_key => ENV['CREATESEND_API_KEY']}
+        auth = {:access_token => ENV['CREATESEND_ACCESS_TOKEN'], :refresh_token => ENV['CREATESEND_REFRESH_TOKEN']}
         @list = CreateSend::List.new auth, ENV['CREATESEND_LIST_ID']
     end
 
