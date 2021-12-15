@@ -1,14 +1,21 @@
 # createsend-ruby history
 
-## v6.0.0 - 22 Nov, 2021
+## v6.0.0 - 15 Dec, 2021
 * Upgrades to Createsend API v3.3 which includes new breaking changes
 * Breaking: 'client.campaigns' now returned an object to support pagination (use .Results to ge the array of campaigns)
-* Breaking: various subscribers related endpoints now returned listJoinedDate along with stateChangedDate (previously known as Date)
 * Added 'Tags' as another field that is returned in 'client.scheduled', 'client.drafts' and 'client.campaigns'
 * Added 'Name' as another field that is returned in 'campaign.summary'
 * Add new support for 'client.tags' endpoint (ie: getting list of tags for the client)
 * Add support for pagination, filtering and sorting to 'client.campaigns' endpoint
 * Bump `rake` to `~> 12.3.3`
+* Breaking: Following endpoints now return ListJoinedDate for each subscriber.  Also, Date has been renamed to StateChangedDate:
+  * List.Active()
+  * List.Bounced()
+  * List.Unsubscribed()
+  * List.Unconfirmed()
+  * List.Deleted()
+  * Segment.Subscribers()
+  * Subscriber.Get()
 
 ## v5.1.1 - 8 Oct, 2021
 * increased default timeout for HTTP requests to 120secs
