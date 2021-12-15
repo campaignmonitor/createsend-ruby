@@ -15,12 +15,6 @@ class AuthorizationSample
         @oauthClientSecret = ENV['CREATESEND_OAUTH_CLIENT_SECRET']
         @oauthRedirectUrl = ENV['CREATESEND_OAUTH_REDIRECT_URL']
         @oauthScope = ENV['CREATESEND_OAUTH_SCOPE']
-
-        @createsendApiKey = 'usCvraxxGylqnTiIWuV/t/hLMAEXOVWGT05hlxiZT1tuhbRfiNtp7xO9jWrlokEoxsLiOKDShqccC3Ohts1WEgJITUSBrC7N9+l8rzgDW9a0944+4IEI7wihr0y/tSDje/IvI8zchTN3xbvgcEMYSg=='
-        @oauthClientId = '123642'
-        @oauthClientSecret = '06DKpCHjLH51SRMnXxlU8PTR7VV2iVG3kIqdoC6gYm0W3xg1301S38m81DA11734IbjvSK0fE9x5Vi7a'
-        @oauthRedirectUrl = 'https://appname.com/register',
-        @oauthScope = 'SendCampaigns,ViewReports,AdministerAccount,ManageLists'
         )
     end
 
