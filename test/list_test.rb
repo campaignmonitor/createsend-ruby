@@ -142,7 +142,7 @@ class ListTest < Test::Unit::TestCase
       res.Results.size.should == 5
       res.Results.first.EmailAddress.should == "subs+7t8787Y@example.com"
       res.Results.first.Name.should =="Person One"
-      res.Results.first.StateChangedDate.should == "2010-10-25 10:28:00"
+      res.Results.first.Date.should == "2010-10-25 10:28:00"
       res.Results.first.ListJoinedDate.should == "2010-10-25 10:28:00"
       res.Results.first.State.should == "Active"
       res.Results.first.CustomFields.size.should == 5
@@ -170,7 +170,7 @@ class ListTest < Test::Unit::TestCase
       res.Results.size.should == 2
       res.Results.first.EmailAddress.should == "subs+7t8787Y@example.com"
       res.Results.first.Name.should =="Unconfirmed One"
-      res.Results.first.StateChangedDate.should =="2010-10-25 10:28:00"
+      res.Results.first.Date.should =="2010-10-25 10:28:00"
       res.Results.first.ListJoinedDate.should =="2010-10-25 10:28:00"
       res.Results.first.State.should == "Unconfirmed"
       res.Results.first.ConsentToTrack.should == "Yes"
@@ -191,7 +191,7 @@ class ListTest < Test::Unit::TestCase
       res.Results.size.should == 5
       res.Results.first.EmailAddress.should == "subscriber@example.com"
       res.Results.first.Name.should == "Unsub One"
-      res.Results.first.StateChangedDate.should == "2010-10-25 13:11:00"
+      res.Results.first.Date.should == "2010-10-25 13:11:00"
       res.Results.first.ListJoinedDate.should == "2010-10-25 13:11:00"
       res.Results.first.State.should == "Unsubscribed"
       res.Results.first.CustomFields.size.should == 0
@@ -213,7 +213,7 @@ class ListTest < Test::Unit::TestCase
       res.Results.size.should == 5
       res.Results.first.EmailAddress.should == "subscriber@example.com"
       res.Results.first.Name.should == "Deleted One"
-      res.Results.first.StateChangedDate.should == "2010-10-25 13:11:00"
+      res.Results.first.Date.should == "2010-10-25 13:11:00"
       res.Results.first.ListJoinedDate.should == "2010-10-25 13:11:00"
       res.Results.first.State.should == "Deleted"
       res.Results.first.CustomFields.size.should == 0
@@ -235,7 +235,7 @@ class ListTest < Test::Unit::TestCase
       res.Results.size.should == 1
       res.Results.first.EmailAddress.should == "bouncedsubscriber@example.com"
       res.Results.first.Name.should == "Bounced One"
-      res.Results.first.StateChangedDate.should == "2010-10-25 13:11:00"
+      res.Results.first.Date.should == "2010-10-25 13:11:00"
       res.Results.first.ListJoinedDate.should == "2010-10-25 13:11:00"
       res.Results.first.State.should == "Bounced"
       res.Results.first.CustomFields.size.should == 0

@@ -3,7 +3,7 @@
         {
             "EmailAddress": "subs+7t8787Y@example.com",
             "Name": "Unconfirmed One",
-            "StateChangedDate": "2010-10-25 10:28:00",
+            "Date": "2010-10-25 10:28:00",
             "ListJoinedDate": "2010-10-25 10:28:00",
             "State": "Unconfirmed",
             "CustomFields": [
@@ -18,7 +18,7 @@
         {
             "EmailAddress": "subs+7878787y8ggg@example.com",
             "Name": "Unconfirmed Two",
-            "StateChangedDate": "2010-10-25 12:17:00",
+            "Date": "2010-10-25 12:17:00",
             "ListJoinedDate": "2010-10-25 12:17:00",
             "State": "Unconfirmed",
             "CustomFields": [

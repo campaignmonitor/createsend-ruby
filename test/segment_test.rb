@@ -41,7 +41,7 @@ class SegmentTest < Test::Unit::TestCase
       res.Results.size.should == 2
       res.Results.first.EmailAddress.should == "personone@example.com"
       res.Results.first.Name.should == "Person One"
-      res.Results.first.StateChangedDate.should == "2010-10-27 13:13:00"
+      res.Results.first.Date.should == "2010-10-27 13:13:00"
       res.Results.first.ListJoinedDate.should == "2010-10-27 13:13:00"
       res.Results.first.State.should == "Active"
       res.Results.first.CustomFields.should == []

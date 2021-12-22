@@ -8,7 +8,7 @@
 * Add new support for 'client.tags' endpoint (ie: getting list of tags for the client)
 * Add support for pagination, filtering and sorting to 'client.campaigns' endpoint
 * Bump `rake` to `~> 12.3.3`
-* Breaking: Following endpoints now return ListJoinedDate for each subscriber.  Also, Date has been renamed to StateChangedDate:
+* Adding support for returning ListJoinedDate for each subscriber. 
   * List.Active()
   * List.Bounced()
   * List.Unsubscribed()
