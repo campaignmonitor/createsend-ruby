@@ -1,12 +1,13 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'createsend'
 
-class ClientCampaignsSample
+class ClientsSample
     def initialize
-        raise 'CREATESEND_API_KEY env var missing' if ENV['CREATESEND_API_KEY'].nil?
+        raise 'CREATESEND_ACCESS_TOKEN env var missing' if ENV['CREATESEND_ACCESS_TOKEN'].nil?
+        raise 'CREATESEND_REFRESH_TOKEN env var missing' if ENV['CREATESEND_REFRESH_TOKEN'].nil?
         raise 'CREATESEND_CLIENT_ID env var missing' if ENV['CREATESEND_CLIENT_ID'].nil?
 
-        auth = {:api_key => ENV['CREATESEND_API_KEY']}
+        auth = auth = {:access_token => ENV['CREATESEND_ACCESS_TOKEN'], :refresh_token => ENV['CREATESEND_REFRESH_TOKEN']}
         @client = CreateSend::Client.new auth, ENV['CREATESEND_CLIENT_ID']
     end
 
@@ -68,7 +69,7 @@ class ClientCampaignsSample
     end
 end
 
-sample = ClientCampaignsSample.new
+sample = ClientsSample.new
 
 puts "All sent campaigns: #{sample.get_all_sent_campaigns.to_json}\n\n"
 puts "All sent campaigns with `tag_example` and `tag_example_2` tag: #{sample.get_sent_campaigns_with_tag_filter.to_json}\n\n"
