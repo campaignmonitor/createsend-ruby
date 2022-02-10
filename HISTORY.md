@@ -1,6 +1,6 @@
 # createsend-ruby history
 
-## v6.0.0 - 15 Dec, 2021
+## v6.0.0 - 10 Feb, 2022
 * Upgrades to Createsend API v3.3 which includes new breaking changes
 * Breaking: 'client.campaigns' now returned an object to support pagination (use .Results to ge the array of campaigns)
 * Added 'Tags' as another field that is returned in 'client.scheduled', 'client.drafts' and 'client.campaigns'
