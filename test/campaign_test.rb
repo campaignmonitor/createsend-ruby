@@ -137,6 +137,7 @@ class CampaignTest < Test::Unit::TestCase
     should "get the summary for a campaign" do
       stub_get(@auth, "campaigns/#{@campaign.campaign_id}/summary.json", "campaign_summary.json")
       summary = @campaign.summary
+      summary.Name.should == "Campaign Name"
       summary.Recipients.should == 5
       summary.TotalOpened.should == 10
       summary.Clicks.should == 0

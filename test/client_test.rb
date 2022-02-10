@@ -26,51 +26,74 @@ class ClientTest < Test::Unit::TestCase
     end
 
     should "get all campaigns" do
-      stub_get(@auth, "clients/#{@client.client_id}/campaigns.json", "campaigns.json")
+      stub_get(@auth, "clients/#{@client.client_id}/campaigns.json?page=1&pagesize=1000&orderdirection=desc&sentfromdate=&senttodate=&tags=", "campaigns.json")
       campaigns = @client.campaigns
-      campaigns.size.should == 2
-      campaigns.first.CampaignID.should == 'fc0ce7105baeaf97f47c99be31d02a91'
-      campaigns.first.WebVersionURL.should == 'http://createsend.com/t/r-765E86829575EE2C'
-      campaigns.first.WebVersionTextURL.should == 'http://createsend.com/t/r-765E86829575EE2C/t'
-      campaigns.first.Subject.should == 'Campaign One'
-      campaigns.first.Name.should == 'Campaign One'
-      campaigns.first.SentDate.should == '2010-10-12 12:58:00'
-      campaigns.first.TotalRecipients.should == 2245
-      campaigns.first.FromName.should == 'My Name'
-      campaigns.first.FromEmail.should == 'myemail@example.com'
-      campaigns.first.ReplyTo.should == 'myemail@example.com'
+      campaigns.Results.size.should == 2
+      campaigns.ResultsOrderedBy == 'sentdate'
+      campaigns.OrderDirection = 'desc'
+      campaigns.PageNumber == 1
+      campaigns.PageSize == 1000
+      campaigns.RecordsOnThisPage == 2
+      campaigns.TotalNumberOfRecords == 2
+      campaigns.NumberOfPages == 1
+
+      campaign = campaigns.Results.first
+      campaign.CampaignID.should == 'fc0ce7105baeaf97f47c99be31d02a91'
+      campaign.WebVersionURL.should == 'http://createsend.com/t/r-765E86829575EE2C'
+      campaign.WebVersionTextURL.should == 'http://createsend.com/t/r-765E86829575EE2C/t'
+      campaign.Subject.should == 'Campaign One'
+      campaign.Name.should == 'Campaign One'
+      campaign.SentDate.should == '2010-10-12 12:58:00'
+      campaign.TotalRecipients.should == 2245
+      campaign.FromName.should == 'My Name'
+      campaign.FromEmail.should == 'myemail@example.com'
+      campaign.ReplyTo.should == 'myemail@example.com'
+      campaign.Tags.should == []
     end
 
     should "get scheduled campaigns" do
       stub_get(@auth, "clients/#{@client.client_id}/scheduled.json", "scheduled_campaigns.json")
       campaigns = @client.scheduled
       campaigns.size.should == 2
-      campaigns.first.DateScheduled.should == "2011-05-25 10:40:00"
-      campaigns.first.ScheduledTimeZone.should == "(GMT+10:00) Canberra, Melbourne, Sydney"
-      campaigns.first.CampaignID.should == "827dbbd2161ea9989fa11ad562c66937"
-      campaigns.first.Name.should == "Magic Issue One"
-      campaigns.first.Subject.should == "Magic Issue One"
-      campaigns.first.DateCreated.should == "2011-05-24 10:37:00"
-      campaigns.first.PreviewURL.should == "http://createsend.com/t/r-DD543521A87C9B8B"
-      campaigns.first.PreviewTextURL.should == "http://createsend.com/t/r-DD543521A87C9B8B/t"
-      campaigns.first.FromName.should == 'My Name'
-      campaigns.first.FromEmail.should == 'myemail@example.com'
-      campaigns.first.ReplyTo.should == 'myemail@example.com'
+      campaign = campaigns.first
+      campaign.DateScheduled.should == "2011-05-25 10:40:00"
+      campaign.ScheduledTimeZone.should == "(GMT+10:00) Canberra, Melbourne, Sydney"
+      campaign.CampaignID.should == "827dbbd2161ea9989fa11ad562c66937"
+      campaign.Name.should == "Magic Issue One"
+      campaign.Subject.should == "Magic Issue One"
+      campaign.DateCreated.should == "2011-05-24 10:37:00"
+      campaign.PreviewURL.should == "http://createsend.com/t/r-DD543521A87C9B8B"
+      campaign.PreviewTextURL.should == "http://createsend.com/t/r-DD543521A87C9B8B/t"
+      campaign.FromName.should == 'My Name'
+      campaign.FromEmail.should == 'myemail@example.com'
+      campaign.ReplyTo.should == 'myemail@example.com'
+      campaign.Tags.should == ['tagexample']
     end
 
     should "get all drafts" do
       stub_get(@auth, "clients/#{@client.client_id}/drafts.json", "drafts.json")
       drafts = @client.drafts
       drafts.size.should == 2
-      drafts.first.CampaignID.should == '7c7424792065d92627139208c8c01db1'
-      drafts.first.Name.should == 'Draft One'
-      drafts.first.Subject.should == 'Draft One'
-      drafts.first.DateCreated.should == '2010-08-19 16:08:00'
-      drafts.first.PreviewURL.should == 'http://createsend.com/t/r-E97A7BB2E6983DA1'
-      drafts.first.PreviewTextURL.should == 'http://createsend.com/t/r-E97A7BB2E6983DA1/t'
-      drafts.first.FromName.should == 'My Name'
-      drafts.first.FromEmail.should == 'myemail@example.com'
-      drafts.first.ReplyTo.should == 'myemail@example.com'
+      draft = drafts.first
+      draft.CampaignID.should == '7c7424792065d92627139208c8c01db1'
+      draft.Name.should == 'Draft One'
+      draft.Subject.should == 'Draft One'
+      draft.DateCreated.should == '2010-08-19 16:08:00'
+      draft.PreviewURL.should == 'http://createsend.com/t/r-E97A7BB2E6983DA1'
+      draft.PreviewTextURL.should == 'http://createsend.com/t/r-E97A7BB2E6983DA1/t'
+      draft.FromName.should == 'My Name'
+      draft.FromEmail.should == 'myemail@example.com'
+      draft.ReplyTo.should == 'myemail@example.com'
+      draft.Tags.should == ['tagexample']
+    end
+
+    should "get all client tags" do
+      stub_get(@auth, "clients/#{@client.client_id}/tags.json", "tags.json")
+      tags = @client.tags
+      tags.size.should == 2
+      tag = tags.first
+      tag.Name.should == 'Tag One'
+      tag.NumberOfCampaigns.should == '120'
     end
 
     should "get all lists" do
