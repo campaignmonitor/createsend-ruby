@@ -174,6 +174,7 @@ class ListTest < Test::Unit::TestCase
       res.Results.first.ListJoinedDate.should =="2010-10-25 10:28:00"
       res.Results.first.State.should == "Unconfirmed"
       res.Results.first.ConsentToTrack.should == "Yes"
+      res.Results.first.ConsentToSendSms.should == "No"
     end
 
     should "get the unsubscribed subscribers for a list" do

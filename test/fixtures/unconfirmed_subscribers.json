@@ -13,7 +13,8 @@
                 }
             ],
             "ReadsEmailWith": "",
-            "ConsentToTrack": "Yes"
+            "ConsentToTrack": "Yes",
+            "ConsentToSendSms": "No"
         },
         {
             "EmailAddress": "subs+7878787y8ggg@example.com",
@@ -28,7 +29,8 @@
                 }
             ],
             "ReadsEmailWith": "",
-            "ConsentToTrack": "No"
+            "ConsentToTrack": "No",
+            "ConsentToSendSms": "No"
         }
     ],
     "ResultsOrderedBy": "email",

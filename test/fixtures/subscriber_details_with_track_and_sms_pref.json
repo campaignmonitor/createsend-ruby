@@ -19,5 +19,6 @@
     }
   ],
   "ReadsEmailWith": "Gmail",
-  "ConsentToTrack": "Yes"
+  "ConsentToTrack": "Yes",
+  "ConsentToSendSms": "No"
 }

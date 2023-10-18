@@ -23,7 +23,7 @@ module CreateSend
 
     # Adds a subscriber to a subscriber list.
     def self.add(auth, list_id, email_address, name, custom_fields, resubscribe, 
-      consent_to_track, restart_subscription_based_autoresponders=false)
+      consent_to_track, consent_to_send_sms, restart_subscription_based_autoresponders=false)
       options = { :body => {
         :EmailAddress => email_address,
         :Name => name,
@@ -31,7 +31,8 @@ module CreateSend
         :Resubscribe => resubscribe,
         :RestartSubscriptionBasedAutoresponders => 
           restart_subscription_based_autoresponders,
-        :ConsentToTrack => consent_to_track }.to_json }
+        :ConsentToTrack => consent_to_track,
+        :ConsentToSendSms => consent_to_send_sms }.to_json }
       cs = CreateSend.new auth
       response = cs.post "/subscribers/#{list_id}.json", options
       response.parsed_response
@@ -70,7 +71,7 @@ module CreateSend
     # Updates any aspect of a subscriber, including email address, name, and
     # custom field data if supplied.
     def update(new_email_address, name, custom_fields, resubscribe, 
-      consent_to_track, restart_subscription_based_autoresponders=false)
+      consent_to_track, consent_to_send_sms, restart_subscription_based_autoresponders=false)
       options = {
         :query => { :email => @email_address },
         :body => {
@@ -80,7 +81,8 @@ module CreateSend
           :Resubscribe => resubscribe,
           :RestartSubscriptionBasedAutoresponders => 
             restart_subscription_based_autoresponders,
-          :ConsentToTrack => consent_to_track }.to_json }
+          :ConsentToTrack => consent_to_track,
+          :ConsentToSendSms => consent_to_send_sms }.to_json }
       put "/subscribers/#{@list_id}.json", options
       # Update @email_address, so this object can continue to be used reliably
       @email_address = new_email_address
