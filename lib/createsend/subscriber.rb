@@ -22,8 +22,8 @@ module CreateSend
     end
 
     # Adds a subscriber to a subscriber list.
-    def self.add(auth, list_id, email_address, name, mobile_number, custom_fields, resubscribe, 
-      consent_to_track, consent_to_send_sms, restart_subscription_based_autoresponders=false)
+    def self.add(auth, list_id, email_address, name, custom_fields, resubscribe, 
+      consent_to_track, restart_subscription_based_autoresponders=false, mobile_number=nil, consent_to_send_sms='No')
       options = { :body => {
         :EmailAddress => email_address,
         :Name => name,
@@ -71,8 +71,8 @@ module CreateSend
 
     # Updates any aspect of a subscriber, including email address, name, and
     # custom field data if supplied.
-    def update(new_email_address, name, mobile_number, custom_fields, resubscribe, 
-      consent_to_track, consent_to_send_sms, restart_subscription_based_autoresponders=false)
+    def update(new_email_address, name, custom_fields, resubscribe, 
+      consent_to_track, restart_subscription_based_autoresponders=false, mobile_number=nil, consent_to_send_sms='No')
       options = {
         :query => { :email => @email_address },
         :body => {
