@@ -61,7 +61,7 @@ class SubscriberTest < Test::Unit::TestCase
       new_email = "new_email_address@example.com"
       stub_put(@auth, "subscribers/#{@list_id}.json?email=#{ERB::Util.url_encode(email)}", nil)
       custom_fields = [ { :Key => 'website', :Value => 'http://example.com/' } ]
-      @subscriber.update new_email, "Subscriber", custom_fields, true, "Yes", "No"
+      @subscriber.update new_email, "Subscriber", custom_fields, true, "Yes"
       @subscriber.email_address.should be == new_email
     end
 
@@ -70,7 +70,7 @@ class SubscriberTest < Test::Unit::TestCase
       new_email = "new_email_address@example.com"
       stub_put(@auth, "subscribers/#{@list_id}.json?email=#{ERB::Util.url_encode(email)}", nil)
       custom_fields = [ { :Key => 'website', :Value => '', :Clear => true } ]
-      @subscriber.update new_email, "Subscriber", custom_fields, true, "No", "Yes"
+      @subscriber.update new_email, "Subscriber", custom_fields, true, "No"
       @subscriber.email_address.should be == new_email
     end
     
