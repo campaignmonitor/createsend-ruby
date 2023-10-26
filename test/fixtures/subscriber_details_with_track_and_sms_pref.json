@@ -1,6 +1,7 @@
 {
   "EmailAddress": "subscriber@example.com",
   "Name": "Subscriber One",
+  "MobileNumber": "123456000",
   "Date": "2010-10-25 10:28:00",
   "ListJoinedDate": "2010-10-25 10:28:00",
   "State": "Active",
@@ -19,5 +20,6 @@
     }
   ],
   "ReadsEmailWith": "Gmail",
-  "ConsentToTrack": "Yes"
+  "ConsentToTrack": "Yes",
+  "ConsentToSendSms": "No"
 }

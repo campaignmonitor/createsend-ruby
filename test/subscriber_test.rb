@@ -14,6 +14,7 @@ class SubscriberTest < Test::Unit::TestCase
       subscriber.EmailAddress.should be == email
       subscriber.Name.should be == "Subscriber One"
       subscriber.Date.should be == "2010-10-25 10:28:00"
+      subscriber.MobileNumber.should be == "0123456000"
       subscriber.ListJoinedDate.should be == "2010-10-25 10:28:00"
       subscriber.State.should be == "Active"
       subscriber.CustomFields.size.should be == 3
@@ -22,25 +23,27 @@ class SubscriberTest < Test::Unit::TestCase
       subscriber.ReadsEmailWith.should be == "Gmail"
     end
 
-    should "get a subscriber with track preference information" do
+    should "get a subscriber with track and sms preference information" do
       email = "subscriber@example.com"
-      stub_get(@auth, "subscribers/#{@list_id}.json?email=#{ERB::Util.url_encode(email)}&includetrackingpreference=true", "subscriber_details_with_track_pref.json")
+      stub_get(@auth, "subscribers/#{@list_id}.json?email=#{ERB::Util.url_encode(email)}&includetrackingpreference=true", "subscriber_details_with_track_and_sms_pref.json")
       subscriber = CreateSend::Subscriber.get @auth, @list_id, email, true
       subscriber.EmailAddress.should be == email
       subscriber.Name.should be == "Subscriber One"
+      subscriber.MobileNumber.should == "123456000"
       subscriber.ConsentToTrack == "Yes"
+      subscriber.ConsentToSendSms == "No"
     end
 
     should "add a subscriber without custom fields" do
       stub_post(@auth, "subscribers/#{@list_id}.json", "add_subscriber.json")
-      email_address = CreateSend::Subscriber.add @auth, @list_id, "subscriber@example.com", "Subscriber", [], true, "Yes"
+      email_address = CreateSend::Subscriber.add @auth, @list_id, "subscriber@example.com", "Subscriber", "123456789", [], true, "Yes", "No"
       email_address.should be == "subscriber@example.com"
     end
 
     should "add a subscriber with custom fields" do
       stub_post(@auth, "subscribers/#{@list_id}.json", "add_subscriber.json")
       custom_fields = [ { :Key => 'website', :Value => 'http://example.com/' } ]
-      email_address = CreateSend::Subscriber.add @auth, @list_id, "subscriber@example.com", "Subscriber", custom_fields, true, "Yes"
+      email_address = CreateSend::Subscriber.add @auth, @list_id, "subscriber@example.com", "Subscriber", "123456789", custom_fields, true, "Yes", "Yes"
       email_address.should be == "subscriber@example.com"
     end
 
@@ -49,7 +52,7 @@ class SubscriberTest < Test::Unit::TestCase
       custom_fields = [ { :Key => 'multioptionselectone', :Value => 'myoption' }, 
         { :Key => 'multioptionselectmany', :Value => 'firstoption' },
         { :Key => 'multioptionselectmany', :Value => 'secondoption' } ]
-      email_address = CreateSend::Subscriber.add @auth, @list_id, "subscriber@example.com", "Subscriber", custom_fields, true, "Yes"
+      email_address = CreateSend::Subscriber.add @auth, @list_id, "subscriber@example.com", "Subscriber", "123456789", custom_fields, true, "Yes", "No"
       email_address.should be == "subscriber@example.com"
     end
 
@@ -58,7 +61,7 @@ class SubscriberTest < Test::Unit::TestCase
       new_email = "new_email_address@example.com"
       stub_put(@auth, "subscribers/#{@list_id}.json?email=#{ERB::Util.url_encode(email)}", nil)
       custom_fields = [ { :Key => 'website', :Value => 'http://example.com/' } ]
-      @subscriber.update new_email, "Subscriber", custom_fields, true, "Yes"
+      @subscriber.update new_email, "Subscriber", "123456", custom_fields, true, "Yes", "No"
       @subscriber.email_address.should be == new_email
     end
 
@@ -67,7 +70,7 @@ class SubscriberTest < Test::Unit::TestCase
       new_email = "new_email_address@example.com"
       stub_put(@auth, "subscribers/#{@list_id}.json?email=#{ERB::Util.url_encode(email)}", nil)
       custom_fields = [ { :Key => 'website', :Value => '', :Clear => true } ]
-      @subscriber.update new_email, "Subscriber", custom_fields, true, "No"
+      @subscriber.update new_email, "Subscriber", "123456", custom_fields, true, "No", "Yes"
       @subscriber.email_address.should be == new_email
     end
     
