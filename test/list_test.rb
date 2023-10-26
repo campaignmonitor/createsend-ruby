@@ -129,7 +129,7 @@ class ListTest < Test::Unit::TestCase
     
     should "get the active subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@auth, "lists/#{@list.list_id}/active.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}&includetrackingpreference=false",
+      stub_get(@auth, "lists/#{@list.list_id}/active.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}&includetrackingpreference=false&includesmspreference=false",
         "active_subscribers.json")
       res = @list.active min_date
       res.ResultsOrderedBy.should be == "email"
@@ -157,9 +157,9 @@ class ListTest < Test::Unit::TestCase
 
     should "get the unconfirmed subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@auth, "lists/#{@list.list_id}/unconfirmed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}&includetrackingpreference=true",
+      stub_get(@auth, "lists/#{@list.list_id}/unconfirmed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}&includetrackingpreference=true&includesmspreference=true",
         "unconfirmed_subscribers.json")
-      res = @list.unconfirmed(min_date, 1, 1000, "email", "asc", true)
+      res = @list.unconfirmed(min_date, 1, 1000, "email", "asc", true, include_sms_preference:true)
       res.ResultsOrderedBy.should be == "email"
       res.OrderDirection.should be == "asc"
       res.PageNumber.should be == 1
@@ -174,12 +174,12 @@ class ListTest < Test::Unit::TestCase
       res.Results.first.ListJoinedDate.should be =="2010-10-25 10:28:00"
       res.Results.first.State.should be == "Unconfirmed"
       res.Results.first.ConsentToTrack.should be == "Yes"
-      res.Results.first.ConsentToSendSms.should == "No"
+      res.Results.first.ConsentToSendSms.should be == "No"
     end
 
     should "get the unsubscribed subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@auth, "lists/#{@list.list_id}/unsubscribed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}&includetrackingpreference=false",
+      stub_get(@auth, "lists/#{@list.list_id}/unsubscribed.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}&includetrackingpreference=false&includesmspreference=false",
         "unsubscribed_subscribers.json")
       res = @list.unsubscribed min_date
       res.ResultsOrderedBy.should be == "email"
@@ -201,7 +201,7 @@ class ListTest < Test::Unit::TestCase
 
     should "get the deleted subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@auth, "lists/#{@list.list_id}/deleted.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}&includetrackingpreference=false",
+      stub_get(@auth, "lists/#{@list.list_id}/deleted.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}&includetrackingpreference=false&includesmspreference=false",
         "deleted_subscribers.json")
       res = @list.deleted min_date
       res.ResultsOrderedBy.should be == "email"
@@ -223,7 +223,7 @@ class ListTest < Test::Unit::TestCase
 
     should "get the bounced subscribers for a list" do
       min_date = "2010-01-01"
-      stub_get(@auth, "lists/#{@list.list_id}/bounced.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}&includetrackingpreference=false",
+      stub_get(@auth, "lists/#{@list.list_id}/bounced.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}&includetrackingpreference=false&includesmspreference=false",
         "bounced_subscribers.json")
       res = @list.bounced min_date
       res.ResultsOrderedBy.should be == "email"
