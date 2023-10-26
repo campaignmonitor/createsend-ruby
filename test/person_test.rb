@@ -11,16 +11,16 @@ class PersonTest < Test::Unit::TestCase
       email = "person@example.com"
       stub_get(@auth, "clients/#{@client_id}/people.json?email=#{ERB::Util.url_encode(email)}", "person_details.json")
       person = CreateSend::Person.get @auth, @client_id, email
-      person.EmailAddress.should == email
-      person.Name.should == "Person One"
-      person.AccessLevel.should == 1023
-      person.Status.should == "Active"
+      person.EmailAddress.should be == email
+      person.Name.should be == "Person One"
+      person.AccessLevel.should be == 1023
+      person.Status.should be == "Active"
     end
 
     should "add a person" do
       stub_post(@auth, "clients/#{@client_id}/people.json", "add_person.json")
       result = CreateSend::Person.add @auth, @client_id, "person@example.com", "Person", 0, "Password"
-      result.EmailAddress.should == "person@example.com"
+      result.EmailAddress.should be == "person@example.com"
     end
 
     should "update a person" do
@@ -28,7 +28,7 @@ class PersonTest < Test::Unit::TestCase
       new_email = "new_email_address@example.com"
       stub_put(@auth, "clients/#{@client_id}/people.json?email=#{ERB::Util.url_encode(email)}", nil)
       @person.update new_email, "Person", 1023, "NewPassword"
-      @person.email_address.should == new_email
+      @person.email_address.should be == new_email
     end
       
     should "delete a person" do

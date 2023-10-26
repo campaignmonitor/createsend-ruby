@@ -11,37 +11,37 @@ class SubscriberTest < Test::Unit::TestCase
       email = "subscriber@example.com"
       stub_get(@auth, "subscribers/#{@list_id}.json?email=#{ERB::Util.url_encode(email)}&includetrackingpreference=false", "subscriber_details.json")
       subscriber = CreateSend::Subscriber.get @auth, @list_id, email
-      subscriber.EmailAddress.should == email
-      subscriber.Name.should == "Subscriber One"
-      subscriber.Date.should == "2010-10-25 10:28:00"
-      subscriber.ListJoinedDate.should == "2010-10-25 10:28:00"
-      subscriber.State.should == "Active"
-      subscriber.CustomFields.size.should == 3
-      subscriber.CustomFields.first.Key.should == 'website'
-      subscriber.CustomFields.first.Value.should == 'http://example.com'
-      subscriber.ReadsEmailWith.should == "Gmail"
+      subscriber.EmailAddress.should be == email
+      subscriber.Name.should be == "Subscriber One"
+      subscriber.Date.should be == "2010-10-25 10:28:00"
+      subscriber.ListJoinedDate.should be == "2010-10-25 10:28:00"
+      subscriber.State.should be == "Active"
+      subscriber.CustomFields.size.should be == 3
+      subscriber.CustomFields.first.Key.should be == 'website'
+      subscriber.CustomFields.first.Value.should be == 'http://example.com'
+      subscriber.ReadsEmailWith.should be == "Gmail"
     end
 
     should "get a subscriber with track preference information" do
       email = "subscriber@example.com"
       stub_get(@auth, "subscribers/#{@list_id}.json?email=#{ERB::Util.url_encode(email)}&includetrackingpreference=true", "subscriber_details_with_track_pref.json")
       subscriber = CreateSend::Subscriber.get @auth, @list_id, email, true
-      subscriber.EmailAddress.should == email
-      subscriber.Name.should == "Subscriber One"
+      subscriber.EmailAddress.should be == email
+      subscriber.Name.should be == "Subscriber One"
       subscriber.ConsentToTrack == "Yes"
     end
 
     should "add a subscriber without custom fields" do
       stub_post(@auth, "subscribers/#{@list_id}.json", "add_subscriber.json")
       email_address = CreateSend::Subscriber.add @auth, @list_id, "subscriber@example.com", "Subscriber", [], true, "Yes"
-      email_address.should == "subscriber@example.com"
+      email_address.should be == "subscriber@example.com"
     end
 
     should "add a subscriber with custom fields" do
       stub_post(@auth, "subscribers/#{@list_id}.json", "add_subscriber.json")
       custom_fields = [ { :Key => 'website', :Value => 'http://example.com/' } ]
       email_address = CreateSend::Subscriber.add @auth, @list_id, "subscriber@example.com", "Subscriber", custom_fields, true, "Yes"
-      email_address.should == "subscriber@example.com"
+      email_address.should be == "subscriber@example.com"
     end
 
     should "add a subscriber with custom fields including multi-option fields" do
@@ -50,7 +50,7 @@ class SubscriberTest < Test::Unit::TestCase
         { :Key => 'multioptionselectmany', :Value => 'firstoption' },
         { :Key => 'multioptionselectmany', :Value => 'secondoption' } ]
       email_address = CreateSend::Subscriber.add @auth, @list_id, "subscriber@example.com", "Subscriber", custom_fields, true, "Yes"
-      email_address.should == "subscriber@example.com"
+      email_address.should be == "subscriber@example.com"
     end
 
     should "update a subscriber with custom fields" do
@@ -59,7 +59,7 @@ class SubscriberTest < Test::Unit::TestCase
       stub_put(@auth, "subscribers/#{@list_id}.json?email=#{ERB::Util.url_encode(email)}", nil)
       custom_fields = [ { :Key => 'website', :Value => 'http://example.com/' } ]
       @subscriber.update new_email, "Subscriber", custom_fields, true, "Yes"
-      @subscriber.email_address.should == new_email
+      @subscriber.email_address.should be == new_email
     end
 
     should "update a subscriber with custom fields including the clear option" do
@@ -68,7 +68,7 @@ class SubscriberTest < Test::Unit::TestCase
       stub_put(@auth, "subscribers/#{@list_id}.json?email=#{ERB::Util.url_encode(email)}", nil)
       custom_fields = [ { :Key => 'website', :Value => '', :Clear => true } ]
       @subscriber.update new_email, "Subscriber", custom_fields, true, "No"
-      @subscriber.email_address.should == new_email
+      @subscriber.email_address.should be == new_email
     end
     
     should "import many subscribers at once" do
@@ -79,11 +79,11 @@ class SubscriberTest < Test::Unit::TestCase
         { :EmailAddress => "example+3@example.com", :Name => "Example Three" },
       ]
       import_result = CreateSend::Subscriber.import @auth, @list_id, subscribers, true
-      import_result.FailureDetails.size.should == 0
-      import_result.TotalUniqueEmailsSubmitted.should == 3
-      import_result.TotalExistingSubscribers.should == 0
-      import_result.TotalNewSubscribers.should == 3
-      import_result.DuplicateEmailsInSubmission.size.should == 0
+      import_result.FailureDetails.size.should be == 0
+      import_result.TotalUniqueEmailsSubmitted.should be == 3
+      import_result.TotalExistingSubscribers.should be == 0
+      import_result.TotalNewSubscribers.should be == 3
+      import_result.DuplicateEmailsInSubmission.size.should be == 0
     end
 
     should "import many subscribers at once, and start subscription-based autoresponders" do
@@ -94,11 +94,11 @@ class SubscriberTest < Test::Unit::TestCase
         { :EmailAddress => "example+3@example.com", :Name => "Example Three" },
       ]
       import_result = CreateSend::Subscriber.import @auth, @list_id, subscribers, true, true
-      import_result.FailureDetails.size.should == 0
-      import_result.TotalUniqueEmailsSubmitted.should == 3
-      import_result.TotalExistingSubscribers.should == 0
-      import_result.TotalNewSubscribers.should == 3
-      import_result.DuplicateEmailsInSubmission.size.should == 0
+      import_result.FailureDetails.size.should be == 0
+      import_result.TotalUniqueEmailsSubmitted.should be == 3
+      import_result.TotalExistingSubscribers.should be == 0
+      import_result.TotalNewSubscribers.should be == 3
+      import_result.DuplicateEmailsInSubmission.size.should be == 0
     end
 
     should "import many subscribers at once with custom fields, including the clear option" do
@@ -109,11 +109,11 @@ class SubscriberTest < Test::Unit::TestCase
         { :EmailAddress => "example+3@example.com", :Name => "Example Three", :CustomFields => [ { :Key => 'website', :Value => '', :Clear => false } ]  },
       ]
       import_result = CreateSend::Subscriber.import @auth, @list_id, subscribers, true
-      import_result.FailureDetails.size.should == 0
-      import_result.TotalUniqueEmailsSubmitted.should == 3
-      import_result.TotalExistingSubscribers.should == 0
-      import_result.TotalNewSubscribers.should == 3
-      import_result.DuplicateEmailsInSubmission.size.should == 0
+      import_result.FailureDetails.size.should be == 0
+      import_result.TotalUniqueEmailsSubmitted.should be == 3
+      import_result.TotalExistingSubscribers.should be == 0
+      import_result.TotalNewSubscribers.should be == 3
+      import_result.DuplicateEmailsInSubmission.size.should be == 0
     end
 
     should "import many subscribers at once with partial success" do
@@ -125,14 +125,14 @@ class SubscriberTest < Test::Unit::TestCase
         { :EmailAddress => "example+3@example.com", :Name => "Example Three" },
       ]
       import_result = CreateSend::Subscriber.import @auth, @list_id, subscribers, true
-      import_result.FailureDetails.size.should == 1
-      import_result.FailureDetails.first.EmailAddress.should == "example+1@example"
-      import_result.FailureDetails.first.Code.should == 1
-      import_result.FailureDetails.first.Message.should == "Invalid Email Address"
-      import_result.TotalUniqueEmailsSubmitted.should == 3
-      import_result.TotalExistingSubscribers.should == 2
-      import_result.TotalNewSubscribers.should == 0
-      import_result.DuplicateEmailsInSubmission.size.should == 0
+      import_result.FailureDetails.size.should be == 1
+      import_result.FailureDetails.first.EmailAddress.should be == "example+1@example"
+      import_result.FailureDetails.first.Code.should be == 1
+      import_result.FailureDetails.first.Message.should be == "Invalid Email Address"
+      import_result.TotalUniqueEmailsSubmitted.should be == 3
+      import_result.TotalExistingSubscribers.should be == 2
+      import_result.TotalNewSubscribers.should be == 0
+      import_result.DuplicateEmailsInSubmission.size.should be == 0
     end
 
     should "raise a BadRequest error if the import _completely_ fails because of a bad request" do
@@ -143,7 +143,7 @@ class SubscriberTest < Test::Unit::TestCase
         { :EmailAddress => "example+2@example.com", :Name => "Example Two" },
         { :EmailAddress => "example+3@example.com", :Name => "Example Three" },
       ]
-      lambda { import_result = CreateSend::Subscriber.import @auth, @list_id, subscribers, 
+      lambda { CreateSend::Subscriber.import @auth, @list_id, subscribers, 
         true }.should raise_error(CreateSend::BadRequest)
     end
 
@@ -155,15 +155,15 @@ class SubscriberTest < Test::Unit::TestCase
     should "get a subscriber's history" do
       stub_get(@auth, "subscribers/#{@subscriber.list_id}/history.json?email=#{ERB::Util.url_encode(@subscriber.email_address)}", "subscriber_history.json")
       history = @subscriber.history
-      history.size.should == 1
-      history.first.Name.should == "Campaign One"
-      history.first.Type.should == "Campaign"
-      history.first.ID.should == "fc0ce7105baeaf97f47c99be31d02a91"
-      history.first.Actions.size.should == 6
-      history.first.Actions.first.Event.should ==  "Open"
-      history.first.Actions.first.Date.should ==  "2010-10-12 13:18:00"
-      history.first.Actions.first.IPAddress.should == "192.168.126.87"
-      history.first.Actions.first.Detail.should == ""
+      history.size.should be == 1
+      history.first.Name.should be == "Campaign One"
+      history.first.Type.should be == "Campaign"
+      history.first.ID.should be == "fc0ce7105baeaf97f47c99be31d02a91"
+      history.first.Actions.size.should be == 6
+      history.first.Actions.first.Event.should be ==  "Open"
+      history.first.Actions.first.Date.should be ==  "2010-10-12 13:18:00"
+      history.first.Actions.first.IPAddress.should be == "192.168.126.87"
+      history.first.Actions.first.Detail.should be == ""
     end
 
     should "delete a subscriber" do
