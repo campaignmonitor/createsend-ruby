@@ -11,27 +11,27 @@ class TransactionalSmartEmailTest < Test::Unit::TestCase
     should "get the list of smart emails" do
       stub_get(@auth, "transactional/smartemail", "tx_smartemails.json")
       response = CreateSend::Transactional::SmartEmail.list(@auth)
-      response.length.should == 2
-      response[0].ID.should == "1e654df2-f484-11e4-970c-6c4008bc7468"
-      response[0].Name.should == "Welcome email"
-      response[0].Status.should == "Active"
+      response.length.should be == 2
+      response[0].ID.should be == "1e654df2-f484-11e4-970c-6c4008bc7468"
+      response[0].Name.should be == "Welcome email"
+      response[0].Status.should be == "Active"
     end
 
     should "get the list of active smart emails using a client ID" do
       stub_get(@auth, "transactional/smartemail?status=active&client=#{@client_id}", "tx_smartemails.json")
       response = CreateSend::Transactional::SmartEmail.list(@auth, { :client => @client_id, :status => 'active'} )
-      response.length.should == 2
-      response[0].ID.should == "1e654df2-f484-11e4-970c-6c4008bc7468"
-      response[0].Name.should == "Welcome email"
-      response[0].Status.should == "Active"
+      response.length.should be == 2
+      response[0].ID.should be == "1e654df2-f484-11e4-970c-6c4008bc7468"
+      response[0].Name.should be == "Welcome email"
+      response[0].Status.should be == "Active"
     end
 
     should "get the details of smart email" do
       stub_get(@auth, "transactional/smartemail/#{@smart_email_id}", "tx_smartemail_details.json")
       response = CreateSend::Transactional::SmartEmail.new(@auth, @smart_email_id).details
-      response.Name.should == "Reset Password"
-      response.Status.should == "active"
-      response.Properties.ReplyTo.should == "joe@example.com"
+      response.Name.should be == "Reset Password"
+      response.Status.should be == "active"
+      response.Properties.ReplyTo.should be == "joe@example.com"
     end
 
     should "send smart email to one recipient" do
@@ -44,10 +44,10 @@ class TransactionalSmartEmailTest < Test::Unit::TestCase
         }
       }
       response = CreateSend::Transactional::SmartEmail.new(@auth, @smart_email_id).send(email)
-      response.length.should == 1
-      response[0].MessageID.should == "0cfe150d-d507-11e4-84a7-c31e5b59881d"
-      response[0].Recipient.should == "\"Bob Sacamano\" <bob@example.com>"
-      response[0].Status.should == "Received"
+      response.length.should be == 1
+      response[0].MessageID.should be == "0cfe150d-d507-11e4-84a7-c31e5b59881d"
+      response[0].Recipient.should be == "\"Bob Sacamano\" <bob@example.com>"
+      response[0].Status.should be == "Received"
     end
 
     should "send smart email to multiple recipients with all the options" do
@@ -71,10 +71,10 @@ class TransactionalSmartEmailTest < Test::Unit::TestCase
         "AddRecipientsToListID" => true
       }
       response = CreateSend::Transactional::SmartEmail.new(@auth, @smart_email_id).send(email)
-      response.length.should == 2
-      response[1].MessageID.should == "0cfe150d-d507-11e4-b579-a64eb0d9c74d"
-      response[1].Recipient.should == "\"Newman\" <newman@example.com>"
-      response[1].Status.should == "Received"
+      response.length.should be == 2
+      response[1].MessageID.should be == "0cfe150d-d507-11e4-b579-a64eb0d9c74d"
+      response[1].Recipient.should be == "\"Newman\" <newman@example.com>"
+      response[1].Status.should be == "Received"
     end
 
   end

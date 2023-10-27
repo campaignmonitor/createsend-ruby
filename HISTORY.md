@@ -1,5 +1,18 @@
 # createsend-ruby history
 
+## v6.1.0 - 27 Oct 2023
+* Added support for add/update subscribers specifying mobile_number and/or consent_to_send_sms (optional parameters)
+  * Subscriber.Add 
+  * Subscriber.Update()
+* Added support for lists endpoints to be able to return the ConsentToSendSms (keyword parameter, is optional)
+  * List.Active(include_sms_preference:true)
+  * List.Bounced(include_sms_preference:true)
+  * List.Unsubscribed(include_sms_preference:true)
+  * List.Unconfirmed(include_sms_preference:true)
+  * List.Deleted(include_sms_preference:true)
+* Clean-up various warnings associated with this package (excluding dependency package warning)
+* Add more samples
+
 ## v6.0.0 - 10 Feb, 2022
 * Upgrades to Createsend API v3.3 which includes new breaking changes
 * Breaking: 'client.campaigns' now returned an object to support pagination (use .Results to ge the array of campaigns)

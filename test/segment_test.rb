@@ -11,7 +11,7 @@ class SegmentTest < Test::Unit::TestCase
       rule_groups = [ { :Rules => [ { :RuleType => "EmailAddress", :Clause => "CONTAINS example.com" } ] } ]
       stub_post(@auth, "segments/#{list_id}.json", "create_segment.json")
       res = CreateSend::Segment.create @auth, list_id, "new segment title", rule_groups
-      res.should == "0246c2aea610a3545d9780bf6ab89006"
+      res.should be == "0246c2aea610a3545d9780bf6ab89006"
     end
 
     should "update a segment" do
@@ -31,20 +31,20 @@ class SegmentTest < Test::Unit::TestCase
       stub_get(@auth, "segments/#{@segment.segment_id}/active.json?pagesize=1000&orderfield=email&page=1&orderdirection=asc&date=#{ERB::Util.url_encode(min_date)}&includetrackingpreference=false",
         "segment_subscribers.json")
       res = @segment.subscribers min_date
-      res.ResultsOrderedBy.should == "email"
-      res.OrderDirection.should == "asc"
-      res.PageNumber.should == 1
-      res.PageSize.should == 1000
-      res.RecordsOnThisPage.should == 2
-      res.TotalNumberOfRecords.should == 2
-      res.NumberOfPages.should == 1
-      res.Results.size.should == 2
-      res.Results.first.EmailAddress.should == "personone@example.com"
-      res.Results.first.Name.should == "Person One"
-      res.Results.first.Date.should == "2010-10-27 13:13:00"
-      res.Results.first.ListJoinedDate.should == "2010-10-27 13:13:00"
-      res.Results.first.State.should == "Active"
-      res.Results.first.CustomFields.should == []
+      res.ResultsOrderedBy.should be == "email"
+      res.OrderDirection.should be == "asc"
+      res.PageNumber.should be == 1
+      res.PageSize.should be == 1000
+      res.RecordsOnThisPage.should be == 2
+      res.TotalNumberOfRecords.should be == 2
+      res.NumberOfPages.should be == 1
+      res.Results.size.should be == 2
+      res.Results.first.EmailAddress.should be == "personone@example.com"
+      res.Results.first.Name.should be == "Person One"
+      res.Results.first.Date.should be == "2010-10-27 13:13:00"
+      res.Results.first.ListJoinedDate.should be == "2010-10-27 13:13:00"
+      res.Results.first.State.should be == "Active"
+      res.Results.first.CustomFields.should be == []
     end
 
     should "delete a segment" do
@@ -55,14 +55,14 @@ class SegmentTest < Test::Unit::TestCase
     should "get the details of a segment" do
       stub_get(@auth, "segments/#{@segment.segment_id}.json", "segment_details.json")
       res = @segment.details
-      res.ActiveSubscribers.should == 0
-      res.RuleGroups.size.should == 2
-      res.RuleGroups.first.Rules.size.should == 1
-      res.RuleGroups.first.Rules.first.RuleType.should == "EmailAddress"
-      res.RuleGroups.first.Rules.first.Clause.should == "CONTAINS @hello.com"
-      res.ListID.should == "2bea949d0bf96148c3e6a209d2e82060"
-      res.SegmentID.should == "dba84a225d5ce3d19105d7257baac46f"
-      res.Title.should == "My Segment"
+      res.ActiveSubscribers.should be == 0
+      res.RuleGroups.size.should be == 2
+      res.RuleGroups.first.Rules.size.should be == 1
+      res.RuleGroups.first.Rules.first.RuleType.should be == "EmailAddress"
+      res.RuleGroups.first.Rules.first.Clause.should be == "CONTAINS @hello.com"
+      res.ListID.should be == "2bea949d0bf96148c3e6a209d2e82060"
+      res.SegmentID.should be == "dba84a225d5ce3d19105d7257baac46f"
+      res.Title.should be == "My Segment"
     end
 
     should "clear a segment's rules" do

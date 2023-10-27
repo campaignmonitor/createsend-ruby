@@ -12,7 +12,11 @@ class ListsSample
     end
 
     def get_active_subscribers
-        @list.active
+        @list.active()
+    end
+
+    def get_active_with_sms_preference_subscribers
+        @list.active(include_sms_preference:true)
     end
 
     def get_bounced_subscribers
@@ -21,6 +25,10 @@ class ListsSample
 
     def get_unsubscribed_subscribers
         @list.unsubscribed
+    end
+
+    def get_unsubscribed_with_sms_preference_subscribers
+        @list.unsubscribed(include_sms_preference:true)
     end
 
     def get_unconfirmed_subscribers
@@ -35,7 +43,9 @@ end
 sample = ListsSample.new
 
 puts "All active subscribers: #{sample.get_active_subscribers.to_json}\n\n"
+puts "All active subscribers with sms preference: #{sample.get_active_with_sms_preference_subscribers.to_json}\n\n"
 puts "All bounced subscribers: #{sample.get_bounced_subscribers.to_json}\n\n"
-puts "All unsubscribed subscribers: #{sample.get_unsubscribed_subscribers.to_json}\n\n"
 puts "All unconfirmed subscribers: #{sample.get_unconfirmed_subscribers.to_json}\n\n"
+puts "All unsubscribed subscribers: #{sample.get_unsubscribed_subscribers.to_json}\n\n"
+puts "All unsubscribed subscribers with sms preference: #{sample.get_unsubscribed_with_sms_preference_subscribers.to_json}\n\n"
 puts "All deleted subscribers: #{sample.get_deleted_subscribers.to_json}\n\n"

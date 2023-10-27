@@ -10,15 +10,15 @@ class AdministratorTest < Test::Unit::TestCase
       email = "admin@example.com"
       stub_get(@auth, "admins.json?email=#{ERB::Util.url_encode(email)}", "admin_details.json")
       admin = CreateSend::Administrator.get @auth, email
-      admin.EmailAddress.should == email
-      admin.Name.should == "Admin One"
-      admin.Status.should == "Active"
+      admin.EmailAddress.should be == email
+      admin.Name.should be == "Admin One"
+      admin.Status.should be == "Active"
     end
 
     should "add an administrator" do
       stub_post(@auth, "admins.json", "add_admin.json")
       result = CreateSend::Administrator.add @auth, "admin@example.com", "Admin"
-      result.EmailAddress.should == "admin@example.com"
+      result.EmailAddress.should be == "admin@example.com"
     end
 
     should "update an administrator" do
@@ -26,7 +26,7 @@ class AdministratorTest < Test::Unit::TestCase
       new_email = "new_email_address@example.com"
       stub_put(@auth, "admins.json?email=#{ERB::Util.url_encode(email)}", nil)
       @admin.update new_email, "Admin Name"
-      @admin.email_address.should == new_email
+      @admin.email_address.should be == new_email
     end
 
     should "delete an admin" do

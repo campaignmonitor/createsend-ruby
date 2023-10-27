@@ -17,8 +17,8 @@ class TransactionalClassicEmailTest < Test::Unit::TestCase
         "Group" => 'Ruby test group'
       }
       response = CreateSend::Transactional::ClassicEmail.new(@auth).send(email)
-      response.length.should == 1
-      response[0].Recipient.should == "\"Bob Sacamano\" <bob@example.com>"
+      response.length.should be == 1
+      response[0].Recipient.should be == "\"Bob Sacamano\" <bob@example.com>"
     end
 
     should "send classic email to with all the options" do
@@ -44,15 +44,15 @@ class TransactionalClassicEmailTest < Test::Unit::TestCase
         "AddRecipientsToListID" => "6d0366fcee146ab9bdaf3247446bbfdd"
       }
       response = CreateSend::Transactional::ClassicEmail.new(@auth).send(email)
-      response.length.should == 2
-      response[1].Recipient.should == "\"Newman\" <newman@example.com>"
+      response.length.should be == 2
+      response[1].Recipient.should be == "\"Newman\" <newman@example.com>"
     end
 
     should "get the list of classic groups" do
       stub_get(@auth, "transactional/classicemail/groups", "tx_classicemail_groups.json")
       response = CreateSend::Transactional::ClassicEmail.new(@auth).groups
-      response.length.should == 3
-      response[0].Group.should == "Password Reset"
+      response.length.should be == 3
+      response[0].Group.should be == "Password Reset"
     end
 
   end

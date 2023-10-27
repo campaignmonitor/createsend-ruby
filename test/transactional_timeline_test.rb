@@ -13,8 +13,8 @@ class TransactionalTimelineTest < Test::Unit::TestCase
     should "get statistics with the default parameters" do
       stub_get(@auth, "transactional/statistics", "tx_statistics_classic.json")
       response = CreateSend::Transactional::Timeline.new(@auth).statistics
-      response.Sent.should == 1000
-      response.Opened.should == 300
+      response.Sent.should be == 1000
+      response.Opened.should be == 300
     end
 
     should "get statistics filtered by date and classic group" do
@@ -25,9 +25,9 @@ class TransactionalTimelineTest < Test::Unit::TestCase
         "timezone" => "client",
         "group" => "Password Reset"
       )
-      response.Query.TimeZone.should == "(GMT+10:00) Canberra, Melbourne, Sydney"
-      response.Query.Group.should == "Password Reset"
-      response.Sent.should == 1000
+      response.Query.TimeZone.should be == "(GMT+10:00) Canberra, Melbourne, Sydney"
+      response.Query.Group.should be == "Password Reset"
+      response.Sent.should be == 1000
     end
 
     should "get statistics filtered by date and smart email" do
@@ -38,17 +38,17 @@ class TransactionalTimelineTest < Test::Unit::TestCase
         "timezone" => "utc",
         "smartEmailID" => "bb4a6ebb-663d-42a0-bdbe-60512cf30a01"
       )
-      response.Query.TimeZone.should == "UTC"
-      response.Query.SmartEmailID.should == "bb4a6ebb-663d-42a0-bdbe-60512cf30a01"
-      response.Sent.should == 1000
+      response.Query.TimeZone.should be == "UTC"
+      response.Query.SmartEmailID.should be == "bb4a6ebb-663d-42a0-bdbe-60512cf30a01"
+      response.Sent.should be == 1000
     end
 
     should "get the message timeline with default parameters" do
       stub_get(@auth, "transactional/messages", "tx_messages.json")
       response = CreateSend::Transactional::Timeline.new(@auth).messages
-      response.length.should == 3
-      response[0].MessageID.should == "ddc697c7-0788-4df3-a71a-a7cb935f00bd"
-      response[0].Status.should == "Delivered"
+      response.length.should be == 3
+      response[0].MessageID.should be == "ddc697c7-0788-4df3-a71a-a7cb935f00bd"
+      response[0].Status.should be == "Delivered"
     end
 
     should "get the message timeline for a smart email" do
@@ -61,9 +61,9 @@ class TransactionalTimelineTest < Test::Unit::TestCase
         "smartEmailID" => @smart_email_id,
         "clientID" => @client_id
       )
-      response.length.should == 1
-      response[0].MessageID.should == "ddc697c7-0788-4df3-a71a-a7cb935f00bd"
-      response[0].Status.should == "Delivered"
+      response.length.should be == 1
+      response[0].MessageID.should be == "ddc697c7-0788-4df3-a71a-a7cb935f00bd"
+      response[0].Status.should be == "Delivered"
     end
 
     should "get the message timeline for a classic group" do
@@ -76,32 +76,32 @@ class TransactionalTimelineTest < Test::Unit::TestCase
         "group" => 'Password Reset',
         "clientID" => @client_id
       )
-      response.length.should == 1
-      response[0].Group.should == "Password Reset"
-      response[0].Status.should == "Delivered"
+      response.length.should be == 1
+      response[0].Group.should be == "Password Reset"
+      response[0].Status.should be == "Delivered"
     end
 
     should "get the message details" do
       stub_get(@auth, "transactional/messages/#{@message_id}", "tx_message_details.json")
       response = CreateSend::Transactional::Timeline.new(@auth).details(@message_id)
-      response.TotalOpens.should == 1
-      response.TotalClicks.should == 1
+      response.TotalOpens.should be == 1
+      response.TotalClicks.should be == 1
     end
 
     should "get the message details with statistics" do
       stub_get(@auth, "transactional/messages/#{@message_id}?statistics=true", "tx_message_details_with_statistics.json")
       response = CreateSend::Transactional::Timeline.new(@auth).details(@message_id, :statistics => true)
-      response.Opens.length == 1
-      response.Clicks.length == 1
+      response.Opens.length.should be == 1
+      response.Clicks.length.should be == 1
     end
 
     should "resend a message" do
       stub_post(@auth, "transactional/messages/#{@message_id}/resend", "tx_send_single.json")
       response = CreateSend::Transactional::Timeline.new(@auth).resend(@message_id)
-      response.length.should == 1
-      response[0].MessageID.should == "0cfe150d-d507-11e4-84a7-c31e5b59881d"
-      response[0].Recipient.should == "\"Bob Sacamano\" <bob@example.com>"
-      response[0].Status.should == "Received"
+      response.length.should be == 1
+      response[0].MessageID.should be == "0cfe150d-d507-11e4-84a7-c31e5b59881d"
+      response[0].Recipient.should be == "\"Bob Sacamano\" <bob@example.com>"
+      response[0].Status.should be == "Received"
     end
 
   end
