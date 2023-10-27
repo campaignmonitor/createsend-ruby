@@ -1,3 +1,3 @@
 module CreateSend
-  VERSION = "6.0.1" unless defined?(CreateSend::VERSION)
+  VERSION = "6.1.0" unless defined?(CreateSend::VERSION)
 end
