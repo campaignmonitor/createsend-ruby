@@ -1,5 +1,10 @@
 # createsend-ruby history
 
+## v6.1.1 - 20 Aug 2024
+* Merged support for error code 429 (rate limiting on subscribers update)
+* Merged gemspec required ruby version to `>= 2.0`
+* Merged `hashie` dependency to `>= 3`, `< 6`
+
 ## v6.1.0 - 27 Oct 2023
 * Added support for add/update subscribers specifying mobile_number and/or consent_to_send_sms (optional parameters)
   * Subscriber.Add 
