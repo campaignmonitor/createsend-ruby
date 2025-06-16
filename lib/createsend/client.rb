@@ -140,16 +140,14 @@ module CreateSend
 
     # Sets the PAYG billing settings for this client.
     def set_payg_billing(currency, can_purchase_credits, client_pays,
-      markup_percentage, markup_on_delivery=0, markup_per_recipient=0,
-      markup_on_design_spam_test=0)
+      markup_percentage, markup_on_delivery=0, markup_per_recipient=0)
       options = { :body => {
         :Currency => currency,
         :CanPurchaseCredits => can_purchase_credits,
         :ClientPays => client_pays,
         :MarkupPercentage => markup_percentage,
         :MarkupOnDelivery => markup_on_delivery,
-        :MarkupPerRecipient => markup_per_recipient,
-        :MarkupOnDesignSpamTest => markup_on_design_spam_test }.to_json }
+        :MarkupPerRecipient => markup_per_recipient }.to_json }
       put 'setpaygbilling', options
     end
 
