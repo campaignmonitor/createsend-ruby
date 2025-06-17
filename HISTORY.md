@@ -1,5 +1,8 @@
 # createsend-ruby history
 
+## v6.1.2 - 17 Jun 2025
+* Removed now redundant parameter ```markup_on_design_spam_test``` from method client.set_payg_billing
+
 ## v6.1.1 - 20 Aug 2024
 * Merged support for error code 429 (rate limiting on subscribers update)
 * Merged gemspec required ruby version to `>= 2.0`
