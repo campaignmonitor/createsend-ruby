@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.executables = `git ls-files -- bin/*`.split("\n").map{|f| File.basename(f)}
   s.files = Dir.chdir(__dir__) do
     `git ls-files -z`.split("\x0").reject do |f|
-      (f == __FILE__) || f.match(%r{\A(?:(?:bin|test|spec|features)/|\.(?:git|travis|circleci)|appveyor)})
+      (f == __FILE__) || f.match(%r{\A(?:(?:bin|test|spec|features|samples)/|\.(?:git|travis|circleci)|appveyor)})
     end
   end
   s.homepage = "http://campaignmonitor.github.io/createsend-ruby/"
