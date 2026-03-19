@@ -19,7 +19,11 @@ Gem::Specification.new do |s|
   s.description = %q{Implements the complete functionality of the Campaign Monitor API.}
   s.email = ["jdennes@gmail.com"]
   s.executables = `git ls-files -- bin/*`.split("\n").map{|f| File.basename(f)}
-  s.files = `git ls-files`.split("\n")
+  s.files = Dir.chdir(__dir__) do
+    `git ls-files -z`.split("\x0").reject do |f|
+      (f == __FILE__) || f.match(%r{\A(?:(?:bin|test|spec|features|samples)/|\.(?:git|travis|circleci)|appveyor)})
+    end
+  end
   s.homepage = "http://campaignmonitor.github.io/createsend-ruby/"
   s.require_paths = ["lib"]
   s.summary = %q{A library which implements the complete functionality of the Campaign Monitor API.}
