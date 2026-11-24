@@ -77,7 +77,9 @@ module CreateSend
       body << "&client_secret=#{CGI.escape(client_secret.to_s)}"
       body << "&redirect_uri=#{CGI.escape(redirect_uri.to_s)}"
       body << "&code=#{CGI.escape(code.to_s)}"
-      options = {:body => body}
+      options = {
+        :body => body,
+        :headers => { 'Content-Type' => 'application/x-www-form-urlencoded' } }
       response = HTTParty.post(@@oauth_token_uri, options)
       if response.has_key? 'error' and response.has_key? 'error_description'
         err = "Error exchanging code for access token: "
@@ -92,7 +94,8 @@ module CreateSend
     # Returns a new access token, 'expires in' value, and refresh token.
     def self.refresh_access_token(refresh_token)
       options = {
-        :body => "grant_type=refresh_token&refresh_token=#{CGI.escape(refresh_token)}" }
+        :body => "grant_type=refresh_token&refresh_token=#{CGI.escape(refresh_token)}",
+        :headers => { 'Content-Type' => 'application/x-www-form-urlencoded' } }
       response = HTTParty.post(@@oauth_token_uri, options)
       if response.has_key? 'error' and response.has_key? 'error_description'
         err = "Error refreshing access token: "
